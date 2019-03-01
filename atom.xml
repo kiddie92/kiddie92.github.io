@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Mun</title>
+  
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://yoursite.com/"/>
+  <updated>2019-03-01T18:26:00.666Z</updated>
+  <id>http://yoursite.com/</id>
+  
+  <author>
+    <name>Mun</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>单机版SuSe搭建Confluence Wiki</title>
+    <link href="http://yoursite.com/2019/03/02/%E5%8D%95%E6%9C%BA%E7%89%88SuSe%E6%90%AD%E5%BB%BAConfluence-Wiki/"/>
+    <id>http://yoursite.com/2019/03/02/单机版SuSe搭建Confluence-Wiki/</id>
+    <published>2019-03-01T18:07:48.000Z</published>
+    <updated>2019-03-01T18:26:00.666Z</updated>
+    
+    <content type="html"><![CDATA[<p><code>单机</code> <code>SuSe</code> <code>confluence</code> <code>Wiki</code></p><p>Wiki，作为知识管理的工具，实现团队成员之间的协作和知识共享。</p><p>下面主要介绍三部分内容：</p><h4 id="一-安装过程主要参考的博客地址"><a href="#一-安装过程主要参考的博客地址" class="headerlink" title="一.安装过程主要参考的博客地址"></a>一.安装过程主要参考的博客<a href="https://segmentfault.com/a/1190000008753391#articleHeader10" target="_blank" rel="noopener">地址</a></h4><p>这篇博客每一个步骤都讲的非常清楚，按照步骤来，肯定没有问题。可能出现的问题我将写在<strong>第二部分</strong>里面。</p><h4 id="二-安装过程的注意事项"><a href="#二-安装过程的注意事项" class="headerlink" title="二.安装过程的注意事项"></a>二.安装过程的注意事项</h4><p>安装软件之前需要添加SuSe的源，尽量避免下载源码自己编译；另外，如果每次都让管理员那边挂载CD源，效率也会比较低。</p><ul><li><strong>下载配置SuSe源</strong><blockquote><p>点击<a href="https://zh.opensuse.org/%E8%BD%AF%E4%BB%B6%E6%BA%90%E9%95%9C%E5%83%8F%E7%AB%99%E7%82%B9" target="_blank" rel="noopener">这里</a>即可进入软件源镜像站点<br>选择一个镜像地址，推荐国内的USTC源：）<br>建议同时下载<code>leap</code>和<code>tumbleweed</code>镜像，每个镜像大小大概4G多一点</p></blockquote></li></ul><p>1.将下载好的iso文件上传至目标主机，低于4G的文件可以使用<code>sz</code>命令（前提是<code>lszrz</code>软件已经安装好了），超过4G的文件需要使用<code>ftp</code>进行上传，注意ftp端口的设置</p><blockquote><p>鉴于公司网络安全方面的设置，我习惯用自己的电脑连接外网，公司电脑连接内网，这样<strong>查询资料</strong>或者<strong>下载文件</strong>的同时也可以使用内网比较方便。这样就会涉及到两台电脑传输数据的问题，如果公司电脑USB有加密传输设置则建议使用网线连接进行文件传输。另外，查询资料建议使用<code>Google</code>。</p></blockquote><p>2.挂载和配置Suse源<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /mnt/localsuse01   <span class="comment">#新建一个存放文件的挂载点</span></span><br><span class="line">mount -o loop imagefilename.iso /mnt/localsuse01  <span class="comment">#挂载到刚刚建立的文件夹</span></span><br><span class="line">zypper ar file:///mnt/localsuse01 localsuse01  <span class="comment">#添加源</span></span><br><span class="line">zypper lr  <span class="comment">#查看添加的源</span></span><br></pre></td></tr></table></figure></p><p>这样的设置会导致电脑重启后需要重新手动挂载，所以可以设置成开机自动挂载。</p><ul><li><strong>mysql安装和配置</strong></li></ul><p>1.使用suse安装软件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">zypper se mysql #查看源里面是否有mysql的包</span><br><span class="line">zypper install mysql #或者mariadb</span><br></pre></td></tr></table></figure></p><p>2.安装完成后，启动mysql服务<code>systemctl start mariadb</code>或者<code>systemctl start mysqld</code><br>3.登录mysql：<code>mysql -uname -p</code>先设置数据库密码<br>按照参考的博客输入内容：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">create database confluence default character <span class="built_in">set</span> utf8;</span><br><span class="line">grant all on confluence.* to <span class="string">'confluenceuser'</span>@<span class="string">'%'</span> identified by <span class="string">'confluencepasswd'</span> with grant option;</span><br><span class="line">grant all on confluence.* to <span class="string">'confluenceuser'</span>@localhost identified by <span class="string">'confluencepasswd'</span> with grant option;</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure></p><p>修改<code>mysql</code>的配置文件，SuSe默认安装mysql到<code>/usr/share/mysql</code>文件夹，<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">zhuz@qwerty:~$ mysql --<span class="built_in">help</span>|grep <span class="string">'my.cnf'</span><span class="comment">#查看默认配置文件的位置</span></span><br><span class="line">/etc/my.cnf /etc/mysql/my.cnf ~/.my.cnf <span class="comment">#这个是按照优先级排列的</span></span><br></pre></td></tr></table></figure></p><p>所以在<code>/etc/my.cnf</code>中添加：<code>binlog_format=mixed</code><br>4.重启mysql服务：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">service mariadb stop</span><br><span class="line">service mariadb start</span><br></pre></td></tr></table></figure></p><ul><li><p><strong>关闭防火墙</strong></p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SuSEfirewall2 stop</span><br></pre></td></tr></table></figure></li><li><p><strong>配置VNC</strong></p><blockquote><p>由于后续安装步骤需要用到<code>windowX</code>图形界面服务，而我们是通过<code>CRT</code>或者<code>putty</code>远程连接登录服务器进行操作的，这里推荐使用<code>VNC viewer</code><br>在服务器电脑上安装<code>vnc</code>服务，并开启即可使用，其间可能会遇到各式各样的问题，需要自行Google一下</p></blockquote></li><li><p><strong>正式安装confluence</strong><br>这里的安装部分全程比较简单，按照前面提到的blog内容step by step即可成功，需要注意的是安装的目录可以自行选择。<br>再贴下blog地址<a href="https://segmentfault.com/a/1190000008753391#articleHeader10" target="_blank" rel="noopener">https://segmentfault.com/a/1190000008753391#articleHeader10</a></p></li></ul><h4 id="三-运行维护"><a href="#三-运行维护" class="headerlink" title="三.运行维护"></a>三.运行维护</h4><p>1.安装后的文件位于<code>/confluence/atlassian/confluence</code>文件夹下，将该目录下的<code>bin</code>目录加入系统的环境变量<code>echo &#39;export PATH=$PATH:/confluence/atlassian/confluence/bin&#39; &gt;&gt; /etc/profile</code><br>2.由于Wiki服务没有手动加入守护进程，所以可能会由于一些原因导致其停止工作，比如电脑重启，这时需要重启Wiki服务：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl start mariadb <span class="comment">#1.启动mysql</span></span><br><span class="line">SuSEfirewall2 stop <span class="comment">#2.关闭防火墙</span></span><br><span class="line">start_up.sh <span class="comment">#3.最后开启wiki</span></span><br></pre></td></tr></table></figure></p><h4 id="四-书签"><a href="#四-书签" class="headerlink" title="四.书签"></a>四.书签</h4><p>CentOS7搭建Confluence Wiki<br><a href="https://segmentfault.com/a/1190000008753391#articleHeader10" target="_blank" rel="noopener">https://segmentfault.com/a/1190000008753391#articleHeader10</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;code&gt;单机&lt;/code&gt; &lt;code&gt;SuSe&lt;/code&gt; &lt;code&gt;confluence&lt;/code&gt; &lt;code&gt;Wiki&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Wiki，作为知识管理的工具，实现团队成员之间的协作和知识共享。&lt;/p&gt;
+&lt;p&gt;下面主要介绍三部分内容：&lt;/
+      
+    
+    </summary>
+    
+      <category term="Linux软件安装" scheme="http://yoursite.com/categories/Linux%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/"/>
+    
+    
+      <category term="Confluence Wiki" scheme="http://yoursite.com/tags/Confluence-Wiki/"/>
+    
+      <category term="Linux" scheme="http://yoursite.com/tags/Linux/"/>
+    
+      <category term="Suse" scheme="http://yoursite.com/tags/Suse/"/>
+    
+  </entry>
+  
+</feed>
