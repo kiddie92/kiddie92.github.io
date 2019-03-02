@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+<meta name="theme-color" content="#f8f5ec">
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+
+  <meta name="description" content="kubernetes 性能测试方法简介">
+
+
+
+
+  <meta name="keywords" content="kubernetes, 性能测试, Mun*">
+
+
+
+
+
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Mun*">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.10.2">
+
+
+
+<link rel="canonical" href="https://kiddie92.github.io/2019/01/23/kubernetes-性能测试方法简介/">
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css">
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/nprogress/nprogress.min.css">
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.10.2">
+
+
+
+  
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-91728997-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-91728997-1');
+</script>
+
+
+  <script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.1.1/av-min.js"></script>
+  <script id="leancloud">
+    AV.init({
+      appId: "n8MGlOWz83zS9G0m0PGinErj-gzGzoHsz",
+      appKey: "bSOcrmi2W53fTzNXQA3UQ2z3"
+    });
+  </script>
+
+
+
+
+
+<script>
+  window.config = {"leancloud":{"app_id":"n8MGlOWz83zS9G0m0PGinErj-gzGzoHsz","app_key":"bSOcrmi2W53fTzNXQA3UQ2z3"},"toc":true,"fancybox":true,"pjax":true};
+</script>
+
+    <title> kubernetes 性能测试方法简介 - Mun* </title>
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Mun*</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            首页
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            归档
+          
+        </li>
+      </a>
+    
+      <a href="/tags">
+        <li class="mobile-menu-item">
+          
+          
+            标签
+          
+        </li>
+      </a>
+    
+      <a href="/categories">
+        <li class="mobile-menu-item">
+          
+          
+            分类
+          
+        </li>
+      </a>
+    
+      <a href="/links">
+        <li class="mobile-menu-item">
+          
+          
+            链接
+          
+        </li>
+      </a>
+    
+      <a href="/about">
+        <li class="mobile-menu-item">
+          
+          
+            关于
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Mun*</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              首页
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              归档
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/tags">
+            
+            
+              标签
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/categories">
+            
+            
+              分类
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/links">
+            
+            
+              链接
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/about">
+            
+            
+              关于
+            
+          </a>
+        </li>
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          kubernetes 性能测试方法简介
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-01-23
+        </span>
+        
+          <span class="post-category">
+            
+              <a href="/categories/kubernetes/">kubernetes</a>
+            
+              <a href="/categories/kubernetes/软件测试/">软件测试</a>
+            
+          </span>
+        
+        
+        <span class="post-visits" data-url="/2019/01/23/kubernetes-性能测试方法简介/" data-title="kubernetes 性能测试方法简介">
+          阅读次数 0
+        </span>
+        
+      </div>
+    </header>
+
+    
+    
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#部署环境简要"><span class="toc-text">部署环境简要</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#集群资源"><span class="toc-text">集群资源</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#集群部署架构"><span class="toc-text">集群部署架构</span></a></li></ol></li></ol><li class="toc-item toc-level-2"><a class="toc-link" href="#容器网络测试"><span class="toc-text">容器网络测试</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#容器网络简介"><span class="toc-text">容器网络简介</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#性能测试"><span class="toc-text">性能测试</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#网络延迟"><span class="toc-text">网络延迟</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#容器存储测试"><span class="toc-text">容器存储测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#k8s-并发测试"><span class="toc-text">k8s 并发测试</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#kube-apiserver-api-规范"><span class="toc-text">kube-apiserver api 规范</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#deployment命名不可重复"><span class="toc-text">deployment命名不可重复</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#横向伸缩能力测试"><span class="toc-text">横向伸缩能力测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#集群高可用测试"><span class="toc-text">集群高可用测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Acknowledgment"><span class="toc-text">Acknowledgment</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-text">Reference</span></a></li>
+    </div>
+  </div>
+
+
+
+    <div class="post-content">
+      
+        <blockquote>
+<p>本文主要介绍kubernetes（以下简称k8s）在性能测试中的主要关注指标以及涉及的辅助测试工具。由于各企业在私有云建设过程中使用的技术标准不尽相同，文中尽可能介绍可能涉及的通用性测试项，由于作者水平有限，以下内容仅供参考，欢迎讨论以及指正。<br><a id="more"></a> </p>
+</blockquote>
+<h2 id="部署环境简要"><a href="#部署环境简要" class="headerlink" title="部署环境简要"></a>部署环境简要</h2><p>企业级k8s集群需要达到生产可用（GA），在部署上常采用高可用方案（HA），也即多台master节点和多台node节点的组合形式。生产上，k8s集群通常搭建在私有云或公有云IaaS之上，且需要较高的硬件资源支持。</p>
+<h4 id="集群资源"><a href="#集群资源" class="headerlink" title="集群资源"></a>集群资源</h4><p>从k8s集群部署需求的角度来说，集群资源应该明确给出，包括CPU、内存、系统、存储、网络以及相关的性能指标，而这些都可以由IaaS层提供，这里简单声明如下：</p>
+<ul>
+<li>集群存储：采用NAS作为后端持久化存储方案</li>
+<li>集群网络：VMware提供的NSX-T容器网络方案</li>
+<li>集群系统、CPU、内存资源列表：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">角色</th>
+<th style="text-align:center">角色说明</th>
+<th style="text-align:center">节点数</th>
+<th style="text-align:center">cpu</th>
+<th style="text-align:center">内存</th>
+<th style="text-align:center">系统</th>
+<th style="text-align:center">存储大小</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">master</td>
+<td style="text-align:center">k8s master节点</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">16</td>
+<td style="text-align:center">CentOS 7.5</td>
+<td style="text-align:center">100G</td>
+</tr>
+<tr>
+<td style="text-align:center">node</td>
+<td style="text-align:center">k8s计算节点</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">8</td>
+<td style="text-align:center">16</td>
+<td style="text-align:center">CentOS 7.5</td>
+<td style="text-align:center">100G</td>
+</tr>
+</tbody>
+</table>
+<h4 id="集群部署架构"><a href="#集群部署架构" class="headerlink" title="集群部署架构"></a>集群部署架构</h4><p>企业级集群部署架构需要考虑很多因素，其中最主要的是需要有<strong>管理平面</strong>和<strong>业务平面</strong>，核心则是降低平台的使用复杂度和运维复杂度，所以部署上我们不仅仅需要有高可用的业务集群，还需要有相应的配套服务机制，其中包括监控（metrics）、日志（Logs）、网络管控、存储管控、负载均衡、私有云场景还需要提供yum源和镜像仓库服务等。</p>
+<blockquote>
+<p>这里，我们的监控采用单个集群使用<code>Prometheus</code>作为TSDB+<code>grafana</code>作为数据展示，而日志方面则以<code>ElasticSearch</code>集群部署的方式进行存储收集。</p>
+</blockquote>
+<p>业务集群的部署架构图则如下所示（图片来自<a href="https://elastisys.com/2018/01/25/setting-highly-available-kubernetes-clusters/" target="_blank" rel="noopener">这里</a>）<br><img src="https://upload-images.jianshu.io/upload_images/13272578-73c9c74a3e5f8573.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="HA部署架构"></p>
+<h2 id="容器网络测试"><a href="#容器网络测试" class="headerlink" title="容器网络测试"></a>容器网络测试</h2><h4 id="容器网络简介"><a href="#容器网络简介" class="headerlink" title="容器网络简介"></a>容器网络简介</h4><p>k8s的最小调度单位为<code>Pod</code>，而Pod“内部”的容器会通过Linux namespace机制与infra容器共享网络栈，所以<a href="https://www.nginx.com/resources/library/container-networking-docker-kubernetes/" target="_blank" rel="noopener">容器网络</a>就是指Pod之间通信的网络，kubernetes以开放插件接口的形式（Container Network Interface）让第三方插件提供Pod间网络通信的能力。</p>
+<blockquote>
+<p>目前主流的k8s容器网络插件有开源的Weave、Calico、Flannel-HostGW、Flannel-VxLAN、MacVLAN、IpVLAN…以及未开源的VMware NSX-T。</p>
+</blockquote>
+<h4 id="性能测试"><a href="#性能测试" class="headerlink" title="性能测试"></a>性能测试</h4><p>从容器网络性能测试的角度来说，关注点主要在于不同场景下带宽、计算资源消耗的情况。下面简单介绍一下相关的测试场景和测试策略以及涉及的测试工具：</p>
+<blockquote>
+<p>由于k8s网络插件在工作过程中存在Linux的<code>User Space</code>和<code>Kernel Space</code>的交互（封包解包），这是性能损耗的主要来源之一；<br>如果考虑网络安全，需要加上网络插件的限制隔离机制（Network Policies）的测试。</p>
+</blockquote>
+<ul>
+<li>场景一：同主机Pod间通信</li>
+<li>场景二：跨主机Pod间通信</li>
+<li>场景三：集群内主机和主机间通信</li>
+<li>场景四：Pod与宿主机间通信</li>
+<li>场景五：Pod与非宿主机间通信</li>
+<li>测试策略：固定网络带宽，固定网络类型，测试不同数据包大小对网络吞吐量的影响，例如可以测试获取文件传输量超过10G，系统在文件传输高峰时对局域网的<strong>带宽要求</strong>，并对比容器网络传输和非容器网络（Bare Metal）传输之间的<strong>CPU消耗</strong>以及<strong>内存消耗</strong>情况。</li>
+<li>测试工具：<a href="https://iperf.fr/iperf-doc.php#3doc" target="_blank" rel="noopener">iperf3</a>，容器化运行在k8s集群上</li>
+</ul>
+<blockquote>
+<p>相关的测试可以参考<a href="https://itnext.io/benchmark-results-of-kubernetes-network-plugins-cni-over-10gbit-s-network-36475925a560" target="_blank" rel="noopener">这里</a>。</p>
+</blockquote>
+<h4 id="网络延迟"><a href="#网络延迟" class="headerlink" title="网络延迟"></a>网络延迟</h4><p>造成容器网络延迟的主要原因是传输延迟及处理延迟，这里的测试关注点在于不同CNI插件下，不同场景的网络延迟。</p>
+<ul>
+<li>场景一：通过Service的VIP或DNS进行集群内部访问</li>
+<li>场景二：通过NodePort进行集群外部访问</li>
+<li>场景三：通过IaaS层提供的LoadBalancer进行访问</li>
+<li>测试策略：容器化运行<code>qperf</code>，依据场景的不同，通过设置yaml文件为qperf添加不同的Service访问方式，测试其在访问过程中的网络延迟。</li>
+<li>涉及工具：<a href="https://linux.die.net/man/1/qperf" target="_blank" rel="noopener">qperf</a></li>
+</ul>
+<blockquote>
+<p>需要注意的是：由于容器网络是基于IaaS层网络搭建，而IaaS层网络通常又是一个跨数据中心的“大二层”网络，虚拟机本身的物理位置对k8s集群来说已经是无感知的了，如此一来，容器网络的测试指标与IaaS网络其实是耦合在一起的，那么容器网络的测试实际上也是包含了IaaS层网络性能考量。</p>
+</blockquote>
+<h2 id="容器存储测试"><a href="#容器存储测试" class="headerlink" title="容器存储测试"></a>容器存储测试</h2><p>针对有状态应用的数据持久化以及容器日志存储需求，k8s设计了容器存储接口（CSI）并辅以PV、PVC的机制实现分布式应用的持久化存储，目前支持CSI实现容器持久化存储的方案有<a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/" target="_blank" rel="noopener">很多</a>。存储的测试主要考量的指标是容器对数据卷的读写IO，除此之外，还需要考虑容器迁移是否依然能够实现数据持久化。</p>
+<ul>
+<li>场景一：多容器实例跨主机部署，数据持久化</li>
+<li>场景二：单个容器对数据卷进行读写IO</li>
+<li>测试策略：k8s上使用deployment部署多个应用实例，每个Pod使用同一个PVC挂载同一个目录（Pod一般会分布在不同的主机上），再查看多个应用实例的数据是否同步写入同一后端存储；此外，在单容器内部使用<code>dd</code>命令在挂载目录下（本地存储或分布式存储）进行读、写以及读写测试，并使用参数<code>iflag=direct</code>，观察输出的平均读写时间。</li>
+<li>涉及工具：<a href="https://linux.die.net/man/1/dd" target="_blank" rel="noopener">dd</a></li>
+</ul>
+<h2 id="k8s-并发测试"><a href="#k8s-并发测试" class="headerlink" title="k8s 并发测试"></a>k8s 并发测试</h2><p>对于使用go编写的k8s来说，并发能力理论上很强。性能测试上，可以使用多线程执行创建、删除、查询各类资源，由于k8s的最小调度单元为Pod，测试时可以仅使用创建deployment作为场景，主要的关注指标为<strong>错误率</strong>和<strong>平均响应时间</strong>以及<strong>硬件资源消耗</strong>：</p>
+<ul>
+<li>场景一：多线程并发创建deployment，再并发删除deployment</li>
+<li>测试策略：使用Jmeter多线程方式发送创建不同name的deployment资源的json文件至<code>kube-apiserver</code>，删除亦如此；同时通过<code>Prometheus</code>和<code>Grafana</code>对集群的资源和相关组件的资源使用进行监控。 </li>
+<li>涉及工具：<code>Jmeter</code> <code>curl</code> <code>Prometheus</code> <code>Grafana</code></li>
+</ul>
+<h5 id="kube-apiserver-api-规范"><a href="#kube-apiserver-api-规范" class="headerlink" title="kube-apiserver api 规范"></a>kube-apiserver api 规范</h5><p>使用curl测试一下kube-apiserver的api规范：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST \</span><br><span class="line">-d @filename.json -H <span class="string">"Content-Type: application/json"</span> \</span><br><span class="line">-H <span class="string">"Authorization: Bearer <span class="variable">$&#123;token&#125;</span>"</span> <span class="variable">$&#123;api_url_or_ip:8080&#125;</span>/apis/extensions/v1beta1/namespaces/<span class="variable">$&#123;namespace_name&#125;</span>/deployments</span><br></pre></td></tr></table></figure></p>
+<h5 id="deployment命名不可重复"><a href="#deployment命名不可重复" class="headerlink" title="deployment命名不可重复"></a>deployment命名不可重复</h5><p>由于deployment的name、label不可以重复，这里可以使用jmeter设置变量，并将变量赋值到将要发送的json文件内，点击<a href="https://github.com/Conan-D/jubernetes-test/blob/master/deployment.json" target="_blank" rel="noopener">deployment.json</a>即可查看deployment的json文件。</p>
+<h2 id="横向伸缩能力测试"><a href="#横向伸缩能力测试" class="headerlink" title="横向伸缩能力测试"></a>横向伸缩能力测试</h2><p>k8s的横向伸缩能力主要体现在两个层面：node扩展和Pod扩展，但是node的扩展同时需要IaaS的能力支持，我们这里仅仅考虑Pod的横向扩缩容。k8s可以开启<a href="https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/" target="_blank" rel="noopener">Horizontal Pod Autoscaler</a>功能，对接了metrics指标后，可以实现根据指标策略来自动扩缩应用副本数（Pod数）。因此，性能测试需要关注的指标有：Pod在扩缩容过程中所需的启停时间；扩缩过程中服务是否会出现中断，也即服务的错误率；以及服务的TPS变化；同时对集群资源的使用率进行监控。</p>
+<ul>
+<li>场景一：对deployment进行扩容操作</li>
+<li>场景二：对deployment进行缩容操作</li>
+<li><p>测试策略：部署单个应用至k8s集群，关联的service端口暴露方式为NortPort，使用Jmeter对该服务进行多线程持续访问；修改deployment的replica参数，使用<code>kubectl apply -f ${deployment.yaml}</code>更新应用，观察Jmeter的TPS、Error指标数据，以及集群资源监控数据。</p>
+<blockquote>
+<p>关于scale out/in，k8s把Pod当做”cattle”而不是”pet”去管理，这里的测试并没有使用HPA，所以手动扩缩容实际上使用的是Rolling Update，Rolling Update思路也即关闭正在运行的Pod再创建新的Pod。所以，缩容过程中可能会出现部分服务暂时中断的现象，jmeter会出现Error，如果将Pod的”优雅停”时间（默认30s）设置长一点应该能够减少Error出现的几率。</p>
+</blockquote>
+</li>
+<li><p>涉及工具：<code>Jmeter</code> <code>Prometheus</code> <code>Grafana</code></p>
+</li>
+</ul>
+<h2 id="集群高可用测试"><a href="#集群高可用测试" class="headerlink" title="集群高可用测试"></a>集群高可用测试</h2><p>k8s集群高可用其实就是集群各组件的高可用，测试关注点则是集群部分组件甚至节点关闭（如master或node宕机），集群是否还能正常工作，以及业务应用对外提供服务的性能是否还能保持稳定。</p>
+<ul>
+<li>场景一：正在对外提供服务的业务集群突然出现部分机器断网、宕机，或者kubelet等组件停止运行</li>
+<li>测试策略：使用systemctl命令启停相关组件，模拟组件的工作中断；使用docker stop命名停止以静态Pod运行的服务组件，模拟组件的工作终止；使用ifconfig命令启停节点的网卡，模拟网络的中断；直接关闭机器模拟集群节点的突然宕机；同时观察集群应用服务及其管理是否能正常工作，业务运行相关指标是否下降。</li>
+<li>涉及工具：<code>systemd</code> <code>ifconfig</code> <code>docker</code> <code>vcenter</code> <code>Jmeter</code></li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>优秀的架构一定是可扩展的，尤其是大规模集群管理这样的底层系统，k8s的扩展能力太强以至于它更像是IaaS和PaaS之间的中间层。以Kubernetes为核心的PaaS平台已在国内外众多企业内实施落地，由于kubernetes的插件化设计，各企业在落地过程中需要解决的网络方案、存储方案、负载均衡方案、监控体系、日志体系等各不相同，从而在性能测试方法上也不尽相同，本文主要介绍了部分性能测试可能需要关注的地方以及相关工具，不够全面系统，内容仅供参考。</p>
+<h2 id="Acknowledgment"><a href="#Acknowledgment" class="headerlink" title="Acknowledgment"></a>Acknowledgment</h2><p>灵雀云的小伙伴们给予了文档参考和技术支持，在此致谢。</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol>
+<li><a href="https://itnext.io/benchmark-results-of-kubernetes-network-plugins-cni-over-10gbit-s-network-36475925a560" target="_blank" rel="noopener">Benchmark results of Kubernetes network plugins (CNI) over 10Gbit/s network</a></li>
+<li><a href="https://www.nginx.com/resources/library/container-networking-docker-kubernetes/" target="_blank" rel="noopener">Container Networking: From Docker to Kubernetes</a></li>
+<li><a href="https://elastisys.com/2018/01/25/setting-highly-available-kubernetes-clusters/" target="_blank" rel="noopener">On setting up highly available Kubernetes clusters</a></li>
+<li><a href="https://iperf.fr/iperf-doc.php#3doc" target="_blank" rel="noopener">iperf3 doc</a></li>
+<li><a href="https://linux.die.net/man/1/qperf" target="_blank" rel="noopener">qperf doc</a></li>
+<li><a href="https://kubernetes.io/blog/2015/09/kubernetes-performance-measurements-and/" target="_blank" rel="noopener">Kubernetes Performance Measurements and Roadmap</a></li>
+</ol>
+
+      
+    </div>
+
+    
+      
+      
+
+
+
+      
+      
+  <div class="post-reward">
+    <input type="checkbox" name="reward" id="reward" hidden>
+    <label class="reward-button" for="reward">赞赏支持</label>
+    <div class="qr-code">
+      
+      
+        <label class="qr-code-image" for="reward">
+          <img class="image" src="/images/reward/wechat.png" title="微信打赏">
+        </label>
+      
+      
+        <label class="qr-code-image" for="reward">
+          <img class="image" src="/images/reward/alipay.png" title="支付宝打赏">
+        </label>
+      
+    </div>
+  </div>
+
+    
+
+    
+      <footer class="post-footer">
+        
+          <div class="post-tags">
+            
+              <a href="/tags/kubernetes/">kubernetes</a>
+            
+              <a href="/tags/性能测试/">性能测试</a>
+            
+          </div>
+        
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2019/03/02/图片识别app从keras-flask代码到kubernetes部署/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">图片识别app从keras+flask代码到kubernetes部署</span>
+        <span class="prev-text nav-mobile">上一篇</span>
+      </a>
+    
+    
+      <a class="next" href="/2019/01/05/CentOS-下基于kubernetes安装部署kubeflow/">
+        <span class="next-text nav-default">CentOS 下基于kubernetes安装部署kubeflow</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+
+      </footer>
+    
+
+  </article>
+
+
+          </div>
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:kiddiezzh@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+        
+          <a href="https://twitter.com/kiddiezzh" class="iconfont icon-twitter" title="twitter"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/kiddie92" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+    
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2018 - 
+    
+    2019
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Mun*</span>
+  </span>
+</div>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+  
+  <script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'https://kiddie92.github.io/2019/01/23/kubernetes-性能测试方法简介/';
+        this.page.identifier = '2019/01/23/kubernetes-性能测试方法简介/';
+        this.page.title = 'kubernetes 性能测试方法简介';
+    };
+    (function() {
+    var d = document, s = d.createElement('script');
+
+    s.src = '//https-kiddie92-github-io.disqus.com/embed.js';
+
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();  
+  </script>
+
+  
+
+  
+
+
+
+    
+  
+
+
+
+  
+  
+
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/pjax/jquery.pjax.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/nprogress/nprogress.min.js"></script>
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.10.2"></script>
+
+  </body>
+</html>
