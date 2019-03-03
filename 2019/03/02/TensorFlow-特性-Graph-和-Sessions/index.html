@@ -301,7 +301,7 @@
         <blockquote>
 <p>深度学习框架有很多，Google的TensorFlow市场占有率居高不下，本文的小目标是说清楚tensorflow的<strong>“图（Graph）”</strong>和<strong>“会话（Session）”</strong>机制及其优缺点，最后以一个回归问题为例实践一下。文中顺便回答一下<strong>动态图（Dynamic computation graphs）</strong>和<strong>静态图（Static computational graphs）</strong>框架的区别。<br><a id="more"></a></p>
 </blockquote>
-<h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p><strong>深度学习</strong>是目前人工智能领域备受推崇的算法种类，其在计算机视觉（Computer vision）、自然语言处理（NLP）领域有比较广泛的应用，这里先挖个坑，<a href="xxx">下一篇</a>将谈谈我对深度学习算法的理解。</p>
+<h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p><strong>深度学习</strong>是目前人工智能领域备受推崇的算法种类，其在计算机视觉（Computer vision）、自然语言处理（NLP）领域有比较广泛的应用，这里先挖个坑，<a href="https://kiddie92.github.io/2019/03/03/%E6%B5%85%E8%B0%88%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95-%E8%83%BD%E4%B8%8D%E8%83%BD%E5%AD%A6%E7%89%A9%E7%90%86%E5%AE%9A%E5%BE%8B/">下一篇</a>将谈谈我对深度学习算法的理解。</p>
 <p>目前开源市场的深度学习框架有很多，如<code>tensorflow</code>、<code>pytorch</code>、<code>mxnet</code>等，而tensorflow的市场占有率相对较高，那么为什么会有如此多的深度学习框架，tensorflow又有什么异于常人的地方呢？为了回答这个问题，本文首先尝试说明一下tensorflow的<code>Graph+Session</code>机制。</p>
 <p>市面上的各种深度学习框架：</p>
 <p><img src="DL-framework.png" alt="DeepLearning frameworks"></p>
