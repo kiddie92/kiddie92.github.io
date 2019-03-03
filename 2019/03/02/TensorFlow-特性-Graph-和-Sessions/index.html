@@ -335,7 +335,7 @@
       ... \\
      W_1X_{1,100} + W_2X_{2,100} +b =y_{100} \\
 \end{pmatrix}</script></li>
-<li><p>假设我们已经知道这个函数式了：$Wx+b=y$，仅仅不知道给定的参数$W$和$b$是什么，根据函数式，可以使用初始化参数来构造$y$，并计算$y$和$y_{data}$之间的<em>“距离”</em>，并使用梯度下降的方式找到一个最优参数组使<strong>距离</strong>尽量减少。见代码部分10-13行。</p>
+<li><p>假设我们已经知道这个函数式了：<script type="math/tex">Wx+b=y</script>，仅仅不知道给定的参数<script type="math/tex">W</script>和<script type="math/tex">b</script>是什么，根据函数式，可以使用初始化参数来构造<script type="math/tex">y</script>，并计算<script type="math/tex">y</script>和<script type="math/tex">y_{data}</script>之间的<em>“距离”</em>，并使用梯度下降的方式找到一个最优参数组使<strong>距离</strong>尽量减少。见代码部分10-13行。</p>
 </li>
 </ol>
 <blockquote>
@@ -347,7 +347,7 @@
 </blockquote>
 <h3 id="运行环境"><a href="#运行环境" class="headerlink" title="运行环境"></a>运行环境</h3><p>由于tensorflow和cuda版本（9.0.176）兼容问题，选择安装V1.12.0GPU版本，本机tensorflow环境：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[conan@localhost ~]$ conda list | grep tensor</span><br><span class="line">tensorboard               1.12.0                    &lt;pip&gt;</span><br><span class="line">tensorflow-gpu            1.12.0                    &lt;pip&gt;</span><br><span class="line">tensorflow-tensorboard    0.4.0                     &lt;pip&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="代码部分"><a href="#代码部分" class="headerlink" title="代码部分"></a>代码部分</h3><p>这里使用一个简单的平面拟合问题来实践一下，完整代码请看<a href="https://github.com/kiddie92/Learning_Tech/blob/master/TensorFlow%20%E7%89%B9%E6%80%A7--Graph%20%E5%92%8C%20Sessions/Demo1_tensor.py" target="_blank" rel="noopener">这里</a></p>
+<h3 id="代码部分"><a href="#代码部分" class="headerlink" title="代码部分"></a>代码部分</h3><p>这里使用一个简单的平面拟合问题来实践一下，完整代码请看<strong><a href="https://github.com/kiddie92/Learning_Tech/blob/master/TensorFlow%20%E7%89%B9%E6%80%A7--Graph%20%E5%92%8C%20Sessions/Demo1_tensor.py" target="_blank" rel="noopener">这里</a></strong></p>
 <ul>
 <li>拟合时主要关注的参数为：<code>tf.train.GradientDescentOptimizer(0.2)</code>里的学习率（或者叫做步长）、和迭代次数<code>for step in range(0, 51):</code>，减小学习率增加迭代次数理论上会使拟合效果更好，但是会有过拟合（over fitting）的危险，并且模型的泛化能力（generalization）会比较差，控制这种风险的算法也很多，比如给目标函数加正则化（regularization）。</li>
 </ul>
@@ -601,24 +601,7 @@
   
 
 
-    <script type="text/javascript" src="/js/src/even.js?v=2.10.2"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+    <script type="text/javascript" src="/js/src/even.js?v=2.10.2"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
   </body>
 </html>
