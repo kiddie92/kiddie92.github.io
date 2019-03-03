@@ -300,14 +300,15 @@
       
         <blockquote>
 <p>本文主要介绍kubernetes（以下简称k8s）在性能测试中的主要关注指标以及涉及的辅助测试工具。由于各企业在私有云建设过程中使用的技术标准不尽相同，文中尽可能介绍可能涉及的通用性测试项，由于作者水平有限，以下内容仅供参考，欢迎讨论以及指正。<br><a id="more"></a> </p>
-</blockquote>
 <h2 id="部署环境简要"><a href="#部署环境简要" class="headerlink" title="部署环境简要"></a>部署环境简要</h2><p>企业级k8s集群需要达到生产可用（GA），在部署上常采用高可用方案（HA），也即多台master节点和多台node节点的组合形式。生产上，k8s集群通常搭建在私有云或公有云IaaS之上，且需要较高的硬件资源支持。</p>
+</blockquote>
 <h3 id="集群资源"><a href="#集群资源" class="headerlink" title="集群资源"></a>集群资源</h3><p>从k8s集群部署需求的角度来说，集群资源应该明确给出，包括CPU、内存、系统、存储、网络以及相关的性能指标，而这些都可以由IaaS层提供，这里简单声明如下：</p>
 <ul>
 <li>集群存储：采用NAS作为后端持久化存储方案</li>
 <li>集群网络：VMware提供的NSX-T容器网络方案</li>
 <li>集群系统、CPU、内存资源列表：</li>
 </ul>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -341,6 +342,7 @@
 </tr>
 </tbody>
 </table>
+</div>
 <h3 id="集群部署架构"><a href="#集群部署架构" class="headerlink" title="集群部署架构"></a>集群部署架构</h3><p>企业级集群部署架构需要考虑很多因素，其中最主要的是需要有<strong>管理平面</strong>和<strong>业务平面</strong>，核心则是降低平台的使用复杂度和运维复杂度，所以部署上我们不仅仅需要有高可用的业务集群，还需要有相应的配套服务机制，其中包括监控（metrics）、日志（Logs）、网络管控、存储管控、负载均衡、私有云场景还需要提供yum源和镜像仓库服务等。</p>
 <blockquote>
 <p>这里，我们的监控采用单个集群使用<code>Prometheus</code>作为TSDB+<code>grafana</code>作为数据展示，而日志方面则以<code>ElasticSearch</code>集群部署的方式进行存储收集。</p>

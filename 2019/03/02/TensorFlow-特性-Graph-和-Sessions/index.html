@@ -290,7 +290,7 @@
   <div class="post-toc" id="post-toc">
     <h2 class="post-toc-title">文章目录</h2>
     <div class="post-toc-content">
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景介绍"><span class="toc-text">背景介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#计算图（Graph）"><span class="toc-text">计算图（Graph）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#张量（Tensor）"><span class="toc-text">张量（Tensor）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#算子（Operation）"><span class="toc-text">算子（Operation）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#会话-（Session）"><span class="toc-text">会话 （Session）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据流-（Dataflow）"><span class="toc-text">数据流 （Dataflow）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实践-–-回归问题"><span class="toc-text">实践 – 回归问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#问题描述"><span class="toc-text">问题描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#运行环境"><span class="toc-text">运行环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#代码部分"><span class="toc-text">代码部分</span></a></li></ol></li></ol><li class="toc-item toc-level-1"><a class="toc-link" href="#静态图和动态图"><span class="toc-text">静态图和动态图</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-text">Reference</span></a>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景介绍"><span class="toc-text">背景介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#计算图（Graph）"><span class="toc-text">计算图（Graph）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#张量（Tensor）"><span class="toc-text">张量（Tensor）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#算子（Operation）"><span class="toc-text">算子（Operation）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#会话-（Session）"><span class="toc-text">会话 （Session）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据流-（Dataflow）"><span class="toc-text">数据流 （Dataflow）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实践-—-回归问题"><span class="toc-text">实践 — 回归问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#问题描述"><span class="toc-text">问题描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#运行环境"><span class="toc-text">运行环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#代码部分"><span class="toc-text">代码部分</span></a></li></ol></li></ol><li class="toc-item toc-level-1"><a class="toc-link" href="#静态图和动态图"><span class="toc-text">静态图和动态图</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-text">Reference</span></a>
     </li></div>
   </div>
 
@@ -299,7 +299,7 @@
     <div class="post-content">
       
         <blockquote>
-<p>深度学习框架有很多，Google的TensorFlow市场占有率居高不下，本文的小目标是说清楚tensorflow的<strong>“图（Graph）”</strong>和<strong>“会话（Session）”</strong>机制及其优缺点，最后以一个回归问题为例实践一下。文中顺便回答一下<strong>动态图（Dynamic computation graphs）</strong>和<strong>静态图（Static computational graphs）</strong>框架的区别。<br><a id="more"></a> </p>
+<p>深度学习框架有很多，Google的TensorFlow市场占有率居高不下，本文的小目标是说清楚tensorflow的<strong>“图（Graph）”</strong>和<strong>“会话（Session）”</strong>机制及其优缺点，最后以一个回归问题为例实践一下。文中顺便回答一下<strong>动态图（Dynamic computation graphs）</strong>和<strong>静态图（Static computational graphs）</strong>框架的区别。<br><a id="more"></a></p>
 </blockquote>
 <h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p><strong>深度学习</strong>是目前人工智能领域备受推崇的算法种类，其在计算机视觉（Computer vision）、自然语言处理（NLP）领域有比较广泛的应用，这里先挖个坑，<a href="xxx">下一篇</a>将谈谈我对深度学习算法的理解。</p>
 <p>目前开源市场的深度学习框架有很多，如<code>tensorflow</code>、<code>pytorch</code>、<code>mxnet</code>等，而tensorflow的市场占有率相对较高，那么为什么会有如此多的深度学习框架，tensorflow又有什么异于常人的地方呢？为了回答这个问题，本文首先尝试说明一下tensorflow的<code>Graph+Session</code>机制。</p>
@@ -323,18 +323,18 @@
 <li><strong>Compilation</strong>：tensorflow的 XLA 编译器利用dadaflow图编译更快的机器码。</li>
 <li><strong>Portability</strong>：datdaflow图使模型表示是语言无关的。<code>tf.saved_model</code>保存的模型可以在其他语言中使用，非常便携。</li>
 </ul>
-<h2 id="实践-–-回归问题"><a href="#实践-–-回归问题" class="headerlink" title="实践 – 回归问题"></a>实践 – 回归问题</h2><h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><ol>
-<li><p>构造一个函数/映射，<span>$y_{data} = f(x_{data})$</span><!-- Has MathJax -->，其中 <span>$x_{data}$</span><!-- Has MathJax -->是一个随机输入的<span>$2\times100$</span><!-- Has MathJax -->矩阵，<span>$y_{data}$</span><!-- Has MathJax -->是一个<span>$1\times100$</span><!-- Has MathJax -->矩阵，由一个参数矩阵<span>$W=\begin{bmatrix} 0.1 &amp; 0.2 \end{bmatrix}$</span><!-- Has MathJax --> 和 <span>$x_{data}$</span><!-- Has MathJax -->点乘后加上一个常数<span>$b=0.3$</span><!-- Has MathJax -->构造出来。</p>
+<h2 id="实践-—-回归问题"><a href="#实践-—-回归问题" class="headerlink" title="实践 — 回归问题"></a>实践 — 回归问题</h2><h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><ol>
+<li><p>构造一个函数/映射，<script type="math/tex">y_{data} = f(x_{data})</script>，其中 <script type="math/tex">x_{data}</script>是一个随机输入的<script type="math/tex">2\times100</script>矩阵，<script type="math/tex">y_{data}</script>是一个<script type="math/tex">1\times100</script>矩阵，由一个参数矩阵<script type="math/tex">W=\begin{bmatrix} 0.1 & 0.2 \end{bmatrix}</script> 和 <script type="math/tex">x_{data}</script>点乘后加上一个常数<script type="math/tex">b=0.3</script>构造出来。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用Numpy生成假数据(phony data),总共100个点.</span></span><br><span class="line">x_data = np.float32(np.random.rand(<span class="number">2</span>, <span class="number">100</span>))      <span class="comment"># 随机输入</span></span><br><span class="line">print(x_data)</span><br><span class="line">y_data = np.dot([<span class="number">0.100</span>, <span class="number">0.200</span>], x_data) + <span class="number">0.300</span>  <span class="comment">#输出的y为[[]]的list</span></span><br><span class="line">print(y_data)</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>使用<span>$x_{data}$</span><!-- Has MathJax -->和<span>$y_{data}$</span><!-- Has MathJax -->数据来反演/学习出参数矩阵<span>$W$</span><!-- Has MathJax -->和常量参数<span>$b$</span><!-- Has MathJax -->，该问题等价于<strong>由100个方程求解三个参数问题</strong>，显然是一个<strong>超定问题</strong>，求解过程就是一个<strong>优化</strong>过程。</p>
-<span>$$\begin{pmatrix}
-        W_1X_{1,1} + W_2X_{2,1} +b = y_1 \\
-        W_1X_{1,2} + W_2X_{2,2} +b = y_2 \\
-         ... \\
-        W_1X_{1,100} + W_2X_{2,100} +b =y_{100} \\
-\end{pmatrix}$$</span><!-- Has MathJax -->
-</li>
+<li><p>使用<script type="math/tex">x_{data}</script>和<script type="math/tex">y_{data}</script>数据来反演/学习出参数矩阵<script type="math/tex">W</script>和常量参数<script type="math/tex">b</script>，该问题等价于<strong>由100个方程求解三个参数问题</strong>，显然是一个<strong>超定问题</strong>，求解过程就是一个<strong>优化</strong>过程。</p>
+<script type="math/tex; mode=display">
+\begin{pmatrix}
+     W_1X_{1,1} + W_2X_{2,1} +b = y_1 \\
+     W_1X_{1,2} + W_2X_{2,2} +b = y_2 \\
+      ... \\
+     W_1X_{1,100} + W_2X_{2,100} +b =y_{100} \\
+\end{pmatrix}</script></li>
 <li><p>假设我们已经知道这个函数式了：$Wx+b=y$，仅仅不知道给定的参数$W$和$b$是什么，根据函数式，可以使用初始化参数来构造$y$，并计算$y$和$y_{data}$之间的<em>“距离”</em>，并使用梯度下降的方式找到一个最优参数组使<strong>距离</strong>尽量减少。见代码部分10-13行。</p>
 </li>
 </ol>
@@ -355,9 +355,9 @@
 <p>得到的y和y_data的对比：<br><img src="Comparation.jpg" alt="Comparation"></p>
 <h1 id="静态图和动态图"><a href="#静态图和动态图" class="headerlink" title="静态图和动态图"></a>静态图和动态图</h1><p>回到最开始的问题，TensorFlow异于常人的地方：其实就是“<strong>静态图</strong>”框架。引用“hackernoon”上看到的一句话：</p>
 <blockquote>
-<p>TensorFlow is a <strong>“Define-and-Run”</strong> framework where one would define conditions and iterations in the graph structure whereas in comparison Chainer, DyNet, PyTorch are all <strong>“Define-by-Run”</strong> frameworks. </p>
+<p>TensorFlow is a <strong>“Define-and-Run”</strong> framework where one would define conditions and iterations in the graph structure whereas in comparison Chainer, DyNet, PyTorch are all <strong>“Define-by-Run”</strong> frameworks.</p>
 </blockquote>
-<p><strong>动态计算图框架</strong>使用起来就像做工程时一边设计一边施工，TensorFlow使用起来就没有“<strong>动态图</strong>”框架那样灵活、直接，容易调试，而这也是其入门门槛高的一个原因。但是，<strong>“静态图”</strong>的优点也是明显的–计算会更加高效，因为所有的步骤都定义好了再进行计算使计算机资源的调配更加合理、高效。所以说，“动态图”和“静态图”是优势互补的。</p>
+<p><strong>动态计算图框架</strong>使用起来就像做工程时一边设计一边施工，TensorFlow使用起来就没有“<strong>动态图</strong>”框架那样灵活、直接，容易调试，而这也是其入门门槛高的一个原因。但是，<strong>“静态图”</strong>的优点也是明显的—计算会更加高效，因为所有的步骤都定义好了再进行计算使计算机资源的调配更加合理、高效。所以说，“动态图”和“静态图”是优势互补的。</p>
 <blockquote>
 <p>TensorFlow 2.0 推出了Eager Execution，开始支持“动态图”了</p>
 </blockquote>

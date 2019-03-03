@@ -300,13 +300,13 @@
       
         <blockquote>
 <p>小目标：不翻墙的情况下，使用kubeadm安装部署Kubernetes集群（非高可用），1个master、2个node<br><a id="more"></a></p>
-</blockquote>
 <h3 id="一、准备工作"><a href="#一、准备工作" class="headerlink" title="一、准备工作"></a>一、准备工作</h3><h4 id="关于机器："><a href="#关于机器：" class="headerlink" title="关于机器："></a>关于机器：</h4><ol>
 <li>准备的主机可以连接外网，对于私有云场景，需要做好前期准备（例如：配置yum源、镜像仓库源等）</li>
 <li>满足安装 Docker 项目所需的要求，比如 64 位的 Linux 操作系统、3.10 及以上的内核版本；</li>
 <li>x86 或者 ARM 架构均可；</li>
 <li>机器之间网络互通，这是将来容器之间网络互通的前提；</li>
 </ol>
+</blockquote>
 <h4 id="关于Linux操作系统："><a href="#关于Linux操作系统：" class="headerlink" title="关于Linux操作系统："></a>关于Linux操作系统：</h4><ol>
 <li>建议开启<code>root</code>权限（我这里是已经开启了root权限，以root用户登录节点）</li>
 <li>修改各节点的hostname：打开终端输入<code>hostnamectl set-hostname master8088</code>，这里的命名需要有一定的<a href="https://github.com/kubernetes/kubeadm/blob/master/docs/design/design_v1.10.md" target="_blank" rel="noopener">规范</a><em>重启后hostname失效</em></li>
@@ -322,7 +322,7 @@
 </li>
 </ol>
 <p>输入<code>sysctl -p</code>使设置生效</p>
-<ol start="9">
+<ol>
 <li>设置三台机器之间可以使用<code>ssh+hostname</code>互相登录，</li>
 </ol>
 <blockquote>
@@ -336,14 +336,14 @@
 </li>
 </ol>
 <p><strong>安装的kubeadm、kubectl、kubelet默认都是最新的版本（1.13版本），也可以指定版本，比如目前是stable版的1.11</strong><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看版本</span></span><br><span class="line">kubeadm version</span><br><span class="line">kubectl version</span><br><span class="line">kubelet --version</span><br><span class="line"><span class="comment"># 下载安装指定版本</span></span><br><span class="line">yum list --showduplicates | grep <span class="string">'kubeadm'</span> <span class="comment">#查看有哪些版本</span></span><br><span class="line">yum install -y kubeadm-1.10.5-0.x86_64 <span class="comment"># 安装指定版本，这里选择的是1.10.5</span></span><br></pre></td></tr></table></figure></p>
-<ol start="2">
+<ol>
 <li>部署master节点：<br>这里需要注意的是，直接使用<code>kubeadm init</code>会发现需要的镜像获取不了，因为大陆被墙了.. 不过可以指定镜像仓库源，这里选择阿里云杭州的源（感谢^_^）：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># kubernetes-version=v1.13.1指定了安装1.13.1版本的kubernetes</span></span><br><span class="line"><span class="comment"># pod-network-cidr是为了后续安装calico这样的网络插件</span></span><br><span class="line">kubeadm init --kubernetes-version=v1.13.1 --pod-network-cidr=192.168.0.0/16 --image-repository registry.cn-hangzhou.aliyuncs.com/google_containers</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
 <blockquote>
 <p>可能出现kubelet和kubeapi-server失联的情况，注意排查<br>master部署完成后，会生成一个指令：<code>kubeadm join ....</code>这个是后续加入node用的<br>kubeadm还会在部署好master后，最后提示我们第一次使用kubernetes集群需要的配置命令：<code>mkdir... sudo cp ... sudo chown...</code></p>
 </blockquote>
-<ol start="3">
+<ol>
 <li><p>部署node节点：参照master部署完毕生成的kubeadm join提示，在每个node上执行以下命令<br><code>kubeadm join ${master_ip}:6443 --token ${kubeadm_token} --discovery-token-ca-cert-hash ${hash_value}</code><br>使用<code>kubectl get no</code>查看node是否已经添加，并且处于Ready状态，由于网络插件还没安装，应该不会Ready</p>
 </li>
 <li><p>安装CNI插件calico</p>

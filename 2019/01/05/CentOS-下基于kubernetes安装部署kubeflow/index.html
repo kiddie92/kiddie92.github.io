@@ -300,8 +300,8 @@
       
         <blockquote>
 <p>小目标：基于前期搭建的<a href="https://kiddie92.github.io/2018/12/26/CentOS%E4%B8%8A%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2Kubernetes%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/">kubernetes集群</a>，部署kubeflow，由于涉及到google的docker镜像，只好设置国外代理了<br><a id="more"></a> </p>
-</blockquote>
 <h3 id="下载安装包："><a href="#下载安装包：" class="headerlink" title="下载安装包："></a>下载安装包：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/ksonnet/ksonnet/releases/download/v0.13.1/ks_0.13.1_linux_amd64.tar.gz</span><br><span class="line">wget https://github.com/kubeflow/kubeflow/archive/v0.4.0-rc.3.tar.gz  <span class="comment">#2019.1.4 最新版本v0.4.0-rc.3</span></span><br></pre></td></tr></table></figure>
+</blockquote>
 <p>将下载好的安装包解压并归档</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tar -vxf ks_0.13.1_linux_amd64.tar.gz</span><br><span class="line">tar -vxf v0.4.0-rc.3.tar.gz</span><br><span class="line">mkdir kubeflow-ks</span><br><span class="line">cp -r kubeflow-0.4.0-rc.3 kubeflow-ks</span><br><span class="line">cp -r ks_0.13.1_linux_amd64 kubeflow-ks</span><br></pre></td></tr></table></figure>
 <h3 id="安装ksonnet"><a href="#安装ksonnet" class="headerlink" title="安装ksonnet"></a>安装ksonnet</h3><p>ks是一个可执行文件，直接拷贝到系统可执行目录下就OK了</p>
