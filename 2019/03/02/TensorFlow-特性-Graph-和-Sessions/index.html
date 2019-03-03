@@ -335,7 +335,7 @@
       ... \\
      W_1X_{1,100} + W_2X_{2,100} +b =y_{100} \\
 \end{pmatrix}</script></li>
-<li><p>假设我们已经知道这个函数式了：<script type="math/tex">Wx+b=y</script>，仅仅不知道给定的参数<script type="math/tex">W</script>和<script type="math/tex">b</script>是什么，根据函数式，可以使用初始化参数来构造<script type="math/tex">y</script>，并计算<script type="math/tex">y</script>和<script type="math/tex">y_{data}</script>之间的<em>“距离”</em>，并使用梯度下降的方式找到一个最优参数组使<strong>距离</strong>尽量减少。见代码部分10-13行。</p>
+<li><p>假设我们已经知道这个函数式了$Wx+b=y$，仅仅不知道给定的参数<script type="math/tex">W</script>和<script type="math/tex">b</script>是什么，根据函数式，可以使用初始化参数来构造<script type="math/tex">y</script>，并计算<script type="math/tex">y</script>和<script type="math/tex">y_{data}</script>之间的<em>“距离”</em>，并使用梯度下降的方式找到一个最优参数组使<strong>距离</strong>尽量减少。见代码部分10-13行。</p>
 </li>
 </ol>
 <blockquote>
@@ -601,7 +601,24 @@
   
 
 
-    <script type="text/javascript" src="/js/src/even.js?v=2.10.2"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+    <script type="text/javascript" src="/js/src/even.js?v=2.10.2"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 
   </body>
 </html>
