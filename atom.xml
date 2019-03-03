@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://kiddie92.github.io/"/>
-  <updated>2019-03-03T11:52:32.658Z</updated>
+  <updated>2019-03-03T12:37:49.648Z</updated>
   <id>https://kiddie92.github.io/</id>
   
   <author>
@@ -15,6 +15,20 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>浅谈深度学习算法 -- 能不能学物理定律?</title>
+    <link href="https://kiddie92.github.io/2019/03/03/%E6%B5%85%E8%B0%88%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95-%E8%83%BD%E4%B8%8D%E8%83%BD%E5%AD%A6%E7%89%A9%E7%90%86%E5%AE%9A%E5%BE%8B/"/>
+    <id>https://kiddie92.github.io/2019/03/03/浅谈深度学习算法-能不能学物理定律/</id>
+    <published>2019-03-03T12:37:49.000Z</published>
+    <updated>2019-03-03T12:37:49.648Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>TensorFlow 特性--Graph 和 Sessions</title>
@@ -173,9 +187,9 @@
     
       <category term="kubernetes" scheme="https://kiddie92.github.io/tags/kubernetes/"/>
     
-      <category term="机器学习" scheme="https://kiddie92.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-    
       <category term="python" scheme="https://kiddie92.github.io/tags/python/"/>
+    
+      <category term="机器学习" scheme="https://kiddie92.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
       <category term="flask" scheme="https://kiddie92.github.io/tags/flask/"/>
     
