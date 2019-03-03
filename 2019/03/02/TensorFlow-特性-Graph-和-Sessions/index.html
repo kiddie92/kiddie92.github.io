@@ -324,15 +324,16 @@
 <li><strong>Portability</strong>：datdaflow图使模型表示是语言无关的。<code>tf.saved_model</code>保存的模型可以在其他语言中使用，非常便携。</li>
 </ul>
 <h2 id="实践-–-回归问题"><a href="#实践-–-回归问题" class="headerlink" title="实践 – 回归问题"></a>实践 – 回归问题</h2><h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><ol>
-<li><p>构造一个函数/映射，$y_{data} = f(x_{data})$，其中 $x_{data}$是一个随机输入的$2\times100$矩阵，$y_{data}$是一个$1\times100$矩阵，由一个参数矩阵$W=\begin{bmatrix} 0.1 &amp; 0.2 \end{bmatrix}$ 和 $x_{data}$点乘后加上一个常数$b=0.3$构造出来。</p>
+<li><p>构造一个函数/映射，<span>$y_{data} = f(x_{data})$</span><!-- Has MathJax -->，其中 <span>$x_{data}$</span><!-- Has MathJax -->是一个随机输入的<span>$2\times100$</span><!-- Has MathJax -->矩阵，<span>$y_{data}$</span><!-- Has MathJax -->是一个<span>$1\times100$</span><!-- Has MathJax -->矩阵，由一个参数矩阵<span>$W=\begin{bmatrix} 0.1 &amp; 0.2 \end{bmatrix}$</span><!-- Has MathJax --> 和 <span>$x_{data}$</span><!-- Has MathJax -->点乘后加上一个常数<span>$b=0.3$</span><!-- Has MathJax -->构造出来。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用Numpy生成假数据(phony data),总共100个点.</span></span><br><span class="line">x_data = np.float32(np.random.rand(<span class="number">2</span>, <span class="number">100</span>))      <span class="comment"># 随机输入</span></span><br><span class="line">print(x_data)</span><br><span class="line">y_data = np.dot([<span class="number">0.100</span>, <span class="number">0.200</span>], x_data) + <span class="number">0.300</span>  <span class="comment">#输出的y为[[]]的list</span></span><br><span class="line">print(y_data)</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>使用$x_{data}$和$y_{data}$数据来反演/学习出参数矩阵$W$和常量参数$b$，该问题等价于<strong>由100个方程求解三个参数问题</strong>，显然是一个<strong>超定问题</strong>，求解过程就是一个<strong>优化</strong>过程。<br>$$<br>\begin{pmatrix}</p>
-<pre><code>W_1X_{1,1} + W_2X_{2,1} +b = y_1 \\
-W_1X_{1,2} + W_2X_{2,2} +b = y_2 \\
- ... \\
-W_1X_{1,100} + W_2X_{2,100} +b =y_{100} \\
-</code></pre><p>\end{pmatrix}<br>$$</p>
+<li><p>使用<span>$x_{data}$</span><!-- Has MathJax -->和<span>$y_{data}$</span><!-- Has MathJax -->数据来反演/学习出参数矩阵<span>$W$</span><!-- Has MathJax -->和常量参数<span>$b$</span><!-- Has MathJax -->，该问题等价于<strong>由100个方程求解三个参数问题</strong>，显然是一个<strong>超定问题</strong>，求解过程就是一个<strong>优化</strong>过程。</p>
+<span>$$\begin{pmatrix}
+        W_1X_{1,1} + W_2X_{2,1} +b = y_1 \\
+        W_1X_{1,2} + W_2X_{2,2} +b = y_2 \\
+         ... \\
+        W_1X_{1,100} + W_2X_{2,100} +b =y_{100} \\
+\end{pmatrix}$$</span><!-- Has MathJax -->
 </li>
 <li><p>假设我们已经知道这个函数式了：$Wx+b=y$，仅仅不知道给定的参数$W$和$b$是什么，根据函数式，可以使用初始化参数来构造$y$，并计算$y$和$y_{data}$之间的<em>“距离”</em>，并使用梯度下降的方式找到一个最优参数组使<strong>距离</strong>尽量减少。见代码部分10-13行。</p>
 </li>
@@ -613,7 +614,7 @@ W_1X_{1,100} + W_2X_{2,100} +b =y_{100} \\
   });
 </script>
 
-<script type="text/javascript" src="custom_mathjax_source">
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 <!-- End: Injected MathJax -->
 <!-- hexo-inject:end -->
