@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://kiddie92.github.io/"/>
-  <updated>2019-03-03T12:37:49.648Z</updated>
+  <updated>2019-03-04T16:10:24.028Z</updated>
   <id>https://kiddie92.github.io/</id>
   
   <author>
@@ -21,12 +21,22 @@
     <link href="https://kiddie92.github.io/2019/03/03/%E6%B5%85%E8%B0%88%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95-%E8%83%BD%E4%B8%8D%E8%83%BD%E5%AD%A6%E7%89%A9%E7%90%86%E5%AE%9A%E5%BE%8B/"/>
     <id>https://kiddie92.github.io/2019/03/03/浅谈深度学习算法-能不能学物理定律/</id>
     <published>2019-03-03T12:37:49.000Z</published>
-    <updated>2019-03-03T12:37:49.648Z</updated>
+    <updated>2019-03-04T16:10:24.028Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>本篇博客以一个物理问题为出发点，试图从数学的角度来理解一下深度学习算法。主要围绕着深度学习算法（未讨论非监督学习）能否学习出物理定律这个问题进行阐述。</p></blockquote><a id="more"></a><h1 id="先看一个物理问题"><a href="#先看一个物理问题" class="headerlink" title="先看一个物理问题"></a>先看一个物理问题</h1><p><img src="picture1.png" alt="示意图"></p><p>如上图所示，使用一个锤子敲击地面，会给地面造成一个冲击力，冲击造成的<strong>震源</strong>可以大致表示成图中<strong>（a）</strong>所显示的信号，震源使地面开始震动形成波场，<strong>（a）</strong>信号随着地面震动而传播，位于远处的<strong>检测器</strong>（倒三角形所示）感受到检测器所在位置的地面震动，并记录下来就得到了途中<strong>（b）</strong>所示的信号。这个问题可以简单理解成声音的传播，<strong>(a)</strong>是声源，经过大地传播之后（滤波作用），使接收声波的一方接收到信号<strong>（b）</strong>。</p><p>显然，不同的地质环境，大地的”材质”也会不同，那么一定会影响到<strong>（b）</strong>信号的最终形态。这就好像，人在水里说话和在空气中说话听到的声音肯定也会不一样。那么，如何描述材料的性质和接收信号<strong>（b）</strong>的关系呢？（<em>我们把这一关系表达为以下映射，在物理中称为正演问题</em>）下面给出两种解法。</p><script type="math/tex; mode=display">Model Parameterts --> Data</script><h2 id="物理方法"><a href="#物理方法" class="headerlink" title="物理方法"></a>物理方法</h2><p>物理学家根据力学定律以及材料的弹性性质、密度等参数推导出<script type="math/tex">Model</script>和<script type="math/tex">Data</script>之间有着定量的关系，可以描述成下图的物理方程，有了这个方程，我们就可以建立这两者之间的关系了。</p><p><img src="phy_law.png" alt="物理方法"></p><h2 id="深度学习方法"><a href="#深度学习方法" class="headerlink" title="深度学习方法"></a>深度学习方法</h2><p>如今，我们还可以使用深度学习方法建立<script type="math/tex">Model</script>和<script type="math/tex">Data</script>之间的定量关系。首先我们建立一个网络架构，比如用几个卷积层、几个全链接层等，每一个神经元还有一组参数<script type="math/tex">[W]，[b]</script>通过给定<script type="math/tex">Model</script>和<script type="math/tex">Data</script>的数据对，不断的改进神经元的参数，最终在function set里面找到一个相对令人满意的函数，其可以表示<script type="math/tex">Model</script>和<script type="math/tex">Data</script>之间的映射关系。</p><p><img src="NN.png" alt="深度学习"></p><h1 id="问题的提出和回答"><a href="#问题的提出和回答" class="headerlink" title="问题的提出和回答"></a>问题的提出和回答</h1><p>上面给出了两种方法来解这个问题，我们可以看到如果两种方法都能解这个正演问题（<strong><em>深度学习实际上是在从数据反推回模型的过程中逐步给出正演函数的</em></strong>），那么是不是深度学习学习到的模型等价于物理定律呢，换句话说深度学习可以学到物理定律？</p><p>这个问题我给它拆成两个：</p><ol><li>深度学习建立<script type="math/tex">Model</script>到<script type="math/tex">Data</script>的映射这件事情能不能做？<br>肯定能，因为有人已经证明了深度学习算法可以拟合任何复杂的函数，参见<a href="https://en.wikipedia.org/wiki/Universal_approximation_theorem" target="_blank" rel="noopener">Universal approximation theorem</a>。相关问题也可以看看这里<a href="https://www.zhihu.com/question/268384579" target="_blank" rel="noopener">神经网络为什么可以拟合任意函数？</a>。也就是说，<script type="math/tex">Model</script>到<script type="math/tex">Data</script>的映射再复杂，深度学习也可以给你找个函数来逼近它。</li><li>建立的映射好不好用？或者说模型的泛化能力会很强吗？<br>虽说神经网络有万能逼近的性质，但是逼近的好不好就另说了，因为毕竟没有拿所有的数据集去训练，而一个物理问题的数据集几乎可以说是无限大的。那有没有可能深度学习学习出来的模型恰好和物理定律一致呢？那就得把深度学习模型当作一个函数来研究了，看看它是不是化简完恰好就是物理方程，不过，几万甚至上亿个参数的函数，研究起来应该很头疼吧，一般人肯定会疯掉的，所以说这个问题还是交给科学家去解决吧。<blockquote><p>这里和胡师兄讨论的时候，发现我们的理解基本一致（难道是因为大家都学地球物理的吗…）</p></blockquote></li></ol><p>其实，一个非线性的物理问题也可以线性化，比如使用泰勒展开就可以做到；从另外一个角度去理解就是<script type="math/tex">G(m)=d</script>转化成<script type="math/tex">Gm=d</script>的问题。但是，由于数据有限，这里的G存在0空间，所以会有<script type="math/tex">G_0m=d</script>，也就是说有限的数据集几乎是不可能约束<script type="math/tex">G</script>的。</p><h1 id="其他策略"><a href="#其他策略" class="headerlink" title="其他策略"></a>其他策略</h1><p>为了让深度学习学到的模型/函数/映射更加接近”理论事实”，我们可以加一些约束，比如先做特征提取、结合比较好解释的机器学习和深度学习算法来学习出一个泛化能力更强的模型/函数/映射。</p><h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>深度学习算法一般来说只能学习到数据集中已有的知识，它比较<strong>擅长于归纳，而不擅长演绎</strong>。对于<strong>非监督学习</strong>，情况可能比较复杂，暂不讨论。</p>]]></content>
     
     <summary type="html">
     
+      &lt;blockquote&gt;
+&lt;p&gt;本篇博客以一个物理问题为出发点，试图从数学的角度来理解一下深度学习算法。主要围绕着深度学习算法（未讨论非监督学习）能否学习出物理定律这个问题进行阐述。&lt;/p&gt;
+&lt;/blockquote&gt;
+    
     </summary>
     
+      <category term="算法，人工智能，机器学习，知识理解" scheme="https://kiddie92.github.io/categories/%E7%AE%97%E6%B3%95%EF%BC%8C%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%EF%BC%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%8C%E7%9F%A5%E8%AF%86%E7%90%86%E8%A7%A3/"/>
+    
+    
+      <category term="算法，人工智能，机器学习" scheme="https://kiddie92.github.io/tags/%E7%AE%97%E6%B3%95%EF%BC%8C%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%EF%BC%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
   </entry>
   
@@ -51,9 +61,9 @@
       <category term="机器学习" scheme="https://kiddie92.github.io/categories/tensorflow/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
     
-      <category term="tensorflow" scheme="https://kiddie92.github.io/tags/tensorflow/"/>
-    
       <category term="机器学习" scheme="https://kiddie92.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="tensorflow" scheme="https://kiddie92.github.io/tags/tensorflow/"/>
     
   </entry>
   
