@@ -22,7 +22,7 @@
 
 
 
-  <meta name="keywords" content="算法，人工智能，机器学习, Mun*">
+  <meta name="keywords" content="机器学习, 算法, 人工智能, Mun*">
 
 
 
@@ -271,7 +271,13 @@
         
           <span class="post-category">
             
-              <a href="/categories/算法，人工智能，机器学习，知识理解/">算法，人工智能，机器学习，知识理解</a>
+              <a href="/categories/算法/">算法</a>
+            
+              <a href="/categories/算法/人工智能/">人工智能</a>
+            
+              <a href="/categories/算法/人工智能/机器学习/">机器学习</a>
+            
+              <a href="/categories/算法/人工智能/机器学习/知识理解/">知识理解</a>
             
           </span>
         
@@ -304,6 +310,7 @@
 <p>如上图所示，使用一个锤子敲击地面，会给地面造成一个冲击力，冲击造成的<strong>震源</strong>可以大致表示成图中<strong>（a）</strong>所显示的信号，震源使地面开始震动形成波场，<strong>（a）</strong>信号随着地面震动而传播，位于远处的<strong>检测器</strong>（倒三角形所示）感受到检测器所在位置的地面震动，并记录下来就得到了途中<strong>（b）</strong>所示的信号。这个问题可以简单理解成声音的传播，<strong>(a)</strong>是声源，经过大地传播之后（滤波作用），使接收声波的一方接收到信号<strong>（b）</strong>。</p>
 <p>显然，不同的地质环境，大地的”材质”也会不同，那么一定会影响到<strong>（b）</strong>信号的最终形态。这就好像，人在水里说话和在空气中说话听到的声音肯定也会不一样。那么，如何描述材料的性质和接收信号<strong>（b）</strong>的关系呢？（<em>我们把这一关系表达为以下映射，在物理中称为正演问题</em>）下面给出两种解法。</p>
 <script type="math/tex; mode=display">
+
 Model Parameterts --> Data</script><h2 id="物理方法"><a href="#物理方法" class="headerlink" title="物理方法"></a>物理方法</h2><p>物理学家根据力学定律以及材料的弹性性质、密度等参数推导出<script type="math/tex">Model</script>和<script type="math/tex">Data</script>之间有着定量的关系，可以描述成下图的物理方程，有了这个方程，我们就可以建立这两者之间的关系了。</p>
 <p><img src="phy_law.png" alt="物理方法"></p>
 <h2 id="深度学习方法"><a href="#深度学习方法" class="headerlink" title="深度学习方法"></a>深度学习方法</h2><p>如今，我们还可以使用深度学习方法建立<script type="math/tex">Model</script>和<script type="math/tex">Data</script>之间的定量关系。首先我们建立一个网络架构，比如用几个卷积层、几个全链接层等，每一个神经元还有一组参数<script type="math/tex">[W]，[b]</script>通过给定<script type="math/tex">Model</script>和<script type="math/tex">Data</script>的数据对，不断的改进神经元的参数，最终在function set里面找到一个相对令人满意的函数，其可以表示<script type="math/tex">Model</script>和<script type="math/tex">Data</script>之间的映射关系。</p>
@@ -373,7 +380,11 @@ Model Parameterts --> Data</script><h2 id="物理方法"><a href="#物理方法"
         
           <div class="post-tags">
             
-              <a href="/tags/算法，人工智能，机器学习/">算法，人工智能，机器学习</a>
+              <a href="/tags/机器学习/">机器学习</a>
+            
+              <a href="/tags/算法/">算法</a>
+            
+              <a href="/tags/人工智能/">人工智能</a>
             
           </div>
         

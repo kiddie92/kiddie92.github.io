@@ -17,12 +17,8 @@
 
 
 
-  <meta name="description" content="囚徒困境回顾">
 
 
-
-
-  <meta name="keywords" content="数学, 囚徒困境, 金融知识, Mun*">
 
 
 
@@ -42,7 +38,7 @@
 
 
 
-<link rel="canonical" href="https://kiddie92.github.io/2018/11/07/囚徒困境回顾/">
+<link rel="canonical" href="https://kiddie92.github.io/categories/算法/">
 
 
 
@@ -108,7 +104,11 @@
   window.config = {"leancloud":{"app_id":"n8MGlOWz83zS9G0m0PGinErj-gzGzoHsz","app_key":"bSOcrmi2W53fTzNXQA3UQ2z3"},"toc":true,"fancybox":true,"pjax":true};
 </script>
 
-    <title> 囚徒困境回顾 - Mun* </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+    <title>
+  
+    算法 · Mun*
+  
+</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   </head>
 
   <body><div id="mobile-navbar" class="mobile-navbar">
@@ -256,175 +256,47 @@
           <div id="content" class="content">
             
   
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          囚徒困境回顾
-        
-      </h1>
+  
+  
 
-      <div class="post-meta">
-        <span class="post-time">
-          2018-11-07
+  <section id="archive" class="archive">
+    
+      
+        <div class="archive-title category">
+          <h2 class="archive-name">算法</h2>
+        </div>
+      
+    
+
+    
+      
+
+      <div class="archive-post">
+        <span class="archive-post-time">
+          
+            2019-03-03
+          
         </span>
-        
-          <span class="post-category">
-            
-              <a href="/categories/经济学原理/">经济学原理</a>
-            
-          </span>
-        
-        
-        <span class="post-visits" data-url="/2018/11/07/囚徒困境回顾/" data-title="囚徒困境回顾">
-          阅读次数 0
+        <span class="archive-post-title">
+          <a href="/2019/03/03/浅谈深度学习算法-能不能学物理定律/" class="archive-post-link">
+            浅谈深度学习算法 -- 能不能学物理定律?
+          </a>
         </span>
-        
       </div>
-    </header>
-
     
+  </section>
+
+  
+  <nav class="pagination">
     
-  <div class="post-toc" id="post-toc">
-    <h2 class="post-toc-title">文章目录</h2>
-    <div class="post-toc-content">
-      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#思考"><span class="toc-text">思考</span></a></li></ol>
-    </div>
-  </div>
-
-
-
-    <div class="post-content">
-      
-        <p>甲囚犯和乙囚犯分别被审讯</p>
-<blockquote>
-<p>甲和乙都选择合作（拒不认罪或者不指认乙），那么他们会分别被判处3年；甲选择背叛（指认乙）而乙选择合作，则甲将会被无罪释放，而乙则被判处5年；甲和乙都选择背叛（相互指认）则各获刑1年<br><a id="more"></a><br>审讯的结果是，<br>|  甲\判刑时间\乙 |  合作   |  背叛   |<br>|      :-:      |  :-:  | :-:  |<br>|   <strong>合作</strong>        |  3, 3      | 0, 5   |<br>|   <strong>背叛</strong>        |  5, 0      | 1, 1   |</p>
-</blockquote>
-<p>那么针对以上的规则，甲理性思考会依据<strong>对方的选择</strong>来判断自己的处境：</p>
-<ol>
-<li>乙背叛：那么甲选择合作就会被判5年，选择背叛就会被判1年；</li>
-<li>乙合作：那么甲选择合作就会被判3年，选择背叛就会被判0年；</li>
-</ol>
-<p>显然，无论乙怎么选，甲选择背叛都是最优解</p>
-<p>那么就此判断在竞争中，选择背叛就一定是对自己有利的吗？不一定吧…</p>
-<p>我们改一下游戏规则（<strong>规则二</strong>）：</p>
-<p>审讯的结果是，<br>| 甲\判刑时间\乙    |      合作     |    背叛<br>| :—: | :—: | :—: |<br>| <strong>合作</strong> |  0，0    | 0, 10  |<br>| <strong>背叛</strong> |    10, 0    | 5, 5 |</p>
-<p>那么甲再次理性思考同样会依据对方的选择来判断自己的处境：</p>
-<ol>
-<li>乙背叛：那么甲选择合作就是被判10年，选择背叛就是被判5年；</li>
-<li>乙合作：那么甲选择合作就是被判0年，选择背叛也是被判0年；</li>
-</ol>
-<p>显然，无论乙怎么选，甲选择背叛还是是最优解</p>
-<p>再次改一下规则（<strong>规则三</strong>）：</p>
-<p>审讯的结果是，<br>|    甲\判刑时间\乙 |合作|    背叛|<br>|:-:|:-:|:-:|<br>|合作    |0，0    |0, 10|<br>|背叛    |10, 0    |15, 15|</p>
-<p>那么甲再次理性思考还是会依据对方的选择来判断自己的处境：</p>
-<ol>
-<li>乙背叛：那么甲选择合作就是被判10年，选择背叛就是被判15年；</li>
-<li>乙合作：那么甲选择合作就是被判0年，选择背叛也是被判0年；</li>
-</ol>
-<p>显然，无论乙怎么选，甲选择背叛就<code>不再是最优解</code>了</p>
-<p>所以说<strong>游戏规则</strong>会改变囚徒困境的结果…？</p>
-<h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><p>假设第三条规则不那么合理，那么什么样的规则才是合理的呢？<br>市场行为中有多方参与，比简单的两者博弈要复杂很多… 即使如此，囚徒困境的模型还是有一些指导意义的</p>
-
-      
-    </div>
-
-    
-      
-      
-
-  <div class="post-copyright">
-    <p class="copyright-item">
-      <span>原文作者: </span>
-      <a href="https://kiddie92.github.io">Mun*</a>
-    </p>
-    <p class="copyright-item">
-      <span>原文链接: </span>
-      <a href="https://kiddie92.github.io/2018/11/07/囚徒困境回顾/">https://kiddie92.github.io/2018/11/07/囚徒困境回顾/</a>
-    </p>
-    <p class="copyright-item">
-      <span>许可协议: </span>
-      
-      <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用4.0国际许可协议</a>
-    </p>
-  </div>
-
-
-
-      
-      
-  <div class="post-reward">
-    <input type="checkbox" name="reward" id="reward" hidden>
-    <label class="reward-button" for="reward">赞赏支持</label>
-    <div class="qr-code">
-      
-      
-        <label class="qr-code-image" for="reward">
-          <img class="image" src="/images/reward/wechat.png" title="微信打赏">
-        </label>
-      
-      
-        <label class="qr-code-image" for="reward">
-          <img class="image" src="/images/reward/alipay.png" title="支付宝打赏">
-        </label>
-      
-    </div>
-  </div>
-
-    
-
-    
-      <footer class="post-footer">
-        
-          <div class="post-tags">
-            
-              <a href="/tags/数学/">数学</a>
-            
-              <a href="/tags/囚徒困境/">囚徒困境</a>
-            
-              <a href="/tags/金融知识/">金融知识</a>
-            
-          </div>
-        
-        
-        
-  <nav class="post-nav">
-    
-      <a class="prev" href="/2018/12/06/图片识别app从keras-flask代码到kubernetes部署/">
-        <i class="iconfont icon-left"></i>
-        <span class="prev-text nav-default">图片识别app从keras+flask代码到kubernetes部署</span>
-        <span class="prev-text nav-mobile">上一篇</span>
-      </a>
-    
-    
-      <a class="next" href="/2018/08/30/Django安装与使用/">
-        <span class="next-text nav-default">Django安装与使用</span>
-        <span class="prev-text nav-mobile">下一篇</span>
-        <i class="iconfont icon-right"></i>
-      </a>
     
   </nav>
 
 
-      </footer>
-    
-
-  </article>
 
 
           </div>
           
-  <div class="comments" id="comments">
-    
-      <div id="disqus_thread">
-        <noscript>
-          Please enable JavaScript to view the
-          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
-        </noscript>
-      </div>
-    
-  </div>
-
 
         </div>
       </main>
@@ -515,9 +387,9 @@
   
   <script type="text/javascript">
     var disqus_config = function () {
-        this.page.url = 'https://kiddie92.github.io/2018/11/07/囚徒困境回顾/';
-        this.page.identifier = '2018/11/07/囚徒困境回顾/';
-        this.page.title = '囚徒困境回顾';
+        this.page.url = '';
+        this.page.identifier = 'categories/算法/index.html';
+        this.page.title = '';
     };
     (function() {
     var d = document, s = d.createElement('script');
