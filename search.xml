@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title><![CDATA[go语言生成网址二维码]]></title>
+    <title><![CDATA[go语言为网站生成二维码]]></title>
     <url>%2F2019%2F03%2F05%2Fgo%E8%AF%AD%E8%A8%80%E7%94%9F%E6%88%90%E7%BD%91%E5%9D%80%E4%BA%8C%E7%BB%B4%E7%A0%81%2F</url>
-    <content type="text"><![CDATA[搭建golang环境安装go1234# ubuntusudo apt install golang-go# CentOSsudo yum install go 设置GOPATH将GOPATH添加至环境变量12345echo export GOPATH=/root/go &gt;&gt; ~/.bashrc`# 设置当前终端生效source ~/.bashrc # 查看GOPATHgo env 创建所需文件夹 12cd /root/gomkdir bin &amp;&amp; mkdir pkg &amp;&amp; mkdir src GOPATH的目录结构: bin 编译后生成的可执行文件 pkg 编译后生成的文件（比如：.a） src 存放源代码（比如：.go .c .h .s等） 运行代码导入第三方包：go get -u github.com/yeqown/go-qrcode 新建文件夹makeqrcode，进入该文件夹后，新建文件 makeqrforwebsite.go 1234567891011121314151617package main import ( "fmt" qrcode "github.com/yeqown/go-qrcode" // 给后面的包一个简称)func main() &#123; qrc, err := qrcode.New("https://kiddie92.github.io/") if err != nil&#123; fmt.Printf("could not generate QRCode: %v", err) &#125; // 保存二维码 if err := qrc.Save("."); err != nil &#123; fmt.Printf("could not save image: %v", err) &#125;&#125; 直接运行：go run makeqrforwebsite.go，生成本博客地址对应的二维码，扫描一下试试。 Referencehttps://github.com/yeqown/go-qrcode/]]></content>
+    <content type="text"><![CDATA[二维码有点意思，想着把俺的博客地址用二维码展示出来，比较来看还是go语言比较强大啊… 搭建golang环境安装go1234# ubuntusudo apt install golang-go# CentOSsudo yum install go 设置GOPATH将GOPATH添加至环境变量12345echo export GOPATH=/root/go &gt;&gt; ~/.bashrc# 设置当前终端生效source ~/.bashrc # 查看GOPATHgo env 创建所需文件夹 12cd /root/gomkdir bin &amp;&amp; mkdir pkg &amp;&amp; mkdir src GOPATH的目录结构: bin 编译后生成的可执行文件 pkg 编译后生成的文件（比如：.a） src 存放源代码（比如：.go .c .h .s等） 运行代码导入第三方包：go get -u github.com/yeqown/go-qrcode 新建文件夹makeqrcode，进入该文件夹后，新建文件 makeqrforwebsite.go 1234567891011121314151617package main import ( "fmt" qrcode "github.com/yeqown/go-qrcode" // 给后面的包一个简称)func main() &#123; qrc, err := qrcode.New("https://kiddie92.github.io/") if err != nil&#123; fmt.Printf("could not generate QRCode: %v", err) &#125; // 保存二维码 if err := qrc.Save("."); err != nil &#123; fmt.Printf("could not save image: %v", err) &#125;&#125; 直接运行：go run makeqrforwebsite.go，生成本博客地址对应的二维码，扫描一下试试。 Referencehttps://github.com/yeqown/go-qrcode/]]></content>
       <categories>
-        <category>go语言</category>
+        <category>go</category>
         <category>Just for Fun</category>
       </categories>
       <tags>
@@ -103,8 +103,8 @@
       </categories>
       <tags>
         <tag>kubernetes</tag>
-        <tag>python</tag>
         <tag>机器学习</tag>
+        <tag>python</tag>
         <tag>flask</tag>
         <tag>keras</tag>
       </tags>

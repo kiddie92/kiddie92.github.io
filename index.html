@@ -260,7 +260,7 @@
     <header class="post-header">
       <h1 class="post-title">
         
-          <a class="post-link" href="/2019/03/05/go语言生成网址二维码/">go语言生成网址二维码</a>
+          <a class="post-link" href="/2019/03/05/go语言生成网址二维码/">go语言为网站生成二维码</a>
         
       </h1>
 
@@ -271,14 +271,14 @@
         
           <span class="post-category">
             
-              <a href="/categories/go语言/">go语言</a>
+              <a href="/categories/go/">go</a>
             
-              <a href="/categories/go语言/Just-for-Fun/">Just for Fun</a>
+              <a href="/categories/go/Just-for-Fun/">Just for Fun</a>
             
           </span>
         
         
-        <span class="post-visits" data-url="/2019/03/05/go语言生成网址二维码/" data-title="go语言生成网址二维码">
+        <span class="post-visits" data-url="/2019/03/05/go语言生成网址二维码/" data-title="go语言为网站生成二维码">
           阅读次数 0
         </span>
         
@@ -293,28 +293,18 @@
       
         
         
+          
+        
 
         
-          <h1 id="搭建golang环境"><a href="#搭建golang环境" class="headerlink" title="搭建golang环境"></a>搭建golang环境</h1><h2 id="安装go"><a href="#安装go" class="headerlink" title="安装go"></a>安装go</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ubuntu</span></span><br><span class="line">sudo apt install golang-go</span><br><span class="line"><span class="comment"># CentOS</span></span><br><span class="line">sudo yum install go</span><br></pre></td></tr></table></figure>
-<h2 id="设置GOPATH"><a href="#设置GOPATH" class="headerlink" title="设置GOPATH"></a>设置GOPATH</h2><p>将GOPATH添加至环境变量<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="built_in">export</span> GOPATH=/root/go &gt;&gt; ~/.bashrc`</span><br><span class="line"><span class="comment"># 设置当前终端生效</span></span><br><span class="line"><span class="built_in">source</span> ~/.bashrc </span><br><span class="line"><span class="comment"># 查看GOPATH</span></span><br><span class="line">go env</span><br></pre></td></tr></table></figure></p>
-<p>创建所需文件夹</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /root/go</span><br><span class="line">mkdir bin &amp;&amp; mkdir pkg &amp;&amp; mkdir src</span><br></pre></td></tr></table></figure>
-<p>GOPATH的目录结构:</p>
-<ul>
-<li>bin 编译后生成的可执行文件</li>
-<li>pkg 编译后生成的文件（比如：.a）</li>
-<li>src 存放源代码（比如：.go .c .h .s等）</li>
-</ul>
-<h2 id="运行代码"><a href="#运行代码" class="headerlink" title="运行代码"></a>运行代码</h2><p>导入第三方包：<code>go get -u github.com/yeqown/go-qrcode</code></p>
-<p>新建文件夹<code>makeqrcode</code>，进入该文件夹后，新建文件 <code>makeqrforwebsite.go</code></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main </span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">        <span class="string">"fmt"</span></span><br><span class="line">        qrcode <span class="string">"github.com/yeqown/go-qrcode"</span> <span class="comment">// 给后面的包一个简称</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">        qrc, err := qrcode.New(<span class="string">"https://kiddie92.github.io/"</span>)</span><br><span class="line">        <span class="keyword">if</span> err != <span class="literal">nil</span>&#123;</span><br><span class="line">                fmt.Printf(<span class="string">"could not generate QRCode: %v"</span>, err)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 保存二维码</span></span><br><span class="line">        <span class="keyword">if</span> err := qrc.Save(<span class="string">"."</span>); err != <span class="literal">nil</span> &#123;</span><br><span class="line">                fmt.Printf(<span class="string">"could not save image: %v"</span>, err)</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>直接运行：<code>go run makeqrforwebsite.go</code>，生成本博客地址对应的二维码，扫描一下试试。</p>
-<p><img src="./kiddie92.jpeg" alt="Alt text"></p>
-<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a href="https://github.com/yeqown/go-qrcode/" target="_blank" rel="noopener">https://github.com/yeqown/go-qrcode/</a></p>
-
+          <blockquote>
+<p>二维码有点意思，想着把俺的博客地址用二维码展示出来，比较来看还是go语言比较强大啊…<br>
+          <div class="read-more">
+            <a href="/2019/03/05/go语言生成网址二维码/" class="read-more-link">阅读更多</a>
+          </div>
         
       
-    </div>
+    </p></blockquote></div>
 
     
 
