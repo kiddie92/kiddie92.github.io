@@ -316,15 +316,15 @@ Model Parameterts --> Data</script><h2 id="物理方法"><a href="#物理方法"
 <h1 id="问题的提出和回答"><a href="#问题的提出和回答" class="headerlink" title="问题的提出和回答"></a>问题的提出和回答</h1><p>上面给出了两种方法来解这个问题，我们可以看到如果两种方法都能解这个正演问题（<strong><em>深度学习实际上是在从数据反推回模型的过程中逐步给出正演函数的</em></strong>），那么是不是深度学习学习到的模型等价于物理定律呢，换句话说深度学习可以学到物理定律？</p>
 <p>这个问题我给它拆成两个：</p>
 <ol>
-<li>深度学习建立<script type="math/tex">Model</script>到<script type="math/tex">Data</script>的映射这件事情能不能做？<br>肯定能，因为有人已经证明了深度学习算法可以拟合任何复杂的函数，参见<a href="https://en.wikipedia.org/wiki/Universal_approximation_theorem" target="_blank" rel="noopener">Universal approximation theorem</a>。相关问题也可以看看这里<a href="https://www.zhihu.com/question/268384579" target="_blank" rel="noopener">神经网络为什么可以拟合任意函数？</a>。也就是说，<script type="math/tex">Model</script>到<script type="math/tex">Data</script>的映射再复杂，深度学习也可以给你找个函数来逼近它。</li>
-<li>建立的映射好不好用？或者说模型的泛化能力会很强吗？<br>虽说神经网络有万能逼近的性质，但是逼近的好不好就另说了，因为毕竟没有拿所有的数据集去训练，而一个物理问题的数据集几乎可以说是无限大的。那有没有可能深度学习学习出来的模型恰好和物理定律一致呢？那就得把深度学习模型当作一个函数来研究了，看看它是不是化简完恰好就是物理方程，不过，几万甚至上亿个参数的函数，研究起来应该很头疼吧，一般人肯定会疯掉的，所以说这个问题还是交给科学家去解决吧。<blockquote>
+<li><strong>深度学习建立<script type="math/tex">Model</script>到<script type="math/tex">Data</script>的映射这件事情能不能做？</strong><br>肯定能，因为有人已经证明了深度学习算法可以拟合任何复杂的函数，参见<a href="https://en.wikipedia.org/wiki/Universal_approximation_theorem" target="_blank" rel="noopener">Universal approximation theorem</a>。相关问题也可以看看这里<a href="https://www.zhihu.com/question/268384579" target="_blank" rel="noopener">神经网络为什么可以拟合任意函数？</a>。也就是说，<script type="math/tex">Model</script>到<script type="math/tex">Data</script>的映射再复杂，深度学习也可以给你找个函数来逼近它。</li>
+<li><strong>建立的映射好不好用？或者说模型的泛化能力会很强吗？</strong><br>虽说神经网络有万能逼近的性质，但是逼近的好不好就另说了，因为毕竟没有拿所有的数据集去训练，而一个物理问题的数据集几乎可以说是无限大的。那有没有可能深度学习学习出来的模型恰好和物理定律一致呢？那就得把深度学习模型当作一个函数来研究了，看看它是不是化简完恰好就是物理方程，不过，几万甚至上亿个参数的函数，研究起来应该很头疼吧，一般人肯定会疯掉的，所以说这个问题还是交给科学家去解决吧。<blockquote>
 <p>这里和胡师兄讨论的时候，发现我们的理解基本一致（难道是因为大家都学地球物理的吗…）</p>
 </blockquote>
 </li>
 </ol>
-<p>其实，一个非线性的物理问题也可以线性化，比如使用泰勒展开就可以做到；从另外一个角度去理解就是<script type="math/tex">G(m)=d</script>转化成<script type="math/tex">Gm=d</script>的问题。但是，由于数据有限，这里的G存在0空间，所以会有<script type="math/tex">G_0m=d</script>，也就是说有限的数据集几乎是不可能约束<script type="math/tex">G</script>的。</p>
+<p>其实，一个非线性的物理问题也可以线性化，比如使用泰勒展开就可以做到；从另外一个角度去理解就是<script type="math/tex">G(m)=d</script>转化成<script type="math/tex">Gm=d</script>的问题。但是，由于数据有限，这里的<script type="math/tex">G</script>存在<script type="math/tex">0</script>空间，所以会有<script type="math/tex">G_0m=0</script>，也就是说有限的数据集几乎是不可能约束<script type="math/tex">G</script>的。</p>
 <h1 id="其他策略"><a href="#其他策略" class="headerlink" title="其他策略"></a>其他策略</h1><p>为了让深度学习学到的模型/函数/映射更加接近”理论事实”，我们可以加一些约束，比如先做特征提取、结合比较好解释的机器学习和深度学习算法来学习出一个泛化能力更强的模型/函数/映射。</p>
-<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>深度学习算法一般来说只能学习到数据集中已有的知识，它比较<strong>擅长于归纳，而不擅长演绎</strong>。对于<strong>非监督学习</strong>，情况可能比较复杂，暂不讨论。</p>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>深度学习算法一般来说只能学习到数据集中已有的知识，它比较<strong>擅长于归纳，而不擅长演绎</strong>。对于<strong>非监督学习</strong>，情况可能比较复杂，暂不讨论。此外，世界是复杂的，但是伟大的理论通常在数学表达上都是简单优美的，这恐怕是<strong>现阶段</strong>人工智能所不能企及的。</p>
 
       
     </div>
