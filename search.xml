@@ -113,8 +113,8 @@
         <category>Machine Learning</category>
       </categories>
       <tags>
-        <tag>kubernetes</tag>
         <tag>python</tag>
+        <tag>kubernetes</tag>
         <tag>机器学习</tag>
         <tag>flask</tag>
         <tag>keras</tag>
