@@ -17,8 +17,12 @@
 
 
 
+  <meta name="description" content="卷积神经网络之Batch Normalization（一）：How？">
 
 
+
+
+  <meta name="keywords" content="算法，深度学习，人工智能, Mun*">
 
 
 
@@ -38,7 +42,7 @@
 
 
 
-<link rel="canonical" href="https://kiddie92.github.io/">
+<link rel="canonical" href="https://kiddie92.github.io/2019/03/06/卷积神经网络之Batch-Normalization（一）：How？/">
 
 
 
@@ -104,7 +108,7 @@
   window.config = {"leancloud":{"app_id":"n8MGlOWz83zS9G0m0PGinErj-gzGzoHsz","app_key":"bSOcrmi2W53fTzNXQA3UQ2z3"},"toc":true,"fancybox":true,"pjax":true};
 </script>
 
-    <title> Mun* </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+    <title> 卷积神经网络之Batch Normalization（一）：How？ - Mun* </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   </head>
 
   <body><div id="mobile-navbar" class="mobile-navbar">
@@ -252,15 +256,11 @@
           <div id="content" class="content">
             
   
-  <section id="posts" class="posts">
-    
-      
-        
   <article class="post">
     <header class="post-header">
       <h1 class="post-title">
         
-          <a class="post-link" href="/2019/03/06/卷积神经网络之Batch-Normalization（一）：How？/">卷积神经网络之Batch Normalization（一）：How？</a>
+          卷积神经网络之Batch Normalization（一）：How？
         
       </h1>
 
@@ -285,15 +285,18 @@
 
     
     
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#批量归一化"><span class="toc-text">批量归一化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#批量归一化层"><span class="toc-text">批量归一化层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#对全连接层做批量归一化"><span class="toc-text">对全连接层做批量归一化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对卷积层做批量归一化"><span class="toc-text">对卷积层做批量归一化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#测试-预测时的批量归一化"><span class="toc-text">测试/预测时的批量归一化</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#tensorflow调用"><span class="toc-text">tensorflow调用</span></a></li></ol>
+    </div>
+  </div>
+
 
 
     <div class="post-content">
       
-        
-        
-
-        
-          <blockquote>
+        <blockquote>
 <p>本文主要介绍深度学习里的一个常用的trick，主要用于加速收敛算法，这篇主要介绍一下怎么做的（How），下篇再介绍Why和该算法的一些好处，本来想着根据自己的理解写一下，看了大神写的之后我就决定”抄袭了”，（大神就是大神啊…）。原文使用MXNet实现的算法（原文查看文末的<strong>原文链接</strong>），这里改成使用TensorFlow实现一下这个例子。<br>&lt;! — more —&gt;</p>
 </blockquote>
 <h1 id="批量归一化"><a href="#批量归一化" class="headerlink" title="批量归一化"></a>批量归一化</h1><p>这一节我们介绍批量归一化（batch normalization）层，它能让较深的神经网络的训练变得更加容易 [1]。在 <a href="../chapter_deep-learning-basics/kaggle-house-price.md">“实战 Kaggle 比赛：预测房价”</a> 一节里，我们对输入数据做了标准化处理：处理后的任意一个特征在数据集中所有样本上的均值为 0、标准差为 1。标准化处理输入数据使各个特征的分布相近：这往往更容易训练出有效的模型。</p>
@@ -314,270 +317,79 @@
 x_{i} --> W_i --> z_i --> \tilde{z_i} --> activation --> a_i</script><p>下面，还是以mnist数据集的CNN训练为例，按照这个流程走一遍吧，在tensorflow中调用使用的是<code>tf.layers.batch_normalization</code>，完整代码请看<a href="deng">这里</a>：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">epsilon = <span class="number">0.001</span></span><br><span class="line">Wx_plus_b = tf.nn.batch_normalization(Wx_plus_b, mean, var, shift, scale, epsilon)</span><br><span class="line"><span class="comment"># similar with this two steps:</span></span><br><span class="line"><span class="comment"># Wx_plus_b = (Wx_plus_b - fc_mean) / tf.sqrt(fc_var + 0.001)</span></span><br><span class="line"><span class="comment"># Wx_plus_b = Wx_plus_b * scale + shift</span></span><br></pre></td></tr></table></figure></p>
 <p><strong>转载自：</strong>动手学深度学习<br><strong>原文网址：</strong><a href="https://zh.gluon.ai/chapter_convolutional-neural-networks/batch-norm.html" target="_blank" rel="noopener">https://zh.gluon.ai/chapter_convolutional-neural-networks/batch-norm.html</a><br><strong>作者：</strong>阿斯顿·张、<strong>李沐</strong>、扎卡里 C. 立顿、亚历山大 J. 斯莫拉</p>
 
-        
       
     </div>
 
     
+      
+      
 
-    
 
-  </article>
 
       
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/03/05/go语言生成网址二维码/">go语言为网站生成二维码</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-03-05
-        </span>
-        
-          <span class="post-category">
-            
-              <a href="/categories/go/">go</a>
-            
-              <a href="/categories/go/Just-for-Fun/">Just for Fun</a>
-            
-          </span>
-        
-        
-        <span class="post-visits" data-url="/2019/03/05/go语言生成网址二维码/" data-title="go语言为网站生成二维码">
-          阅读次数 0
-        </span>
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
       
-        
-        
-          
-        
+  <div class="post-reward">
+    <input type="checkbox" name="reward" id="reward" hidden>
+    <label class="reward-button" for="reward">赞赏支持</label>
+    <div class="qr-code">
+      
+      
+        <label class="qr-code-image" for="reward">
+          <img class="image" src="/images/reward/wechat.png" title="微信打赏">
+        </label>
+      
+      
+        <label class="qr-code-image" for="reward">
+          <img class="image" src="/images/reward/alipay.png" title="支付宝打赏">
+        </label>
+      
+    </div>
+  </div>
 
+    
+
+    
+      <footer class="post-footer">
         
-          <blockquote>
-<p>二维码有点意思，想着把俺的博客地址用二维码展示出来，比较来看还是go语言比较强大啊…<br>
-          <div class="read-more">
-            <a href="/2019/03/05/go语言生成网址二维码/" class="read-more-link">阅读更多</a>
+          <div class="post-tags">
+            
+              <a href="/tags/算法，深度学习，人工智能/">算法，深度学习，人工智能</a>
+            
           </div>
         
-      
-    </p></blockquote></div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/03/03/浅谈深度学习算法-能不能学物理定律/">浅谈深度学习算法 -- 能不能学物理定律?</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-03-03
-        </span>
-        
-          <span class="post-category">
-            
-              <a href="/categories/算法/">算法</a>
-            
-              <a href="/categories/算法/人工智能/">人工智能</a>
-            
-              <a href="/categories/算法/人工智能/机器学习/">机器学习</a>
-            
-              <a href="/categories/算法/人工智能/机器学习/知识理解/">知识理解</a>
-            
-          </span>
         
         
-        <span class="post-visits" data-url="/2019/03/03/浅谈深度学习算法-能不能学物理定律/" data-title="浅谈深度学习算法 -- 能不能学物理定律?">
-          阅读次数 0
-        </span>
-        
-      </div>
-    </header>
-
+  <nav class="post-nav">
     
     
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <blockquote>
-<p>本篇博客以一个物理问题为出发点，试图从数学的角度来理解一下深度学习算法。主要围绕着深度学习算法（未讨论非监督学习）能否学习出物理定律这个问题进行阐述。<br>
-          <div class="read-more">
-            <a href="/2019/03/03/浅谈深度学习算法-能不能学物理定律/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </p></blockquote></div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/03/02/TensorFlow-特性-Graph-和-Sessions/">TensorFlow 特性--Graph 和 Sessions</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-03-02
-        </span>
-        
-          <span class="post-category">
-            
-              <a href="/categories/tensorflow/">tensorflow</a>
-            
-              <a href="/categories/tensorflow/机器学习/">机器学习</a>
-            
-          </span>
-        
-        
-        <span class="post-visits" data-url="/2019/03/02/TensorFlow-特性-Graph-和-Sessions/" data-title="TensorFlow 特性--Graph 和 Sessions">
-          阅读次数 0
-        </span>
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <blockquote>
-<p>深度学习框架有很多，Google的TensorFlow市场占有率居高不下，本文的小目标是说清楚tensorflow的<strong>“图（Graph）”</strong>和<strong>“会话（Session）”</strong>机制及其优缺点，最后以一个回归问题为例实践一下。文中顺便回答一下<strong>动态图（Dynamic computation graphs）</strong>和<strong>静态图（Static computational graphs）</strong>框架的区别。<br>
-          <div class="read-more">
-            <a href="/2019/03/02/TensorFlow-特性-Graph-和-Sessions/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </p></blockquote></div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/01/23/kubernetes-性能测试方法简介/">kubernetes 性能测试方法简介</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-01-23
-        </span>
-        
-          <span class="post-category">
-            
-              <a href="/categories/kubernetes/">kubernetes</a>
-            
-              <a href="/categories/kubernetes/软件测试/">软件测试</a>
-            
-          </span>
-        
-        
-        <span class="post-visits" data-url="/2019/01/23/kubernetes-性能测试方法简介/" data-title="kubernetes 性能测试方法简介">
-          阅读次数 0
-        </span>
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <blockquote>
-<p>本文主要介绍kubernetes（以下简称k8s）在性能测试中的主要关注指标以及涉及的辅助测试工具。由于各企业在私有云建设过程中使用的技术标准不尽相同，文中尽可能介绍可能涉及的通用性测试项，由于作者水平有限，以下内容仅供参考，欢迎讨论以及指正。<br>
-          <div class="read-more">
-            <a href="/2019/01/23/kubernetes-性能测试方法简介/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </p></blockquote></div>
-
-    
-
-    
-
-  </article>
-
-      
-      
-  <nav class="pagination">
-    
-    
-      <a class="next" href="/page/2/">
-        <span class="next-text">下一页</span>
+      <a class="next" href="/2019/03/05/go语言生成网址二维码/">
+        <span class="next-text nav-default">go语言为网站生成二维码</span>
+        <span class="prev-text nav-mobile">下一篇</span>
         <i class="iconfont icon-right"></i>
       </a>
     
   </nav>
 
 
+      </footer>
     
-  </section>
+
+  </article>
+
 
           </div>
           
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
 
         </div>
       </main>
@@ -665,6 +477,27 @@ x_{i} --> W_i --> z_i --> \tilde{z_i} --> activation --> a_i</script><p>下面�
     </div>
 
     
+  
+  <script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'https://kiddie92.github.io/2019/03/06/卷积神经网络之Batch-Normalization（一）：How？/';
+        this.page.identifier = '2019/03/06/卷积神经网络之Batch-Normalization（一）：How？/';
+        this.page.title = '卷积神经网络之Batch Normalization（一）：How？';
+    };
+    (function() {
+    var d = document, s = d.createElement('script');
+
+    s.src = '//https-kiddie92-github-io.disqus.com/embed.js';
+
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();  
+  </script>
+
+  
+
+  
+
 
 
     
