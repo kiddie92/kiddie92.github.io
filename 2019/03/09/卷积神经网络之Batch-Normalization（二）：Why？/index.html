@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+<meta name="theme-color" content="#f8f5ec">
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+
+  <meta name="description" content="卷积神经网络之Batch-Normalization（二）：Why？">
+
+
+
+
+  <meta name="keywords" content="算法，深度学习，人工智能, Mun*">
+
+
+
+
+
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Mun*">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.10.2">
+
+
+
+<link rel="canonical" href="https://kiddie92.github.io/2019/03/09/卷积神经网络之Batch-Normalization（二）：Why？/">
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css">
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/nprogress/nprogress.min.css">
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.10.2">
+
+
+
+  
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-91728997-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-91728997-1');
+</script>
+
+
+  <script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.1.1/av-min.js"></script>
+  <script id="leancloud">
+    AV.init({
+      appId: "n8MGlOWz83zS9G0m0PGinErj-gzGzoHsz",
+      appKey: "bSOcrmi2W53fTzNXQA3UQ2z3"
+    });
+  </script>
+
+
+
+
+
+<script>
+  window.config = {"leancloud":{"app_id":"n8MGlOWz83zS9G0m0PGinErj-gzGzoHsz","app_key":"bSOcrmi2W53fTzNXQA3UQ2z3"},"toc":true,"fancybox":true,"pjax":true};
+</script>
+
+    <title> 卷积神经网络之Batch-Normalization（二）：Why？ - Mun* </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="mobile-header-logo">
+    <a href="/." class="logo">Mun*</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            首页
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            归档
+          
+        </li>
+      </a>
+    
+      <a href="/tags">
+        <li class="mobile-menu-item">
+          
+          
+            标签
+          
+        </li>
+      </a>
+    
+      <a href="/categories">
+        <li class="mobile-menu-item">
+          
+          
+            分类
+          
+        </li>
+      </a>
+    
+      <a href="/links">
+        <li class="mobile-menu-item">
+          
+          
+            链接
+          
+        </li>
+      </a>
+    
+      <a href="/about">
+        <li class="mobile-menu-item">
+          
+          
+            关于
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Mun*</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              首页
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              归档
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/tags">
+            
+            
+              标签
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/categories">
+            
+            
+              分类
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/links">
+            
+            
+              链接
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/about">
+            
+            
+              关于
+            
+          </a>
+        </li>
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          卷积神经网络之Batch-Normalization（二）：Why？
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-03-09
+        </span>
+        
+          <span class="post-category">
+            
+              <a href="/categories/算法，深度学习，人工智能/">算法，深度学习，人工智能</a>
+            
+          </span>
+        
+        
+        <span class="post-visits" data-url="/2019/03/09/卷积神经网络之Batch-Normalization（二）：Why？/" data-title="卷积神经网络之Batch-Normalization（二）：Why？">
+          阅读次数 0
+        </span>
+        
+      </div>
+    </header>
+
+    
+    
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#问题的提出和解决"><span class="toc-text">问题的提出和解决</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Internal-Covariate-shift-ICS"><span class="toc-text">Internal Covariate shift (ICS)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ICS问题的解决"><span class="toc-text">ICS问题的解决</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BN算法的有效性分析"><span class="toc-text">BN算法的有效性分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Q1-为什么先做BN再做activation？"><span class="toc-text">Q1: 为什么先做BN再做activation？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q2-mini-batch的大小设置多大比较合适？"><span class="toc-text">Q2: mini-batch的大小设置多大比较合适？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q3-scale和shift参数的加入有什么作用？"><span class="toc-text">Q3: scale和shift参数的加入有什么作用？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q4-训练好的模型如何使用，因为已经没有batch的概念了？"><span class="toc-text">Q4: 训练好的模型如何使用，因为已经没有batch的概念了？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#新的理解"><span class="toc-text">新的理解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#在BN层之后添加Noise"><span class="toc-text">在BN层之后添加Noise</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#梯度更新前后的Loss和其梯度的变化"><span class="toc-text">梯度更新前后的Loss和其梯度的变化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-text">Reference</span></a></li></ol>
+    </div>
+  </div>
+
+
+
+    <div class="post-content">
+      
+        <blockquote>
+<p>上一篇主要介绍了Batch-Normalization（下面简称BN）是如何工作的，即在连接层和激活函数之间加了一个BN层，这些参数参与了整个网络的正向和反向传播。这篇博文主要介绍为什么BN算法可以work，内容主要参考了两篇论文，包括18年的一篇NIPS论文。<br><a id="more"></a></p>
+</blockquote>
+<h2 id="问题的提出和解决"><a href="#问题的提出和解决" class="headerlink" title="问题的提出和解决"></a>问题的提出和解决</h2><p>在引入BN之前，以前的model training有一些系统性的问题，导致很多算法收敛速度都非常慢，甚至根本就不能工作，尤其在使用sigmoid激活函数时。其中一个比较著名的问题就是每层神经元是会受到它之前所有神经元影响的，因为每一层的输出都是下一层的输入，所以一个神经元输出的数据分布发生改变一定会使其他神经元跟着改变，这样相互影响的调参很容易使调参过程乱套，这个被称作Internal Covariate shift（ICS）。此外，还有其他问题，比如仿射层的输出值太大或太小，其经过sigmoid激活函数时会落在饱和区域，反向传播会有梯度消失的问题。这里先试图说明一下ICS问题及其解决方法。</p>
+<h3 id="Internal-Covariate-shift-ICS"><a href="#Internal-Covariate-shift-ICS" class="headerlink" title="Internal Covariate shift (ICS)"></a>Internal Covariate shift (ICS)</h3><p>关于ICS，有个形象的比喻：当你有个射击目标时，如果这个目标是静止的，它就会比较容易击中；而当这个<strong>目标是在不停的移动时</strong>，它就很难被击中。深度学习的训练过程中就类似于后者：</p>
+<ol>
+<li>训练数据被输入到神经网络时，一般会先被normalization一下，因为输入的数据的每个维度的<strong>量纲</strong>可能会不一样，通过normalization可以消除量纲不一致的问题；</li>
+<li>数据经过{Wx+b}和activation后，进入hidden layer，<strong>数据集的分布</strong>（均值和标准差）就会发生变化，而且每经过一层，输出数据集的分布都会变化；</li>
+<li>由于每一层都发现自己的input数据集的分布在不停的变化，而反向传播更新参数时，想要适应训练数据集的分布就是一件非常困难的事情。</li>
+</ol>
+<p><img src="ICS.png" alt="Alt text"></p>
+<p><strong>如果上面的理解是正确的</strong>，那么训练过程收敛速度非常慢就很容易理解了，尤其是对于深度较深的网络（隐含层比较多）。</p>
+<h3 id="ICS问题的解决"><a href="#ICS问题的解决" class="headerlink" title="ICS问题的解决"></a>ICS问题的解决</h3><p>虽然ICS的问题很棘手，但也不是无解的。</p>
+<ul>
+<li><p>其中一个比较常见的解法就是<strong>减小learning rate</strong>，因为学习率一旦降低，学习训练数据集分布的过程就能够通过<strong>持续微小的调整</strong>来慢慢接近目标；但是，这也带来了一个问题，学习率太小容易使学习/训练的速度变慢，此外，还可能使学习过程陷入局部极小值。</p>
+</li>
+<li><p>BN算法之所以work的比较好，最主要的原因一直被认为是其解决了ICS的问题。Batch Normalization将每一层的输出都经过了“变换”，每一层的输出数据集（batch）都会重新将数据集的分布归一化到标准的分布形态上（均值为0，标准差为1）。这样一来，“目标分布” 在每一层的传递过程中变化就不会很大了，也即<strong>目标被固定住了</strong>。</p>
+</li>
+</ul>
+<p><img src="BN.png" alt="Alt text"></p>
+<p>下图对比了使用BN和不使用BN时，训练收敛的变化趋势，可以看到使用BN可以在更少的训练步数内达到同等的准确率，此外使用BN还可以达到更高的准确率，也即训练收敛速度更快，效果更佳。</p>
+<p><img src="BN.VS.NOBN.png" alt="BN.VS.Stand"></p>
+<h2 id="BN算法的有效性分析"><a href="#BN算法的有效性分析" class="headerlink" title="BN算法的有效性分析"></a>BN算法的有效性分析</h2><p>除了ICS的问题，BN算法还一并解决了深度学习训练过程中遇到的各种小问题。下面以问答的形式，说明一下几个小问题的解决。</p>
+<h3 id="Q1-为什么先做BN再做activation？"><a href="#Q1-为什么先做BN再做activation？" class="headerlink" title="Q1: 为什么先做BN再做activation？"></a>Q1: 为什么先做BN再做activation？</h3><p>其实仅仅考虑ICS的问题，先做activation再做BN也不是不可以；但是，先做BN还是有好处的，BN将仿射层的输出标准化后，数值基本分布在0附近，对于sigmoid激活函数来说，值大都落在<strong>非饱和区</strong>了，就不太会造成梯度消失的现象了。</p>
+<h3 id="Q2-mini-batch的大小设置多大比较合适？"><a href="#Q2-mini-batch的大小设置多大比较合适？" class="headerlink" title="Q2: mini-batch的大小设置多大比较合适？"></a>Q2: mini-batch的大小设置多大比较合适？</h3><p>mini batch的大小稍微大一点其实会比较合理，因为算法中需要使用mini-batch内的数据去估计整个样本的<strong>均值</strong>和<strong>方差</strong>，所以大一点会比较接近总体样本的分布；但是，太大又会导致training比较慢，所以，batch的大小和算力需要去权衡一下。</p>
+<h3 id="Q3-scale和shift参数的加入有什么作用？"><a href="#Q3-scale和shift参数的加入有什么作用？" class="headerlink" title="Q3: scale和shift参数的加入有什么作用？"></a>Q3: scale和shift参数的加入有什么作用？</h3><p>scale、shift是两个独立的参数，也即和数据是没有依赖关系的，它们完全有可能将BN的作用给抵消掉，然而这恰好也是这个方法的优势，可以根据具体情况由网络自身在训练过程中来决定需不需要BN。</p>
+<h3 id="Q4-训练好的模型如何使用，因为已经没有batch的概念了？"><a href="#Q4-训练好的模型如何使用，因为已经没有batch的概念了？" class="headerlink" title="Q4: 训练好的模型如何使用，因为已经没有batch的概念了？"></a>Q4: 训练好的模型如何使用，因为已经没有batch的概念了？</h3><p>一种方法是真的去估计整个样本在每一层的输出值的均值和方差，这个计算量太大。另一种比较常用的方法是，对训练集数据中的每一个均值和方差都保留下来，最后做移动平均来估计总体样本的均值和方差。</p>
+<h2 id="新的理解"><a href="#新的理解" class="headerlink" title="新的理解"></a>新的理解</h2><p>这是一篇投稿于NeurIPS 2018的会议论文（参考文献2），文章以<strong>新的观点</strong>阐述了BN算法的有效性。主要涉及了两个实验（公式太多，没有细看）：</p>
+<h3 id="在BN层之后添加Noise"><a href="#在BN层之后添加Noise" class="headerlink" title="在BN层之后添加Noise"></a>在BN层之后添加Noise</h3><p>在BatchNorm层之后加上一个随机噪音，噪音的分布异于BatchNorm层的输出（均值非0，反差非1），并且每次传播的时候，噪音都不一样。也就是说，在BatchNorm层之后故意加了一个ICS，结果发现训练并没有因此而明显变差（如下图粉红色所示），虽然隐含层的输出分布会随着迭代次数的增加（时间的推移）而变得不太稳定。</p>
+<p><img src="why.jpg" alt="Alt text"></p>
+<h3 id="梯度更新前后的Loss和其梯度的变化"><a href="#梯度更新前后的Loss和其梯度的变化" class="headerlink" title="梯度更新前后的Loss和其梯度的变化"></a>梯度更新前后的Loss和其梯度的变化</h3><p>作者使用量化的方式定量的说明了BN算法并不能减少ICS。实际上，作者认为BN算法减少了Lipschitz常数（也即loss函数变得更加连续/光滑），使得梯度变得跟加”可预测”（如下图所式），才是BN算法有效性的关键。</p>
+<blockquote>
+<p>这里”<strong>可预测</strong>“我的理解是表示变量的变化范围比较小，更加可控。</p>
+</blockquote>
+<p><img src="landscapes.jpg" alt="Alt text"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>ICS问题的解决使深度神经网络的收敛速度变快，另外，此时的learning rate也可以设置大一些，则加快了学习的速率；</li>
+<li>BN的引入极大的降低了sigmoid和tanh这样的激活函数梯度消失的风险；</li>
+<li>使用了Batch Normalization，初始化参数对神经网络的影响减小；</li>
+<li>BN算法降低了过拟合的风险，训练过程不需要太多的正则化，也可以不需要drop out了；</li>
+<li>新的观点认为ICS的解决并非BN算法有效的根本原因，loss变得平滑了才是主要原因；</li>
+<li>国外发表的论文还做了一个几分钟的小视频放在youtube上，我觉得国内也可以校仿一下。</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol>
+<li>Ioffe, S., &amp; Szegedy, C. (2015). Batch normalization: Accelerating deep network training by reducing internal covariate shift. arXiv preprint arXiv:1502.03167.</li>
+<li>Santurkar, S., Tsipras, D., Ilyas, A., &amp; Madry, A. (2018). How does batch normalization help optimization?. In Advances in Neural Information Processing Systems (pp. 2488-2498).</li>
+<li><a href="https://mc.ai/batch-normalization-speed-up-neural-network-training/" target="_blank" rel="noopener">Batch Normalization — Speed up Neural Network Training</a></li>
+</ol>
+
+      
+    </div>
+
+    
+      
+      
+
+  <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="https://kiddie92.github.io">Mun*</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="https://kiddie92.github.io/2019/03/09/卷积神经网络之Batch-Normalization（二）：Why？/">https://kiddie92.github.io/2019/03/09/卷积神经网络之Batch-Normalization（二）：Why？/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span>
+      
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用4.0国际许可协议</a>
+    </p>
+  </div>
+
+
+
+      
+      
+  <div class="post-reward">
+    <input type="checkbox" name="reward" id="reward" hidden>
+    <label class="reward-button" for="reward">赞赏支持</label>
+    <div class="qr-code">
+      
+      
+        <label class="qr-code-image" for="reward">
+          <img class="image" src="/images/reward/wechat.png" title="微信打赏">
+        </label>
+      
+      
+        <label class="qr-code-image" for="reward">
+          <img class="image" src="/images/reward/alipay.png" title="支付宝打赏">
+        </label>
+      
+    </div>
+  </div>
+
+    
+
+    
+      <footer class="post-footer">
+        
+          <div class="post-tags">
+            
+              <a href="/tags/算法，深度学习，人工智能/">算法，深度学习，人工智能</a>
+            
+          </div>
+        
+        
+        
+  <nav class="post-nav">
+    
+    
+      <a class="next" href="/2019/03/06/卷积神经网络之Batch-Normalization（一）：How？/">
+        <span class="next-text nav-default">卷积神经网络之Batch Normalization（一）：How？</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+
+      </footer>
+    
+
+  </article>
+
+
+          </div>
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:kiddiezzh@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+        
+          <a href="https://twitter.com/kiddiezzh" class="iconfont icon-twitter" title="twitter"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/kiddie92" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+    
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2018 - 
+    
+    2019
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Mun*</span>
+  </span>
+</div>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+  
+  <script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'https://kiddie92.github.io/2019/03/09/卷积神经网络之Batch-Normalization（二）：Why？/';
+        this.page.identifier = '2019/03/09/卷积神经网络之Batch-Normalization（二）：Why？/';
+        this.page.title = '卷积神经网络之Batch-Normalization（二）：Why？';
+    };
+    (function() {
+    var d = document, s = d.createElement('script');
+
+    s.src = '//https-kiddie92-github-io.disqus.com/embed.js';
+
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();  
+  </script>
+
+  
+
+  
+
+
+
+    
+  
+
+
+
+  
+  
+
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/pjax/jquery.pjax.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/nprogress/nprogress.min.js"></script>
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.10.2"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+  </body>
+</html>
