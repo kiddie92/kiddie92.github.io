@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://kiddie92.github.io/"/>
-  <updated>2019-03-11T14:12:03.481Z</updated>
+  <updated>2019-03-17T14:11:53.394Z</updated>
   <id>https://kiddie92.github.io/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>数据采集之Python爬虫实验</title>
+    <link href="https://kiddie92.github.io/2019/03/11/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPython%E7%88%AC%E8%99%AB%E5%AE%9E%E9%AA%8C/"/>
+    <id>https://kiddie92.github.io/2019/03/11/数据分析之Python爬虫实验/</id>
+    <published>2019-03-11T14:20:32.000Z</published>
+    <updated>2019-03-17T14:11:53.394Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>如果说算法是程序的灵魂，那么数据就是算法的灵魂。数据采集是数据工程的第一步，为了提高效率，目前在互联网上采集数据比较高效的方法就是爬虫了。今天就来爬一下《惊奇队长》豆瓣上的影评/review。<br><a id="more"></a></p></blockquote><h1 id="爬虫简介"><a href="#爬虫简介" class="headerlink" title="爬虫简介"></a>爬虫简介</h1><p>数据可以挖掘潜在的价值，但是在挖掘之前需要有数据，否则再牛的算法也不会work。在一些具体的问题上，比如，我们可以收集各大网站上观众对于该电影的评价来判断电影的火热程度，结合其他的数据还可以估计票房等信息；又或者根据社交网络上人们对于股票市场行情的态度以及相关新闻，通过NLP处理来预测股价。那么，首先需要解决的问题就是如何获取数据。网络爬虫就是获取数据的一个重要手段，爬虫就好像一个全自动的机器人一直在浏览网页并将重要的信息收集起来，并按照一定的规则存储在相应的数据库或者文件内。数据收集好了，算法设计人员才可以做进一步的工作。</p><blockquote><p>如果有网站数据的API接口，就不用写爬虫了；<br>爬虫获取的数据都是公开的数据，很多有价值的数据还是需要花重金购买。</p></blockquote><h1 id="开始实践"><a href="#开始实践" class="headerlink" title="开始实践"></a>开始实践</h1><p>本次内容就是编写一个最简单的爬虫，实现豆瓣上电影的影评（或者叫做review），思路就是使用<code>urllib库</code>去模拟浏览器访问相关网页，再利用<code>re库</code>和<code>正则表达式</code>提取关键信息。</p><h2 id="URL分析"><a href="#URL分析" class="headerlink" title="URL分析"></a>URL分析</h2><p>首先，看一下豆瓣影评页的<code>URL</code>是否存在<strong>规律</strong>：浏览器打开豆瓣电影，逐个点击《惊奇队长》—&gt; 惊奇队长的影评 · · · · · · ( 全部 1160 条 )，查看网址为：<code>https://movie.douban.com/subject/26213252/reviews</code>，网址中出现的数字应该是电影的编号，但是没有页码的信息，点击”后页”按钮，网址变成了<code>https://movie.douban.com/subject/26213252/reviews?start=20</code>，所以猜测<code>start=20</code>这个参数是控制页码的，多试几次，发现确实是这个规律。<br>那么，在代码中设置翻页的操作就可以通过<code>for循环</code>来写了:</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">urlorg = <span class="string">"https://movie.douban.com/subject/26213252/reviews?start="</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(0, 100, 20):</span><br><span class="line">    url = urlorg + str(i)  <span class="comment"># 这里的url即为下一页的url了</span></span><br></pre></td></tr></table></figure><h2 id="网页源码分析"><a href="#网页源码分析" class="headerlink" title="网页源码分析"></a>网页源码分析</h2><p>查看《惊奇队长》影评页的网页源码，发现每一个影评都对应了一个<code>id</code>，而且每个<code>id</code>都对应了一个新的<code>URL</code>，想要查看完整的影评内容需要跳转到这个新的网页上进行查看；这些新的<code>URL</code>的构造也很有<strong>规律</strong>：<code>https://movie.douban.com/review/10034121/</code>最后的数字<code>10034121</code>就是这个review的<code>id</code>。通过网页源码的搜索（如下所示），可以发现<code>data-rid=&quot;9371928&quot; title=&quot;有用&quot;&gt;</code>可以唯一对应这个<code>id</code>，我们可以据此来设置正则表达式。</p><p>html 源码：</p><figure class="highlight htmlbars"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href="javascript:;" class="action-btn up" data-rid="9371928" title="有用"&gt;</span><br></pre></td></tr></table></figure><p>使用python 的<code>re包</code>接收正则表达式，(.*?)表示匹配项：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pat = <span class="string">'data-rid="(.*?)" title="有用"'</span>   <span class="comment">#(.*?)部分即为id</span></span><br></pre></td></tr></table></figure><p>得到了每一个review的id之后，把它存在一个list内，我们就可以构造出每一个review的URL：<code>https://movie.douban.com/review/</code>+<code>str(id)</code>，打开其中一个review继续分析（我们的目标是把影评的内容拿到）；再次查看影评的网页源码，可以发现影评的题目可以通过<code>&lt;meta name=&quot;description&quot; content=&quot;影评题目&quot; /&gt;</code>唯一确定，而影评的内容则在<code>data-original=&quot;1&quot;&gt;</code>和<code>&lt;div class=&quot;copyright&quot;&gt;</code>之间，如下所示：<br><figure class="highlight htmlbars"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta name="description" content="影评题目" /&gt;</span><br><span class="line">...</span><br><span class="line">...</span><br><span class="line">...</span><br><span class="line">data-original="1"&gt;</span><br><span class="line">  &lt;p&gt;内容....</span><br><span class="line">     ....内容&lt;/p&gt;&lt;p&gt;&lt;/p&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">  &lt;div class="copyright"&gt;</span><br></pre></td></tr></table></figure></p><p>如此以来，我们便可以设置正则将这两个主要内容提取出来。python的<code>re包</code>接收正则表达式：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pat2 = <span class="string">'&lt;meta name="description" content="(.*?)" /&gt;'</span>      <span class="comment">#影评的题目</span></span><br><span class="line">pat3 = <span class="string">'data-original="1"&gt;(.*?)&lt;div class="copyright"&gt;'</span>   <span class="comment">#影评的内容</span></span><br></pre></td></tr></table></figure><h2 id="编写代码"><a href="#编写代码" class="headerlink" title="编写代码"></a>编写代码</h2><p>根据上面的信息，爬虫的主要代码部分已经呼之欲出了，完整代码请点击<a href="https://github.com/kiddie92/Learning_Tech/blob/master/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPython%E7%88%AC%E8%99%AB%E5%AE%9E%E9%AA%8C/spder_douban_movie.py" target="_blank" rel="noopener">这里</a>查看，爬取之前可以做一下浏览器模拟请求，最后爬下来的影评内容存放在一个文件中，以供后续使用。</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">urlorg = <span class="string">"https://movie.douban.com/subject/26213252/reviews?start="</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#每页显示20个评论，所以间隔20算作一页</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">100</span>, <span class="number">20</span>):   <span class="comment">#如果需要爬取所有影评可以将100设置为更大的数字</span></span><br><span class="line">    url = urlorg + str(i)  </span><br><span class="line">    every_page = ur.urlopen(url).read().decode(<span class="string">"utf-8"</span>)</span><br><span class="line">    pat = <span class="string">'data-rid="(.*?)" title="有用"'</span></span><br><span class="line">    review_id = re.compile(pat).findall(every_page)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">20</span>):</span><br><span class="line">        review_url = <span class="string">"https://movie.douban.com/review/"</span> + str(review_id[j])</span><br><span class="line">        review = ur.urlopen(review_url).read().decode(<span class="string">"utf-8"</span>)</span><br><span class="line">        pat2 = <span class="string">'&lt;meta name="description" content="(.*?)" /&gt;'</span></span><br><span class="line">        pat3 = <span class="string">'data-original="1"&gt;(.*?)&lt;div class="copyright"&gt;'</span></span><br><span class="line">        review_title = re.compile(pat2).findall(review)</span><br><span class="line">        review_content = re.compile(pat3, re.S).findall(review)</span><br><span class="line">        print(review_title)</span><br><span class="line">        print(<span class="string">"-----------------------------"</span>)</span><br><span class="line">        print(review_content)</span><br></pre></td></tr></table></figure><h1 id="高级爬虫"><a href="#高级爬虫" class="headerlink" title="高级爬虫"></a>高级爬虫</h1><p>这里所谓的高级爬虫就是网络爬虫在遇到各种各样的问题时，依旧可以正常工作。下图表示一个爬虫的工作流程，首先进行网页的源码分析，看看是否存在规律，接着编写爬虫代码，最后将爬取的数据（适合存在在数据库的数据）保存在数据库内。下面简单的分析几个问题，以下问题都是有解的。</p><p><img src="archtech.png" alt="spyder"></p><ul><li><strong>网页抓包分析</strong><br>静态网页直接查看网页源码就可以爬取内容了，而动态网页则是利用一些前端技术（比如<code>js</code>、<code>css</code>等）进行动态展示。此时需要对浏览器进行抓包分析，将真正的网址抓取出来，得到关键信息。抓包的工具有<code>Fiddler</code>等。</li><li><strong>网站数据的加密、验证码</strong><br>很多网站采取了防爬虫的措施，比如对网页源码进行加密（典型的例子：网易云音乐的评论）、访问过频繁需要填写验证码等。对于网页加密，需要仔细的对网站进行抓包分析，将加密方式破解就可以了（一般还是<code>js</code>文件在搞事情）；对于填写验证码，可以让爬虫在爬取时加一个sleep时间（或者使用图片识别技术）。</li><li><strong>异常处理</strong><br>爬虫的工作依赖网络，所以网络万一出现问题，爬虫得有相应的处理机制，例如尝试连接某个网页未果后要及时爬取下一个，而不是异常退出了；再比如爬虫异常推出重启后得在重启之前得位置接着爬取数据，而不是重头再来。</li><li><strong>多线程</strong><br>对于爬虫这种io密集型的操作，多线程确实会提高效率，但是python的<code>GIL设计</code>使其多线程其实是假的多线程，所以如果比较在乎效率，这里比较推崇的做法是go语言写的爬虫。</li><li><strong>使用框架</strong><br>使用框架的好处是可以省去很多麻烦的设置，少考虑一些简单的问题，相互传阅代码也比较通俗易懂，python中的<code>scrapy框架</code>使用的比较多。</li><li><strong>数据库表的设计</strong><br>如果数据需要存入数据库，则需要设计一下数据库、表；这样做的好处是后续的数据供大家使用非常方便快捷。</li></ul><h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><ol><li>网络上有很多数据值得深入的挖掘，获取数据是数据挖掘的第一步；</li><li>爬虫可以对网络的资源进行自动化获取，爬取数据之前需要对资源的获取进行仔细分析；</li><li>高级/工业级的爬虫需要考虑更多的问题，如：对加密网页内容的破解、抓包分析、爬虫的异常处理、数据存库等。</li></ol>]]></content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;如果说算法是程序的灵魂，那么数据就是算法的灵魂。数据采集是数据工程的第一步，为了提高效率，目前在互联网上采集数据比较高效的方法就是爬虫了。今天就来爬一下《惊奇队长》豆瓣上的影评/review。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="数据工程" scheme="https://kiddie92.github.io/categories/%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B/"/>
+    
+    
+      <category term="机器学习" scheme="https://kiddie92.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="爬虫" scheme="https://kiddie92.github.io/tags/%E7%88%AC%E8%99%AB/"/>
+    
+      <category term="数据采集" scheme="https://kiddie92.github.io/tags/%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86/"/>
+    
+  </entry>
   
   <entry>
     <title>卷积神经网络之Batch-Normalization（二）：Why？</title>
@@ -41,9 +68,9 @@
     
       <category term="算法" scheme="https://kiddie92.github.io/tags/%E7%AE%97%E6%B3%95/"/>
     
-      <category term="深度学习" scheme="https://kiddie92.github.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
-    
       <category term="人工智能" scheme="https://kiddie92.github.io/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
+    
+      <category term="深度学习" scheme="https://kiddie92.github.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
   </entry>
   
@@ -72,9 +99,9 @@
     
       <category term="算法" scheme="https://kiddie92.github.io/tags/%E7%AE%97%E6%B3%95/"/>
     
-      <category term="深度学习" scheme="https://kiddie92.github.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
-    
       <category term="人工智能" scheme="https://kiddie92.github.io/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
+    
+      <category term="深度学习" scheme="https://kiddie92.github.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
   </entry>
   
@@ -238,9 +265,9 @@
       <category term="经济学原理" scheme="https://kiddie92.github.io/categories/%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%8E%9F%E7%90%86/"/>
     
     
-      <category term="金融知识" scheme="https://kiddie92.github.io/tags/%E9%87%91%E8%9E%8D%E7%9F%A5%E8%AF%86/"/>
-    
       <category term="比较优势" scheme="https://kiddie92.github.io/tags/%E6%AF%94%E8%BE%83%E4%BC%98%E5%8A%BF/"/>
+    
+      <category term="金融知识" scheme="https://kiddie92.github.io/tags/%E9%87%91%E8%9E%8D%E7%9F%A5%E8%AF%86/"/>
     
   </entry>
   
@@ -293,9 +320,9 @@
     
       <category term="kubernetes" scheme="https://kiddie92.github.io/tags/kubernetes/"/>
     
-      <category term="python" scheme="https://kiddie92.github.io/tags/python/"/>
-    
       <category term="机器学习" scheme="https://kiddie92.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="python" scheme="https://kiddie92.github.io/tags/python/"/>
     
       <category term="flask" scheme="https://kiddie92.github.io/tags/flask/"/>
     
@@ -323,11 +350,11 @@
       <category term="经济学原理" scheme="https://kiddie92.github.io/categories/%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%8E%9F%E7%90%86/"/>
     
     
+      <category term="金融知识" scheme="https://kiddie92.github.io/tags/%E9%87%91%E8%9E%8D%E7%9F%A5%E8%AF%86/"/>
+    
       <category term="数学" scheme="https://kiddie92.github.io/tags/%E6%95%B0%E5%AD%A6/"/>
     
       <category term="囚徒困境" scheme="https://kiddie92.github.io/tags/%E5%9B%9A%E5%BE%92%E5%9B%B0%E5%A2%83/"/>
-    
-      <category term="金融知识" scheme="https://kiddie92.github.io/tags/%E9%87%91%E8%9E%8D%E7%9F%A5%E8%AF%86/"/>
     
   </entry>
   

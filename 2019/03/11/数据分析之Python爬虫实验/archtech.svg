@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"
+   sodipodi:docname="archtech.svg"
+   inkscape:export-filename="/home/conan/ZZH_Blog/blog/source/_posts/数据分析之Python爬虫实验/archtech.png"
+   inkscape:export-xdpi="120"
+   inkscape:export-ydpi="120">
+  <defs
+     id="defs2">
+    <marker
+       inkscape:isstock="true"
+       style="overflow:visible;"
+       id="marker5242"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend">
+      <path
+         transform="scale(0.4) rotate(180) translate(10,0)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path5240" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Mend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Mend"
+       style="overflow:visible;"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         id="path4841"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         transform="scale(0.4) rotate(180) translate(10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Lend"
+       style="overflow:visible;"
+       inkscape:isstock="true">
+      <path
+         id="path4835"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         transform="scale(0.8) rotate(180) translate(12.5,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="EmptyTriangleOutL"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="EmptyTriangleOutL"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path4992"
+         d="M 5.77,0.0 L -2.88,5.0 L -2.88,-5.0 L 5.77,0.0 z "
+         style="fill-rule:evenodd;fill:#ffffff;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         transform="scale(0.8) translate(-6,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="EmptyTriangleInM"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="EmptyTriangleInM"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path4986"
+         d="M 5.77,0.0 L -2.88,5.0 L -2.88,-5.0 L 5.77,0.0 z "
+         style="fill-rule:evenodd;fill:#ffffff;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         transform="scale(-0.4) translate(-4.5,0)" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="435.83562"
+     inkscape:cy="854.64577"
+     inkscape:document-units="mm"
+     inkscape:current-layer="g4651"
+     showgrid="false"
+     inkscape:snap-text-baseline="true"
+     inkscape:snap-global="true"
+     inkscape:snap-bbox="true"
+     inkscape:window-width="1920"
+     inkscape:window-height="1025"
+     inkscape:window-x="0"
+     inkscape:window-y="-3"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#020000;stroke-width:0.56499994;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect831"
+       width="27.79603"
+       height="14.699824"
+       x="30.735992"
+       y="31.334089" />
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#020000;stroke-width:0.565;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect831-4"
+       width="27.79603"
+       height="14.699824"
+       x="79.913589"
+       y="31.334089" />
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#020000;stroke-width:0.565;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect831-40"
+       width="27.79603"
+       height="14.699824"
+       x="128.82393"
+       y="31.334089" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.55124527;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
+       d="M 58.799295,38.817636 H 78.898061"
+       id="path4545"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.55124527;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker5242)"
+       d="m 107.57598,38.817636 h 20.09877"
+       id="path4545-7"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93888889px;line-height:1.25;font-family:'WenQuanYi Micro Hei Mono';-inkscape-font-specification:'WenQuanYi Micro Hei Mono, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332;"
+       x="35.279575"
+       y="37.508148"
+       id="text4570"><tspan
+         sodipodi:role="line"
+         id="tspan4696"> URL及</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4698">网页分析</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93888903px;line-height:1.25;font-family:'WenQuanYi Micro Hei Mono';-inkscape-font-specification:'WenQuanYi Micro Hei Mono, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="88.056778"
+       y="40.683151"
+       id="text4570-5"><tspan
+         sodipodi:role="line"
+         id="tspan4600"
+         x="88.056778"
+         y="40.683151">爬虫</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93888903px;line-height:1.25;font-family:'WenQuanYi Micro Hei Mono';-inkscape-font-specification:'WenQuanYi Micro Hei Mono, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="134.96037"
+       y="40.683151"
+       id="text4570-9"><tspan
+         sodipodi:role="line"
+         id="tspan4602"
+         x="134.96037"
+         y="40.683151">数据库</tspan></text>
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#020000;stroke-width:0.56499994;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect4604"
+       width="9.6217022"
+       height="30.201456"
+       x="32.318123"
+       y="59.664658" />
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#020000;stroke-width:0.565;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect4604-0"
+       width="9.6217022"
+       height="30.201458"
+       x="47.573975"
+       y="59.664658" />
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#020000;stroke-width:0.565;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect4604-7"
+       width="9.6217022"
+       height="30.201458"
+       x="81.522575"
+       y="59.664658" />
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#020000;stroke-width:0.565;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect4604-4"
+       width="9.6217022"
+       height="30.201458"
+       x="97.024208"
+       y="59.664658" />
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#020000;stroke-width:0.565;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect4604-06"
+       width="9.6217022"
+       height="30.201458"
+       x="138.17836"
+       y="59.664658" />
+    <g
+       id="g4651">
+      <path
+         inkscape:connector-curvature="0"
+         id="path4645"
+         d="m 44.643605,46.869058 -7.51867,12.470161"
+         style="fill:none;stroke:#000000;stroke-width:0.488;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path4647"
+         d="m 44.643605,46.869058 7.904066,12.461585"
+         style="fill:none;stroke:#000000;stroke-width:0.469;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none" />
+    </g>
+    <g
+       transform="translate(49.494631,-0.08776973)"
+       id="g4651-5">
+      <path
+         inkscape:connector-curvature="0"
+         id="path4645-7"
+         d="m 44.643605,46.869058 -7.51867,12.470161"
+         style="fill:none;stroke:#000000;stroke-width:0.488;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path4647-8"
+         d="m 44.643605,46.869058 7.904066,12.461585"
+         style="fill:none;stroke:#000000;stroke-width:0.469;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none" />
+    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.414;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="m 142.92542,46.336709 0.10705,13.120539 v 0"
+       id="path4684"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93888903px;line-height:1.25;font-family:'WenQuanYi Micro Hei Mono';-inkscape-font-specification:'WenQuanYi Micro Hei Mono, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="34.047398"
+       y="67.166672"
+       id="text4688"
+       transform="rotate(-0.37803998)"><tspan
+         sodipodi:role="line"
+         id="tspan4702"
+         x="34.047398"
+         y="67.166672">抓</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4704"
+         x="34.047398"
+         y="73.340286">包</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4706"
+         x="34.047398"
+         y="79.513893">分</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4708"
+         x="34.047398"
+         y="85.687508">析</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93888903px;line-height:1.25;font-family:'WenQuanYi Micro Hei Mono';-inkscape-font-specification:'WenQuanYi Micro Hei Mono, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="49.966381"
+       y="67.270058"
+       id="text4688-2"
+       transform="rotate(-0.37803995)"><tspan
+         sodipodi:role="line"
+         id="tspan4737"
+         x="49.966381"
+         y="67.270058">加</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4739"
+         x="49.966381"
+         y="73.443672">密</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4741"
+         x="49.966381"
+         y="79.617279">分</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4743"
+         x="49.966381"
+         y="85.790894">析</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93888903px;line-height:1.25;font-family:'WenQuanYi Micro Hei Mono';-inkscape-font-specification:'WenQuanYi Micro Hei Mono, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="83.380585"
+       y="67.356628"
+       id="text4688-5"
+       transform="rotate(-0.37803995)"><tspan
+         sodipodi:role="line"
+         id="tspan4759"
+         x="83.380585"
+         y="67.356628">异</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4761"
+         x="83.380585"
+         y="73.530243">常</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4763"
+         x="83.380585"
+         y="79.70385">处</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4765"
+         x="83.380585"
+         y="85.877464">理</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93888903px;line-height:1.25;font-family:'WenQuanYi Micro Hei Mono';-inkscape-font-specification:'WenQuanYi Micro Hei Mono, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="98.627876"
+       y="64.982437"
+       id="text4688-5-0"
+       transform="rotate(-0.37803995)"><tspan
+         sodipodi:role="line"
+         id="tspan4794"
+         x="98.627876"
+         y="64.982437">多</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4796"
+         x="98.627876"
+         y="71.156052">线</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4798"
+         x="98.627876"
+         y="77.329659">程</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4800"
+         x="98.627876"
+         y="83.503273">处</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4802"
+         x="98.627876"
+         y="89.67688">理</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93888889px;line-height:1.25;font-family:'WenQuanYi Micro Hei Mono';-inkscape-font-specification:'WenQuanYi Micro Hei Mono, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332;"
+       x="140.29301"
+       y="67.867699"
+       id="text4688-5-3"
+       transform="rotate(-0.37803995)"><tspan
+         sodipodi:role="line"
+         id="tspan4824">库</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4826">表</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4828">设</tspan><tspan
+         sodipodi:role="line"
+         id="tspan4830">计</tspan></text>
+  </g>
+</svg>
