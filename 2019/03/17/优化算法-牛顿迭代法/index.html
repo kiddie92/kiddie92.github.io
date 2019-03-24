@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+<meta name="theme-color" content="#f8f5ec">
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+
+  <meta name="description" content="优化算法--牛顿迭代法">
+
+
+
+
+  <meta name="keywords" content="优化算法, 牛顿迭代法, Mun*">
+
+
+
+
+
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Mun*">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.10.2">
+
+
+
+<link rel="canonical" href="https://kiddie92.github.io/2019/03/17/优化算法-牛顿迭代法/">
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css">
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/nprogress/nprogress.min.css">
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.10.2">
+
+
+
+  
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-91728997-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-91728997-1');
+</script>
+
+
+  <script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.1.1/av-min.js"></script>
+  <script id="leancloud">
+    AV.init({
+      appId: "n8MGlOWz83zS9G0m0PGinErj-gzGzoHsz",
+      appKey: "bSOcrmi2W53fTzNXQA3UQ2z3"
+    });
+  </script>
+
+
+
+
+
+<script>
+  window.config = {"leancloud":{"app_id":"n8MGlOWz83zS9G0m0PGinErj-gzGzoHsz","app_key":"bSOcrmi2W53fTzNXQA3UQ2z3"},"toc":true,"fancybox":true,"pjax":true};
+</script>
+
+    <title> 优化算法--牛顿迭代法 - Mun* </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="mobile-header-logo">
+    <a href="/." class="logo">Mun*</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            首页
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            归档
+          
+        </li>
+      </a>
+    
+      <a href="/tags">
+        <li class="mobile-menu-item">
+          
+          
+            标签
+          
+        </li>
+      </a>
+    
+      <a href="/categories">
+        <li class="mobile-menu-item">
+          
+          
+            分类
+          
+        </li>
+      </a>
+    
+      <a href="/links">
+        <li class="mobile-menu-item">
+          
+          
+            链接
+          
+        </li>
+      </a>
+    
+      <a href="/about">
+        <li class="mobile-menu-item">
+          
+          
+            关于
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Mun*</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              首页
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              归档
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/tags">
+            
+            
+              标签
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/categories">
+            
+            
+              分类
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/links">
+            
+            
+              链接
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/about">
+            
+            
+              关于
+            
+          </a>
+        </li>
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          优化算法--牛顿迭代法
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-03-17
+        </span>
+        
+          <span class="post-category">
+            
+              <a href="/categories/算法/">算法</a>
+            
+          </span>
+        
+        
+        <span class="post-visits" data-url="/2019/03/17/优化算法-牛顿迭代法/" data-title="优化算法--牛顿迭代法">
+          阅读次数 0
+        </span>
+        
+      </div>
+    </header>
+
+    
+    
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#方程求根"><span class="toc-text">方程求根</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#牛顿迭代法"><span class="toc-text">牛顿迭代法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#算法优缺点分析"><span class="toc-text">算法优缺点分析</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#优化问题求解"><span class="toc-text">优化问题求解</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#算法步骤"><span class="toc-text">算法步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#示例"><span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#几个改进方法"><span class="toc-text">几个改进方法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-text">Reference</span></a></li></ol>
+    </div>
+  </div>
+
+
+
+    <div class="post-content">
+      
+        <blockquote>
+<p>牛顿法给出了任意方程求根的数值解法，而最优化问题一般会转换为求函数之间在”赋范线性空间”的距离<strong>最小点</strong>，所以，利用牛顿法去求解任意目标函数的<strong>极值点</strong>是个不错的思路。<br><a id="more"></a></p>
+</blockquote>
+<h1 id="方程求根"><a href="#方程求根" class="headerlink" title="方程求根"></a>方程求根</h1><p>对于一元二次方程，求根其实很简单，只要套用求根公式就行了，但找到一个方程的求根公式（<strong>解析解</strong>）其实是很困难的，可以证明5次方程以上便没有解析解了，参考维基百科<a href="https://zh.wikipedia.org/wiki/%E4%BA%94%E6%AC%A1%E6%96%B9%E7%A8%8B" target="_blank" rel="noopener">五次方程</a>。其他的复杂方程如偏微分方程求解更是超级困难。好在随着计算机技术的发展，解析解变的不再那么重要（至少是在工程上），取而代之的方法便是数值解法，<strong>牛顿法</strong>便是众多数值解法中的一个。<br>数值法求解又叫做<a href="https://zh.wikipedia.org/wiki/%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90" target="_blank" rel="noopener">数值分析</a>，主要利用逼近的思想来使数值解通过迭代计算不断接近解析解，而得出来得解就叫做<strong>数值解</strong>，在工程上，数值解只要是在精度要求范围内满足方程便是有用的。</p>
+<h2 id="牛顿迭代法"><a href="#牛顿迭代法" class="headerlink" title="牛顿迭代法"></a>牛顿迭代法</h2><p><img src="./sqrt2.png" alt="Alt text"></p>
+<p>先考虑一个小问题：求解方程$x^2-2=0$的根，也即求解$ \sqrt 2$。牛顿迭代法的思想从几何的角度很好理解，如上图所示（画图的脚本在<a href="https://github.com/kiddie92/Learning_Tech/blob/master/%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95-%E7%89%9B%E9%A1%BF%E8%BF%AD%E4%BB%A3%E6%B3%95/equation_sqrt2.py" target="_blank" rel="noopener">这里</a>）方程的根就是函数$y=x^2-2$与$x$轴的交点处横坐标的值。从图中$x<em>n$点出发，计算函数在$x_n$点处的切线，再计算切线和$x$轴的交点得到$x</em>{n+1}$，再计算函数在$x<em>{n+1}$点处的切线… 一直这样迭代下去，可以发现$x</em>{n}$会越来越接近方程的根。</p>
+<p>上述思路的数学表达：<br>由$x<em>{n}$计算$y</em>{n}$</p>
+<script type="math/tex; mode=display">f(x_n)=y_n</script><p>得到切线方程：</p>
+<script type="math/tex; mode=display">y-y_n= \left.  f(x)' \right | _{x=x_n}(x-x_n)</script><p>切线和$x$轴的交点，也即，当$y=0$时，</p>
+<script type="math/tex; mode=display">0-y_n=\left.  f(x)' \right | _{x=x_n}(x-x_n)</script><script type="math/tex; mode=display">\frac{-y_n}{\left. f'(x) \right | _{x=x_n}} = (x-x_n)</script><p>当$ \left. f’(x) \right | _{x=x_n} \neq 0$时，</p>
+<script type="math/tex; mode=display">x = x_n- \frac{y_n}{\left. f'(x) \right | _{x=x_n}}</script><p>由$ y_n = f(x_n) $，得到：</p>
+<script type="math/tex; mode=display">x = x_n- \frac{f(x_n)}{\left. f'(x) \right | _{x=x_n}}</script><p>令$x=x_n$，继续迭代，则得到迭代公式： </p>
+<script type="math/tex; mode=display">x_{n+1} = x_n- \frac{f(x_n)}{\left. f'(x) \right | _{x=x_n}}</script><p>推导过程还可以从<strong>函数泰勒展开的角度</strong>去理解，这在很多博客里有写，这里就不赘述了。</p>
+<p>根据上面的迭代公式，可以计算方程$x^2-2=0$的根了：</p>
+<ol>
+<li>猜一个初始值，因为根大概是1点多吧，那就给个$x_0=2$好了；</li>
+<li>计算$x_1$：<script type="math/tex; mode=display">x_{1} = x_0- \frac{f(x_0)}{\left. f'(x) \right | _{x=x_0}}= 2- \frac{f(2)}{\left. f'(x) \right | _{x=2}}=1.5</script><script type="math/tex; mode=display">x_{2} = 1.5- \frac{f(1.5)}{\left. f'(x) \right | _{x=1.5}}=1.416667</script><script type="math/tex; mode=display">x_{3} = 1.416667- \frac{f(1.416667)}{\left. f'(x) \right | _{x=1.416667}}=1.414216</script></li>
+</ol>
+<h2 id="算法优缺点分析"><a href="#算法优缺点分析" class="headerlink" title="算法优缺点分析"></a>算法优缺点分析</h2><p>牛顿法的优点当然就是提供了一种方程求根的数值解方法。而缺点也有几点：</p>
+<ol>
+<li>首先算法是要求函数处处可导的，如果对于优化问题还需要导函数连续（因为要求处处存在二阶导数），否则算法就不能计算函数的根了，比如$f(x)=x^{1/3}$就不能收敛，虽然函数的根为0，但是它在0处的导数是不存在的；</li>
+<li>求出的解可能仅仅是众多解中的一个，这个比较<strong>依赖于初始值的选取</strong>，比如上面的问题，初始值为2，则收敛到了方程的正数解，要想得到负数解，则需要将初始值选在负数中，现实中的问题，很难去估计解的大小范围；</li>
+<li>如果初始的估计值与根的距离太远收敛就会变的比较慢； </li>
+<li>要求每次迭代是得到的切线导数不能为0，如推导过程所示；</li>
+<li>如果方程本来就没有根，那牛顿法是不能收敛的； </li>
+</ol>
+<h1 id="优化问题求解"><a href="#优化问题求解" class="headerlink" title="优化问题求解"></a>优化问题求解</h1><p>优化问题从泛函的角度理解起来，就是计算函数之间的距离最小。对于距离的定义有很多，比较常用的是<strong>二范数</strong>，使<strong>二范数</strong>距离最小的求解过程就叫做最小二乘。对于$Gm=data<em>{predict}$这样的线性问题（非线程问题可以通过泰勒展开转换成线性问题），可以定义距离为$\phi (m)=||Gm-data</em>{observation}||_2$，为了求距离最小值点，需要先求极值点，问题便转换为求解$\phi ‘(m)=0$的根，这时候<strong>牛顿法</strong>便派上了用场。与之前问题不同的是，这里需要求$\phi ‘(m)$的导数，也即求解$\phi “(m)$，也即Hessian矩阵。假设，此处的参数$m$是n维向量，则Hessian矩阵为：</p>
+<script type="math/tex; mode=display">
+       H = \begin{pmatrix}
+        \frac{\partial ^2f}{\partial m_1^2} & \frac{\partial ^2f}{\partial m_1 \partial m_2} & \cdots & \frac{\partial ^2f}{\partial m_1 \partial m_n} \\
+        \frac{\partial ^2f}{\partial m_2 \partial m_1} & \frac{\partial ^2f}{\partial m_2^2} & \cdots & \frac{\partial ^2f}{\partial m_2 \partial m_n} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        \frac{\partial ^2f}{\partial m_n \partial m_1} & \frac{\partial ^2f}{\partial m_n \partial m_2} & \cdots & \frac{\partial ^2f}{\partial m_n^2} \\
+        \end{pmatrix}</script><p>所以，牛顿法求解最优化问题，需要先求目标函数的Jacobian矩阵和Hessian矩阵，计算量比较大的便是计算Hessian矩阵了，因为二阶导计算量成指数增长。</p>
+<blockquote>
+<p>注意，这里若二阶导数是连续的，则$H$是对称矩阵。</p>
+</blockquote>
+<h2 id="算法步骤"><a href="#算法步骤" class="headerlink" title="算法步骤"></a>算法步骤</h2><p><strong>步骤1：</strong> 给定误差阈值$0\leq\epsilon &lt;&lt;1$，初始模型$m<em>0$（也可以给定迭代次数）；<br><strong>步骤2：</strong> 计算梯度$g_k=\nabla f(m_k)$，若$g_k\leq \epsilon$，停止计算，输出$m^<em> \approx m_k$;<br><strong>步骤3：</strong> 计算Hessian矩阵$G_k=\nabla^2f(m_k)$，计算$d_k=\frac {g_k}{G_k}$;<br><em>*步骤4：</em></em> 令$x</em>{k+1}=x<em>{k}-d</em>{k}$，k=k+1，转到第2步。</p>
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><p>一个例子：求极小值$ f(m_1,m_2) = 5m_1^2+6m_1m_2+3m_2+4 $</p>
+<h1 id="几个改进方法"><a href="#几个改进方法" class="headerlink" title="几个改进方法"></a>几个改进方法</h1><p>优化算化考虑重点包括算法的通用性、有效性、收敛性、效率，当然，这些都包括在时间复杂度和空间复杂度中。牛顿法存在几个问题需要考虑一下：</p>
+<ol>
+<li>计算Hessian矩阵太耗资源和时间了；</li>
+<li>牛顿法不稳定，只有$H$正定时才收敛，也即要求目标函数的 Hessian 阵 $H_{i,j}$ 在每个迭代点 $m_i$ 处是正定的，否则难以保证牛顿法收敛的方向，实际上，$H$很可能是一个病态/奇异矩阵； </li>
+<li>初始模型$m_0$很重要，选的不好会迭代很多次，收敛比较慢；</li>
+<li>初始模型的选取不在最小值附近，很容易让结果陷入局部极小值。</li>
+</ol>
+<p>对此，大牛们提出了一些改进的方法：</p>
+<ol>
+<li><p>拟牛顿法：为了避免计算Hessian矩阵，不直接计算$H$，而是构造一个矩阵$K$来近似，$K$需要一直<strong>正定</strong>并且<strong>更新起来比较简单</strong>，此处可以查看相关文献，不赘述了；</p>
+</li>
+<li><p>高斯牛顿法：将目标函数$\phi (m)=||Gm-data_{observation}||_2$变换为$\phi (m)=\frac {1}{2}||r(m)||_2$，其中$r(m)$表示残差（residual），则根据chain rule，可以得到：</p>
+<script type="math/tex; mode=display">\nabla^2 \phi (m)=\nabla r(m) \nabla^T r(m)+\sum_{i=1}^nr_i(m)\nabla^2 r_{i}(m)</script><p>这里令$Q(m)=\sum<em>{i=1}^nr_i(m)\nabla^2 r</em>{i}(m)$，若对于将要迭代的值$m^<em>$，有$r_{i}(m^</em>)=0$则$Q(m)=0$；这样的话就不需要计算Hessian矩阵了。这个想法不错，当$m^*$和极值点/最小值的距离比较近时，简直完美；但是，当初始值距离最小值较远时，$Q(m) \approx 0$的思路就不行了，此时，高斯-牛顿法并不收敛。</p>
+</li>
+</ol>
+<blockquote>
+<p>所以高斯-牛顿法也是极度依赖初始模型/初值的选取的</p>
+</blockquote>
+<ol>
+<li>莱文贝格－马夸特方法(Levenberg–Marquardt algorithm)：该方法结合了高斯-牛顿法和最速下降法/梯度法，因为高斯-牛顿法比较依赖初始模型/初值，梯度法可以克服这个问题；而梯度法收敛速度要低于高斯-牛顿法，所以该方法能提供数非线性最小化（局部最小）的数值解。其实做法也很简单，就是在目标函数内加了一个参数$\lambda$，所以该方法也叫做阻尼最小二乘法。类似的做法在Tikhonov正则化中也出现了。</li>
+</ol>
+<blockquote>
+<p>所有这些方法都可能陷入局部极小值，而非找到全局极小值/最小值。要想克服这个问题，就需要启发式/非线性优化算法了。</p>
+</blockquote>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
+<li><a href="https://www.youtube.com/watch?v=_pbD-3aS304" target="_blank" rel="noopener">Calculus- where Newton’s method fail</a></li>
+<li><a href="http://www.ltcconline.net/greenl/courses/105/applications/NEWT.HTM" target="_blank" rel="noopener">Newton’s Method</a></li>
+<li>马昌凤, 《最优化方法及其 Matlab 程序设计》</li>
+</ol>
+
+      
+    </div>
+
+    
+      
+      
+
+  <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="https://kiddie92.github.io">Mun*</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="https://kiddie92.github.io/2019/03/17/优化算法-牛顿迭代法/">https://kiddie92.github.io/2019/03/17/优化算法-牛顿迭代法/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span>
+      
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用4.0国际许可协议</a>
+    </p>
+  </div>
+
+
+
+      
+      
+  <div class="post-reward">
+    <input type="checkbox" name="reward" id="reward" hidden>
+    <label class="reward-button" for="reward">赞赏支持</label>
+    <div class="qr-code">
+      
+      
+        <label class="qr-code-image" for="reward">
+          <img class="image" src="/images/reward/wechat.png" title="微信打赏">
+        </label>
+      
+      
+        <label class="qr-code-image" for="reward">
+          <img class="image" src="/images/reward/alipay.png" title="支付宝打赏">
+        </label>
+      
+    </div>
+  </div>
+
+    
+
+    
+      <footer class="post-footer">
+        
+          <div class="post-tags">
+            
+              <a href="/tags/优化算法/">优化算法</a>
+            
+              <a href="/tags/牛顿迭代法/">牛顿迭代法</a>
+            
+          </div>
+        
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2019/03/18/支持向量机（SVM）/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">支持向量机（SVM）</span>
+        <span class="prev-text nav-mobile">上一篇</span>
+      </a>
+    
+    
+      <a class="next" href="/2019/03/11/数据分析之Python爬虫实验/">
+        <span class="next-text nav-default">数据采集之Python爬虫实验</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+
+      </footer>
+    
+
+  </article>
+
+
+          </div>
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:kiddiezzh@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+        
+          <a href="https://twitter.com/kiddiezzh" class="iconfont icon-twitter" title="twitter"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/kiddie92" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+    
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2018 - 
+    
+    2019
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Mun*</span>
+  </span>
+</div>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+  
+  <script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'https://kiddie92.github.io/2019/03/17/优化算法-牛顿迭代法/';
+        this.page.identifier = '2019/03/17/优化算法-牛顿迭代法/';
+        this.page.title = '优化算法--牛顿迭代法';
+    };
+    (function() {
+    var d = document, s = d.createElement('script');
+
+    s.src = '//https-kiddie92-github-io.disqus.com/embed.js';
+
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();  
+  </script>
+
+  
+
+  
+
+
+
+    
+  
+
+
+
+  
+  
+
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/pjax/jquery.pjax.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/nprogress/nprogress.min.js"></script>
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.10.2"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+  </body>
+</html>
