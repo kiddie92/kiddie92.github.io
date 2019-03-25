@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://kiddie92.github.io/"/>
-  <updated>2019-03-24T15:37:57.181Z</updated>
+  <updated>2019-03-18T15:11:43.084Z</updated>
   <id>https://kiddie92.github.io/</id>
   
   <author>
@@ -15,20 +15,6 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>云计算前瞻</title>
-    <link href="https://kiddie92.github.io/2019/03/24/%E4%BA%91%E8%AE%A1%E7%AE%97%E5%89%8D%E7%9E%BB/"/>
-    <id>https://kiddie92.github.io/2019/03/24/云计算前瞻/</id>
-    <published>2019-03-24T15:37:57.000Z</published>
-    <updated>2019-03-24T15:37:57.181Z</updated>
-    
-    <summary type="html">
-    
-    </summary>
-    
-    
-  </entry>
   
   <entry>
     <title>支持向量机（SVM）</title>
