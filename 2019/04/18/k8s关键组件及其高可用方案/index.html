@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+<meta name="theme-color" content="#f8f5ec">
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+
+  <meta name="description" content="k8s关键组件及其高可用方案">
+
+
+
+
+  <meta name="keywords" content="kubernetes, 高可用, 云计算架构, Mun*">
+
+
+
+
+
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Mun*">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.10.2">
+
+
+
+<link rel="canonical" href="https://kiddie92.github.io/2019/04/18/k8s关键组件及其高可用方案/">
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css">
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/nprogress/nprogress.min.css">
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.10.2">
+
+
+
+  
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-91728997-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-91728997-1');
+</script>
+
+
+  <script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.1.1/av-min.js"></script>
+  <script id="leancloud">
+    AV.init({
+      appId: "n8MGlOWz83zS9G0m0PGinErj-gzGzoHsz",
+      appKey: "bSOcrmi2W53fTzNXQA3UQ2z3"
+    });
+  </script>
+
+
+
+
+
+<script>
+  window.config = {"leancloud":{"app_id":"n8MGlOWz83zS9G0m0PGinErj-gzGzoHsz","app_key":"bSOcrmi2W53fTzNXQA3UQ2z3"},"toc":true,"fancybox":true,"pjax":true};
+</script>
+
+    <title> k8s关键组件及其高可用方案 - Mun* </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="mobile-header-logo">
+    <a href="/." class="logo">Mun*</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            首页
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            归档
+          
+        </li>
+      </a>
+    
+      <a href="/tags">
+        <li class="mobile-menu-item">
+          
+          
+            标签
+          
+        </li>
+      </a>
+    
+      <a href="/categories">
+        <li class="mobile-menu-item">
+          
+          
+            分类
+          
+        </li>
+      </a>
+    
+      <a href="/links">
+        <li class="mobile-menu-item">
+          
+          
+            链接
+          
+        </li>
+      </a>
+    
+      <a href="/about">
+        <li class="mobile-menu-item">
+          
+          
+            关于
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Mun*</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              首页
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              归档
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/tags">
+            
+            
+              标签
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/categories">
+            
+            
+              分类
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/links">
+            
+            
+              链接
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/about">
+            
+            
+              关于
+            
+          </a>
+        </li>
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          k8s关键组件及其高可用方案
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-04-18
+        </span>
+        
+          <span class="post-category">
+            
+              <a href="/categories/容器云/">容器云</a>
+            
+              <a href="/categories/容器云/云计算/">云计算</a>
+            
+              <a href="/categories/容器云/云计算/kubernetes/">kubernetes</a>
+            
+              <a href="/categories/容器云/云计算/kubernetes/架构/">架构</a>
+            
+          </span>
+        
+        
+        <span class="post-visits" data-url="/2019/04/18/k8s关键组件及其高可用方案/" data-title="k8s关键组件及其高可用方案">
+          阅读次数 0
+        </span>
+        
+      </div>
+    </header>
+
+    
+    
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#如何搭建高可用k8s集群"><span class="toc-text">如何搭建高可用k8s集群</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#何谓高可用"><span class="toc-text">何谓高可用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#k8s关键组件及其高可用方案"><span class="toc-text">k8s关键组件及其高可用方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#管理平面"><span class="toc-text">管理平面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#执行平面"><span class="toc-text">执行平面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据平面"><span class="toc-text">数据平面</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考资料"><span class="toc-text">参考资料</span></a></li></ol></li></ol>
+    </div>
+  </div>
+
+
+
+    <div class="post-content">
+      
+        <blockquote>
+<p>如今，业务上云已经不是什么新鲜事物了，容器云也已在大大小小的公司实现落地，而kubernetes（k8s）也已登上容器编排调度的霸主地位…<br><a id="more"></a></p>
+</blockquote>
+<h1 id="如何搭建高可用k8s集群"><a href="#如何搭建高可用k8s集群" class="headerlink" title="如何搭建高可用k8s集群"></a>如何搭建高可用k8s集群</h1><p>如今，业务上云已经不是什么新鲜事物了，容器云也已在大大小小的公司实现落地，而kubernetes（k8s）也已登上容器编排调度的霸主地位。越来越多的企业开始部署k8s集群，无论是业务应用还是中间件服务，甚至分布式计算任务，k8s集群都能轻松驾驭，然而，企业场景下稳定并且高可用的k8s集群部署也并非毫无挑战，这篇文章就根据笔者参与的企业级容器云建设项目，分享几点高可用k8s集群搭建的经验。</p>
+<h2 id="何谓高可用"><a href="#何谓高可用" class="headerlink" title="何谓高可用"></a>何谓高可用</h2><p>高可用对于底层的IT基础设施来说是基本要求，这意味着云基础设施三个方面的需求：</p>
+<ul>
+<li><strong>容错：</strong>即使出了一些错误（无论是天灾还是人祸），底层系统依旧工作</li>
+<li><strong>服务可用：</strong>跑在云上的服务必须一直是可用的状态</li>
+<li><strong>数据安全：</strong>云上的数据确保健全、可用</li>
+</ul>
+<p>那么在设计上，我们就得要求<strong>“no single point of failure”</strong>：路由、防火墙、负载均衡、反向代理以及监控系统等在网络和应用层面上必须全部是冗余设计，以此来保证最佳的可用性。 下面，浅谈一下k8s高可用集群是如何组建的。</p>
+<h2 id="k8s关键组件及其高可用方案"><a href="#k8s关键组件及其高可用方案" class="headerlink" title="k8s关键组件及其高可用方案"></a>k8s关键组件及其高可用方案</h2><p>首先，看一下架构设计（参考资料2），图中已经将<strong>高可用k8s集群</strong>各个组件的功能以及通讯调用关系清晰的展示出来了，下面我将分别从<strong>管理平面</strong>、<strong>执行平面</strong>和<strong>数据平面</strong>三个部分来简单说明一下该高可用架构方案以及各个组件的功能。<br><img src="https://upload-images.jianshu.io/upload_images/13272578-73c9c74a3e5f8573.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></p>
+<h3 id="管理平面"><a href="#管理平面" class="headerlink" title="管理平面"></a>管理平面</h3><ol>
+<li><p><strong>apiserver:</strong> <code>apiserver</code>是k8s集群的入口，为了使用方便，<code>kubectl</code>作为其客户端供用户使用。为了实现高可用，在3个机器上分别以静态Pod的方式部署了<code>apiserver</code>并挂载在同一个loadbalancer上，如此，其与其他组件的联系都经由这个负载均衡器来做转发（图中黑色连线），这样也保证了每一个用户命令都有且仅有一个<code>apiserver</code>来响应，并且理论上只要还有一个Pod是可用的，该组件的服务就没有问题，再加上k8s的Pod有自愈能力，<code>apiserver</code>高可用可以说是能够保证的。</p>
+<blockquote>
+<p>这里多说两句，k8s的API至关重要，而一些针对k8s做的二次开发其实也主要是围绕着k8s<strong>声明式API</strong>做一些CRUD，而面向API编程也是你从k8s用户向玩家进阶的必经之路。</p>
+</blockquote>
+</li>
+<li><p><strong>controller managers:</strong> k8s自愈能力的关键所在，<code>controller managers</code>提供一种reconciliation的功能，简单来说就是该组件会无限循环地去通过<code>apiserver</code>来查看api资源的状态，并将其实际状态转变为api资源声明中的状态。比如，一个deployment设置了replicas为3，而由于某些原因集群中运行了5个这样的Pod时，<code>controller managers</code>就会触发工作并且调用api来删除2个Pod。同样，在k8s的master节点上，每个节点以静态Pod部署一个组件以达到高可用的目的。</p>
+</li>
+<li><p><strong>scheduler:</strong> 该组件负责集群内部Pod的调度，主要根据集群node资源情况来平衡每个node的任务量，此外，还支持用户对Pod调度的自定义限制规则，比如NodeSelector、affinity规则等。该组件的高可用部署方案也是在每一个master节点上部署一个静态Pod。</p>
+</li>
+</ol>
+<blockquote>
+<p>组件<code>controller managers</code>和<code>scheduler</code>的选主是通过<code>etcd</code>来实现的：当一个副本不能工作时，其余副本会更新endpoint至etcd，而etcd只会接受其中一个更新请求，从而实现leader election。至于为什么需要选主，这里就留作一道思考题好了。</p>
+</blockquote>
+<h3 id="执行平面"><a href="#执行平面" class="headerlink" title="执行平面"></a>执行平面</h3><p>执行平面针对的就是node/slave节点，这里实际上就没有高可用一说了，即便如此，还是简单介绍一下图中出现的几个组件吧。</p>
+<ol>
+<li><strong>container runtime:</strong> 每个节点都需要一个容器运行时来执行容器，比如Docker。非pod启动。</li>
+<li><strong>kubelet:</strong> 用于执行apiserver下达的命令，也可以重启启动失败的pod。</li>
+<li><strong>kube-proxy:</strong> 通过修改<code>iptables</code>来达到网络代理、负载均衡的效果，在k8s中以<code>Service</code>作为代表。比如在使用NodePort进行对外提供服务时，所有node/slave节点都会生成特定的<code>iptables</code>，当该服务被删除或者节点断网时，<code>iptables</code>也会被清除。</li>
+</ol>
+<h3 id="数据平面"><a href="#数据平面" class="headerlink" title="数据平面"></a>数据平面</h3><p><strong>etcd</strong></p>
+<ul>
+<li>对于高可用集群来说，集群的数据至关重要，Kubernetes将<code>etcd</code>作为数据存储中心，其存储了所有集群相关的信息，比如：pod、node、cm… 鉴于底层系统的<strong>高可靠性</strong>，数据决不能丢。</li>
+<li>如图所示，<code>etcd</code>在每个master节点上部署了一个实例，以保证其高可用性，实践证明，etcd挂载本地ssd的方式会大幅提高<strong>超大规模</strong>（节点大于2000）集群性能（参考资料6）。</li>
+<li><code>etcd</code>官方给的部署模式是奇数个（大于等于3）就好了，推荐部署5个节点，这就不得不提<code>etcd</code>的选主协议/逻辑/算法<strong>Raft</strong>，这里有个非常生动的<a href="http://thesecretlivesofdata.com/raft/" target="_blank" rel="noopener">动画</a>值得一看。此外，还需要注意的是所谓<strong>“脑裂”</strong>问题，这里的“脑裂”是指<code>etcd</code>集群出现两个甚至多个leader，如果你也是这样理解脑裂的，那就大可放心使用，因为<a href="https://coreos.com/etcd/docs/latest/op-guide/failures.html" target="_blank" rel="noopener">there is no “split-brain” in etcd</a>。</li>
+<li>默认的etcd参数不太适合disk io比较低的场景，由其是在测试环境，所以可以调优一下：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ETCD_ELECTION_TIMEOUT=5000 <span class="comment">#default 1000ms</span></span><br><span class="line">ETCD_HEARTBEAT_INTERVAL=250 <span class="comment">#default 100ms</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>部署高可用k8s集群对于企业级云平台来说是一个根本性的原则；</li>
+<li><strong>容错</strong>、<strong>服务可用</strong>和<strong>数据安全</strong>是高可用基础设施的关键；</li>
+<li>文中简单介绍了部分k8s组件，实际上还有一些必须组件，如：网络插件、DNS插件等</li>
+<li>对于Business来说，高可用并不仅仅是一个集群就可以做到的，更复杂的还有如<strong>多网络域部署</strong>甚至<strong>异地多数据中心部署</strong>。</li>
+</ol>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><a href="https://www.criticalcase.com/blog/5-reasons-why-you-need-high-availability-for-your-business.html" target="_blank" rel="noopener">https://www.criticalcase.com/blog/5-reasons-why-you-need-high-availability-for-your-business.html</a></li>
+<li><a href="https://elastisys.com/2018/01/25/setting-highly-available-kubernetes-clusters/" target="_blank" rel="noopener">https://elastisys.com/2018/01/25/setting-highly-available-kubernetes-clusters/</a></li>
+<li><a href="https://coreos.com/etcd/docs/latest/op-guide/failures.html" target="_blank" rel="noopener">https://coreos.com/etcd/docs/latest/op-guide/failures.html</a></li>
+<li><a href="https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/" target="_blank" rel="noopener">https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/</a></li>
+<li><a href="http://thesecretlivesofdata.com/raft/" target="_blank" rel="noopener">http://thesecretlivesofdata.com/raft/</a></li>
+<li><a href="https://openai.com/blog/scaling-kubernetes-to-2500-nodes/" target="_blank" rel="noopener">https://openai.com/blog/scaling-kubernetes-to-2500-nodes/</a></li>
+</ol>
+
+      
+    </div>
+
+    
+      
+      
+
+  <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="https://kiddie92.github.io">Mun*</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="https://kiddie92.github.io/2019/04/18/k8s关键组件及其高可用方案/">https://kiddie92.github.io/2019/04/18/k8s关键组件及其高可用方案/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span>
+      
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用4.0国际许可协议</a>
+    </p>
+  </div>
+
+
+
+      
+      
+  <div class="post-reward">
+    <input type="checkbox" name="reward" id="reward" hidden>
+    <label class="reward-button" for="reward">赞赏支持</label>
+    <div class="qr-code">
+      
+      
+        <label class="qr-code-image" for="reward">
+          <img class="image" src="/images/reward/wechat.png" title="微信打赏">
+        </label>
+      
+      
+        <label class="qr-code-image" for="reward">
+          <img class="image" src="/images/reward/alipay.png" title="支付宝打赏">
+        </label>
+      
+    </div>
+  </div>
+
+    
+
+    
+      <footer class="post-footer">
+        
+          <div class="post-tags">
+            
+              <a href="/tags/kubernetes/">kubernetes</a>
+            
+              <a href="/tags/高可用/">高可用</a>
+            
+              <a href="/tags/云计算架构/">云计算架构</a>
+            
+          </div>
+        
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2019/04/25/kubernetes网络和CNI简介/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">kubernetes网络和CNI简介</span>
+        <span class="prev-text nav-mobile">上一篇</span>
+      </a>
+    
+    
+      <a class="next" href="/2019/03/25/CNN网络参数的计算/">
+        <span class="next-text nav-default">CNN网络参数的计算</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+
+      </footer>
+    
+
+  </article>
+
+
+          </div>
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:kiddiezzh@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+        
+          <a href="https://twitter.com/kiddiezzh" class="iconfont icon-twitter" title="twitter"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/kiddie92" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+    
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2018 - 
+    
+    2019
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Mun*</span>
+  </span>
+</div>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+  
+  <script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'https://kiddie92.github.io/2019/04/18/k8s关键组件及其高可用方案/';
+        this.page.identifier = '2019/04/18/k8s关键组件及其高可用方案/';
+        this.page.title = 'k8s关键组件及其高可用方案';
+    };
+    (function() {
+    var d = document, s = d.createElement('script');
+
+    s.src = '//https-kiddie92-github-io.disqus.com/embed.js';
+
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();  
+  </script>
+
+  
+
+  
+
+
+
+    
+  
+
+
+
+  
+  
+
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/pjax/jquery.pjax.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/nprogress/nprogress.min.js"></script>
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.10.2"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+  </body>
+</html>
