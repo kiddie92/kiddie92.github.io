@@ -312,7 +312,7 @@
 <h2 id="线性可分支持向量机"><a href="#线性可分支持向量机" class="headerlink" title="线性可分支持向量机"></a>线性可分支持向量机</h2><p>现在有两类数据（这里假设是二维数据点），分布在二维平面上，如图1所示，以符号<code>+</code>代表一类数据，<code>-</code>代表另外一类数据。我们要做的事情就是画一条线将这两类数据分开来，而画线的原则是使距离这条线（图中虚线所示）<strong>最近的任意数据点</strong>到虚线的<strong>距离最大</strong>，或者说要让图中黑色实线间的<strong>宽度最大</strong>。需要说明的是，目前这里只考虑<strong>线性可分</strong>的情况。</p>
 <p><img src="./p2.png" width="40%" height="40%"></p>
 <p>我们使用以下公式来判断数据点是否落在<code>+</code>分类中，该式也被称为<code>Decision Rule</code></p>
-<script type="math/tex; mode=display">\vec{w} \cdot \vec{u} + b \ge 0,  \text {THEN +} \tag{1}</script><p>式中$\vec{w}$表示垂直于分隔线（图中虚线）的<strong>向量</strong>，$\vec{u}$表示任意数据点的向量表示(unknown)，$b$表示一个与分割线相关的变量，所以，我们只要确定了$\vec w$和$b$就可以据此确定任意一个数据点属于哪个分类了。</p>
+<script type="math/tex; mode=display">\vec{w} \cdot \vec{u} + b \ge 0,  \text {THEN +} \tag{1}</script><p>式中<script type="math/tex">\vec{w}</script>表示垂直于分隔线（图中虚线）的<strong>向量</strong>，<script type="math/tex">\vec{u}</script>表示任意数据点的向量表示(unknown)，<script type="math/tex">b</script>表示一个与分割线相关的变量，所以，我们只要确定了<script type="math/tex">\vec w</script>和<script type="math/tex">b</script>就可以据此确定任意一个数据点属于哪个分类了。</p>
 <blockquote>
 <p>这里可以回顾一下解析几何中<strong>点到直线的距离</strong>公式以及推导过程，方便理解公式。</p>
 </blockquote>
@@ -321,46 +321,46 @@
 <p>引入变量：</p>
 <script type="math/tex; mode=display">\begin{cases} y_i=+1, & \text for \space x_+ \\ y_i=-1, & \text for \space x_- \end{cases} \tag{3}</script><p>这标记数据其实挺有道理的，另外，数学表达上也更为便利，</p>
 <script type="math/tex; mode=display">\begin{cases} y_i(\vec{w} \cdot \vec{x_+} + b) \ge 1 \\ y_i(\vec{w} \cdot \vec{x_-} + b) \ge 1 \end{cases} \tag{4}</script><p>哎呀～，<code>+</code>数据和<code>-</code>数据表达式上统一了，这就是<strong>mathematica convenient</strong>了：<br>这里需要说明一下，当数据点恰好落在gutter上（图1中的实黑线）时，有：<script type="math/tex">y_i(\vec{w} \cdot \vec{x_i} + b) = 1 , \space for \space x_i \space in \space the \space gutter \tag{5}</script></p>
-<p>下面，我们想要让两条黑色实线之间的<strong>宽度</strong>（width of street）越大越好（seperate the samples as wide as possible.）如图1所示，计算<strong>宽度</strong>：距离分割线<strong>最近</strong>的<code>+</code>点用向量$\vec x<em>+$来表示，距离分割线<strong>最近</strong>的<code>-</code>点用向量$\vec x</em>-$来表示，那么<strong>宽度</strong>的计算就可以用向量$\lbrace \vec x<em>+-\vec x</em>- \rbrace$在向量$\vec w$上的投影来表示了，注意$\vec w$是<strong>垂直于分割线的向量</strong>，所以：</p>
-<script type="math/tex; mode=display">WIDTH = (\vec x_+ - \vec x_-) \cdot \frac {\vec w}{||w||}  \tag{6}</script><p>其中，由公式(5)得到$ \vec x<em>+ \cdot \vec w = 1-b$ 而 $- \vec x</em>- \cdot \vec w = b+1$，所以：</p>
+<p>下面，我们想要让两条黑色实线之间的<strong>宽度</strong>（width of street）越大越好（seperate the samples as wide as possible.）如图1所示，计算<strong>宽度</strong>：距离分割线<strong>最近</strong>的<code>+</code>点用向量<script type="math/tex">\vec x_+</script>来表示，距离分割线<strong>最近</strong>的<code>-</code>点用向量<script type="math/tex">\vec x_-</script>来表示，那么<strong>宽度</strong>的计算就可以用向量<script type="math/tex">\lbrace \vec x_+-\vec x_- \rbrace</script>在向量<script type="math/tex">\vec w</script>上的投影来表示了，注意<script type="math/tex">\vec w</script>是<strong>垂直于分割线的向量</strong>，所以：</p>
+<script type="math/tex; mode=display">WIDTH = (\vec x_+ - \vec x_-) \cdot \frac {\vec w}{||w||}  \tag{6}</script><p>其中，由公式(5)得到<script type="math/tex">\vec x_+ \cdot \vec w = 1-b</script> 而 <script type="math/tex">- \vec x_- \cdot \vec w = b+1</script>，所以：</p>
 <script type="math/tex; mode=display">WIDTH = \frac {2}{||w||}  \tag{7}</script><p>得到了宽度的表达式后，要做的事情就变成了使<strong>宽度最大化</strong>：</p>
 <script type="math/tex; mode=display">max {\frac {2}{||w||}} \to min \space ||w|| \to min \space \frac{1}{2}||w||_2^2  \tag{8}</script><p>此时问题已经转化为：</p>
 <script type="math/tex; mode=display">\begin{cases} min \space \frac{1}{2}||w||_2^2 \\ y_i(\vec{w} \cdot \vec{x_i} + b) = 1, & \text for \space for \space x_i \space in \space the \space gutter \\  y_i(\vec{w} \cdot \vec{x_i} + b) > 1, & \text for \space other \space x_i  \end{cases} \tag{9}</script><p>上述问题的优化可以使用<strong>拉格朗日乘数法</strong>，定义L:</p>
 <script type="math/tex; mode=display">L(\vec w,\vec b,\vec \alpha)=\frac{1}{2}||w||_2^2-\sum_{i=1}^m\alpha_i [y_i(\vec{w} \cdot \vec{x_i} + b) - 1] \tag{10}</script><blockquote>
-<p>有些材料里面还会引入$\beta$项，似乎看起来没有必要。此外，为啥约束条件是被减去而不是加上呢，可以思考一下</p>
+<p>有些材料里面还会引入<script type="math/tex">\beta</script>项，似乎看起来没有必要。此外，为啥约束条件是被减去而不是加上呢，可以思考一下</p>
 </blockquote>
 <p>令：</p>
-<script type="math/tex; mode=display">\frac {\partial L}{\partial w} = \vec w - \sum_i \alpha_iy_i\vec x_i =0 \implies  \vec w = \sum_i \alpha_iy_i\vec x_i \\ \frac {\partial L}{\partial b} = -\sum_i\alpha_iy_i=0 \implies \sum_i\alpha_iy_i=0 \tag{11}</script><p>这式(11)说明两点信息：1. $\vec w$只和个别数据相关，因为$\alpha_i$可能为0；2. $\alpha_i$之间是有约束的，加权和为0。</p>
+<script type="math/tex; mode=display">\frac {\partial L}{\partial w} = \vec w - \sum_i \alpha_iy_i\vec x_i =0 \implies  \vec w = \sum_i \alpha_iy_i\vec x_i \\ \frac {\partial L}{\partial b} = -\sum_i\alpha_iy_i=0 \implies \sum_i\alpha_iy_i=0 \tag{11}</script><p>这式(11)说明两点信息：1. <script type="math/tex">\vec w</script>只和个别数据相关，因为<script type="math/tex">\alpha_i</script>可能为0；2. <script type="math/tex">\alpha_i</script>之间是有约束的，加权和为0。</p>
 <p>将式(11)代回式(10)，得到拉格朗日对偶问题：</p>
-<script type="math/tex; mode=display">L(\vec \alpha)=\frac{1}{2}(\sum_i \alpha_iy_i\vec x_i)(\sum_j\alpha_jy_j\vec x_j)-\sum_i \alpha_iy_i\vec x_i\cdot(\sum_i \alpha_jy_j\vec x_j)-\sum_i \alpha_iy_ib + \sum_i \alpha_i  \tag{12}</script><p>下标$i,j$仅仅是为了区分，式(12)化简之后得到：</p>
+<script type="math/tex; mode=display">L(\vec \alpha)=\frac{1}{2}(\sum_i \alpha_iy_i\vec x_i)(\sum_j\alpha_jy_j\vec x_j)-\sum_i \alpha_iy_i\vec x_i\cdot(\sum_i \alpha_jy_j\vec x_j)-\sum_i \alpha_iy_ib + \sum_i \alpha_i  \tag{12}</script><p>下标<script type="math/tex">i,j</script>仅仅是为了区分，式(12)化简之后得到：</p>
 <script type="math/tex; mode=display">L(\vec \alpha)=\sum_i \alpha_i- \frac{1}{2}\sum_i\sum_j\alpha_i\alpha_jy_iy_j \vec x_i \vec x_j \tag{13}</script><p>数学家告诉我们，SVM里拉格朗日对偶是满足<strong>强对偶</strong>条件的，现在的问题已经转化为求<script type="math/tex">max \space L(\vec \alpha)</script>，并且该问题的解（注意需要满足约束条件）便是<strong>原始问题</strong>的解。在SVM算法中，式(13)的解法主要为<code>SMO算法</code>，由微软研究员提出。</p>
 <p>推导至此，我们应当了解到：</p>
 <ol>
-<li>所谓<code>支持向量</code>就是这些对分割线（高维空间里是个超平面）产生影响的数据向量，这些数据点其实就是位于“黑色实线”上的点，或者叫做距离分割线的<strong>最近点</strong>，其他点的$\alpha_i=0$，对$\vec w$的确定没有贡献；</li>
+<li>所谓<code>支持向量</code>就是这些对分割线（高维空间里是个超平面）产生影响的数据向量，这些数据点其实就是位于“黑色实线”上的点，或者叫做距离分割线的<strong>最近点</strong>，其他点的<script type="math/tex">\alpha_i=0</script>，对<script type="math/tex">\vec w</script>的确定没有贡献；</li>
 <li>强对偶下，对偶问题的解就是原始问题的解，并且对偶问题始终是一个<strong>Concave优化问题</strong>，所以SVM的解一定是全局唯一解，<strong>不会陷入局部最小值</strong>；</li>
-<li><code>Decision Rule</code>变为：$\sum_i \alpha_iy_i\vec x_i \cdot \vec u +b \ge 0, \text {THEN +}$</li>
+<li><code>Decision Rule</code>变为：<script type="math/tex">\sum_i \alpha_iy_i\vec x_i \cdot \vec u +b \ge 0, \text {THEN +}</script></li>
 </ol>
 <h2 id="目标函数和Hinge-Loss"><a href="#目标函数和Hinge-Loss" class="headerlink" title="目标函数和Hinge Loss"></a>目标函数和Hinge Loss</h2><p>上一部分介绍的是<strong>线性可分</strong>的支持向量机的推导，如果按照机器学习的“套路”，很难说清楚目标函数、优化算法这类概念。实际上，既然是二分类问题，那目标函数按理说应该是<strong>分类</strong>的准确性，优化的目标便是提升准确性。所以接下来稍微重构一下刚刚的问题，并简单介绍一下<strong>线性不可分（含有噪声信号）</strong>的情况如何使用SVM来做分类。</p>
 <p>原问题：最小距离取最大</p>
 <script type="math/tex; mode=display">\underset{\vec w,b}{\operatorname{arg max}} { \left \lbrace \frac {1}{||w||} \underset{i}{min}[y_i \cdot (w^T \cdot \vec x_i+b)] \right \rbrace} \tag{14}</script><p>现在：分类准确是前提，定义Hinge Loss，“最小距离取最大”反而变成了一个约束项：</p>
-<script type="math/tex; mode=display">min \space L(f)=\sum_il(f(\vec x_i),y_i)+C||w||_2^2 , C 是常系数 \\ l(f(\vec x_i),y_i)=max(0,1-y_if(\vec x_i))  \\ f(\vec x_i)=\sum_iw\vec x_i+b=\begin{bmatrix} w \\ b \\ \end{bmatrix} \cdot \begin {bmatrix} x_i \\ 1 \\ \end{bmatrix}=W^TX \tag{15}</script><p>上式中，$l$便是目标函数/损失函数的关键，如果分类正确l应该为0，如果分类错误$l$将会变得很大（如下图蓝色实线所示），优化的方向便是使式(15)取最小值。如下图所示，蓝色实线表示Hinge Loss，绿色实线是理想情况下的loss，可以看到Hinge Loss在分类错误的情况下值会变的很大，而在分类正确的情况下还有部分缓冲（横轴在0.0-1.0之间的部分），这就有个好处了—Hinge Loss允许<strong>小部分的错误/非严格分类</strong>，一些资料里将这一特征称为<strong>惩罚部分</strong>，这也使得SVM拥有了天然的<strong>抗过拟合</strong>能力。</p>
+<script type="math/tex; mode=display">min \space L(f)=\sum_il(f(\vec x_i),y_i)+C||w||_2^2 , C 是常系数 \\ l(f(\vec x_i),y_i)=max(0,1-y_if(\vec x_i))  \\ f(\vec x_i)=\sum_iw\vec x_i+b=\begin{bmatrix} w \\ b \\ \end{bmatrix} \cdot \begin {bmatrix} x_i \\ 1 \\ \end{bmatrix}=W^TX \tag{15}</script><p>上式中，<script type="math/tex">l</script>便是目标函数/损失函数的关键，如果分类正确l应该为0，如果分类错误<script type="math/tex">l</script>将会变得很大（如下图蓝色实线所示），优化的方向便是使式(15)取最小值。如下图所示，蓝色实线表示Hinge Loss，绿色实线是理想情况下的loss，可以看到Hinge Loss在分类错误的情况下值会变的很大，而在分类正确的情况下还有部分缓冲（横轴在0.0-1.0之间的部分），这就有个好处了—Hinge Loss允许<strong>小部分的错误/非严格分类</strong>，一些资料里将这一特征称为<strong>惩罚部分</strong>，这也使得SVM拥有了天然的<strong>抗过拟合</strong>能力。</p>
 <p><img src="./hingeloss.png" width="50%" height="50%"></p>
 <p>接下来引入<strong>松弛因子(slack variable)</strong>的概念来换一种表达方式:</p>
-<script type="math/tex; mode=display">\xi_i= max(0,1-y_if(\vec x_i)) \tag{16}</script><script type="math/tex; mode=display">\begin{cases} \xi_i \ge 0 \\ \xi_i \ge 1-y_if(\vec x_i) \implies y_if(\vec x_i) \ge 1-\xi_i \end{cases} \tag{17}</script><p><strong>当要求的是$\xi_i$的最小值</strong>时式(16)和(17)是等价的，loss function又可以写成下式，式(17)则是约束条件：</p>
+<script type="math/tex; mode=display">\xi_i= max(0,1-y_if(\vec x_i)) \tag{16}</script><script type="math/tex; mode=display">\begin{cases} \xi_i \ge 0 \\ \xi_i \ge 1-y_if(\vec x_i) \implies y_if(\vec x_i) \ge 1-\xi_i \end{cases} \tag{17}</script><p><strong>当要求的是<script type="math/tex">\xi_i</script>的最小值</strong>时式(16)和(17)是等价的，loss function又可以写成下式，式(17)则是约束条件：</p>
 <script type="math/tex; mode=display">min \space L(f)=\sum_i \xi_i+C||w||_2^2 \tag{18}</script><h2 id="核函数技巧"><a href="#核函数技巧" class="headerlink" title="核函数技巧"></a>核函数技巧</h2><blockquote>
 <p>Dr. 李宏毅说SVM其实就是<code>Hinge Loss</code>+<code>Kernel Trick</code>，我认为Kernel Trick才是使SVM真正被广泛使用的关键所在。</p>
 </blockquote>
-<h3 id="拉格朗日对偶和核函数技巧的关系"><a href="#拉格朗日对偶和核函数技巧的关系" class="headerlink" title="拉格朗日对偶和核函数技巧的关系"></a>拉格朗日对偶和核函数技巧的关系</h3><p>原问题转换为拉格朗日对偶问题还有一个非常强大的好处，由式(13)可知分割平面仅仅和$x_i \cdot x_j$相关，那么，将$x_i$ 和 $x_j$做相同的feature mapping是不会影响分类结果的，于是式(13)可以写成如下形式：</p>
+<h3 id="拉格朗日对偶和核函数技巧的关系"><a href="#拉格朗日对偶和核函数技巧的关系" class="headerlink" title="拉格朗日对偶和核函数技巧的关系"></a>拉格朗日对偶和核函数技巧的关系</h3><p>原问题转换为拉格朗日对偶问题还有一个非常强大的好处，由式(13)可知分割平面仅仅和<script type="math/tex">x_i \cdot x_j</script>相关，那么，将<script type="math/tex">x_i</script> 和 <script type="math/tex">x_j</script>做相同的feature mapping是不会影响分类结果的，于是式(13)可以写成如下形式：</p>
 <script type="math/tex; mode=display">L(\vec \alpha)=\sum_i \alpha_i- \frac{1}{2}\sum_i\sum_j\alpha_i\alpha_jy_iy_j \Phi(\vec x_i) \cdot \Phi(\vec x_j) \tag{19}</script><p>两个向量的点乘是可以在某种程度上衡量两个<strong>向量的相似度</strong>的，这里数学家告诉我们只要满足Mercer’s Theory，就可以设计出一个<strong>核函数</strong>，对于非唯一的feature mapping函数，都有下面的式子成立：</p>
-<script type="math/tex; mode=display">K(<x_i,x_j>)=\Phi (x_i) \cdot \Phi(x_j)</script><p>也即，我们不必要知道具体的函数$\Phi(x)$，只要将$x_i$和$x_j$代入核函数就行了，而这样计算明显比先做mapping再做inner product要快很多（虽然结果是等价的），这便是<code>Kernel Trick</code>。这样做的好处是可以对数据点进行升维，在低维空间中不可分的数据点，在高维空间则是可分的（反正总有办法让数据可分），坏处自然就是模型容易过拟合了。</p>
+<script type="math/tex; mode=display">K(<x_i,x_j>)=\Phi (x_i) \cdot \Phi(x_j)</script><p>也即，我们不必要知道具体的函数<script type="math/tex">\Phi(x)</script>，只要将<script type="math/tex">x_i</script>和<script type="math/tex">x_j</script>代入核函数就行了，而这样计算明显比先做mapping再做inner product要快很多（虽然结果是等价的），这便是<code>Kernel Trick</code>。这样做的好处是可以对数据点进行升维，在低维空间中不可分的数据点，在高维空间则是可分的（反正总有办法让数据可分），坏处自然就是模型容易过拟合了。</p>
 <h3 id="各类核函数"><a href="#各类核函数" class="headerlink" title="各类核函数"></a>各类核函数</h3><p>多项式核：</p>
 <script type="math/tex; mode=display">K(\vec x_i,\vec x_j)= (\vec x_i \cdot \vec x_j+b)^n</script><p>径向基函数核（RBF）：维度太高，容易过拟合</p>
 <script type="math/tex; mode=display">K(\vec x_i,\vec x_j)=exp(-\frac {1}{2\sigma^2}||\vec x_i-\vec x_j||_2^2)</script><p>Sigmiod核：可以理解成只有一个Hidden Layer的NN</p>
 <script type="math/tex; mode=display">K(\vec x_i,\vec x_j)=tanh(\vec x_i \cdot \vec x_j)</script><h2 id="SVM-与-SVR"><a href="#SVM-与-SVR" class="headerlink" title="SVM 与 SVR"></a>SVM 与 SVR</h2><p>用支持向量机来做回归问题其实也是可以的，不过并不是回归问题的主流方法。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
-<li>所谓<code>支持向量</code>就是这些对分割线（高维空间里是个超平面）产生影响的数据向量，这些数据点其实就是位于“黑色实线”上的点，或者叫做距离分割线的<strong>最近点</strong>，其他点的$\alpha_i=0$，对$\vec w$的确定没有贡献；</li>
+<li>所谓<code>支持向量</code>就是这些对分割线（高维空间里是个超平面）产生影响的数据向量，这些数据点其实就是位于“黑色实线”上的点，或者叫做距离分割线的<strong>最近点</strong>，其他点的<script type="math/tex">\alpha_i=0</script>，对<script type="math/tex">\vec w</script>的确定没有贡献；</li>
 <li>强对偶下，对偶问题的解就是原始问题的解，并且对偶问题始终是一个<strong>Concave优化问题</strong>，所以SVM的解一定是全局唯一解，<strong>不会陷入局部最小值</strong>；</li>
-<li><code>Decision Rule</code>变为：$\sum_i \alpha_iy_i\vec x_i \cdot \vec u +b \ge 0, \text {THEN +}$</li>
+<li><code>Decision Rule</code>变为：<script type="math/tex">\sum_i \alpha_iy_i\vec x_i \cdot \vec u +b \ge 0, \text {THEN +}</script></li>
 <li>超平面就是data point的线性组合；</li>
 <li>SVM拥有了天然的去outliers抗过拟合能力；</li>
 <li>线性不可分的问题，可以通过核函数的方法将低维问题进行升维来解决；</li>
@@ -611,24 +611,7 @@
   
 
 
-    <script type="text/javascript" src="/js/src/even.js?v=2.10.2"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+    <script type="text/javascript" src="/js/src/even.js?v=2.10.2"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
   </body>
 </html>
