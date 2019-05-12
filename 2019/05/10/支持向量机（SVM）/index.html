@@ -312,7 +312,7 @@
 <h2 id="线性可分支持向量机"><a href="#线性可分支持向量机" class="headerlink" title="线性可分支持向量机"></a>线性可分支持向量机</h2><p>现在有两类数据（这里假设是二维数据点），分布在二维平面上，如图1所示，以符号<code>+</code>代表一类数据，<code>-</code>代表另外一类数据。我们要做的事情就是画一条线将这两类数据分开来，而画线的原则是使距离这条线（图中虚线所示）<strong>最近的任意数据点</strong>到虚线的<strong>距离最大</strong>，或者说要让图中黑色实线间的<strong>宽度最大</strong>。需要说明的是，目前这里只考虑<strong>线性可分</strong>的情况。</p>
 <p><img src="./p2.png" width="40%" height="40%"></p>
 <p>我们使用以下公式来判断数据点是否落在<code>+</code>分类中，该式也被称为<code>Decision Rule</code></p>
-<script type="math/tex; mode=display">\vec{w} \cdot \vec{u} + b \ge 0,  \text {THEN +} \tag{1}</script><p>式中<script type="math/tex">\vec{w}</script>表示垂直于分隔线（图中虚线）的<strong>向量</strong>，<script type="math/tex">\vec{u}</script>表示任意数据点的向量表示(unknown)，<script type="math/tex">b</script>表示一个与分割线相关的变量，所以，我们只要确定了<script type="math/tex">\vec w</script>和<script type="math/tex">b</script>就可以据此确定任意一个数据点属于哪个分类了。</p>
+<script type="math/tex; mode=display">\vec{w} \cdot \vec{u} + b \ge 0,  \text {THEN +} \tag{1}</script><p>式中$\vec{w}$表示垂直于分隔线（图中虚线）的<strong>向量</strong>，<script type="math/tex">\vec{u}</script>表示任意数据点的向量表示(unknown)，<script type="math/tex">b</script>表示一个与分割线相关的变量，所以，我们只要确定了<script type="math/tex">\vec w</script>和<script type="math/tex">b</script>就可以据此确定任意一个数据点属于哪个分类了。</p>
 <blockquote>
 <p>这里可以回顾一下解析几何中<strong>点到直线的距离</strong>公式以及推导过程，方便理解公式。</p>
 </blockquote>
@@ -617,7 +617,24 @@
   
 
 
-    <script type="text/javascript" src="/js/src/even.js?v=2.10.2"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+    <script type="text/javascript" src="/js/src/even.js?v=2.10.2"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 
   </body>
 </html>
