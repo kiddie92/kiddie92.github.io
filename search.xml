@@ -183,8 +183,8 @@
         <category>经济学原理</category>
       </categories>
       <tags>
-        <tag>金融知识</tag>
         <tag>比较优势</tag>
+        <tag>金融知识</tag>
       </tags>
   </entry>
   <entry>
@@ -210,8 +210,8 @@
       </categories>
       <tags>
         <tag>python</tag>
-        <tag>kubernetes</tag>
         <tag>机器学习</tag>
+        <tag>kubernetes</tag>
         <tag>flask</tag>
         <tag>keras</tag>
       </tags>
@@ -224,9 +224,9 @@
         <category>经济学原理</category>
       </categories>
       <tags>
+        <tag>金融知识</tag>
         <tag>数学</tag>
         <tag>囚徒困境</tag>
-        <tag>金融知识</tag>
       </tags>
   </entry>
   <entry>
