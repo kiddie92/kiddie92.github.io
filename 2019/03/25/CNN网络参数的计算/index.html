@@ -22,6 +22,8 @@
 
 
 
+  <meta name="keywords" content="算法, 深度学习, CNN, Mun*">
+
 
 
 
@@ -267,6 +269,16 @@
           2019-03-25
         </span>
         
+          <span class="post-category">
+            
+              <a href="/categories/算法/">算法</a>
+            
+              <a href="/categories/算法/深度学习/">深度学习</a>
+            
+              <a href="/categories/算法/深度学习/人工智能/">人工智能</a>
+            
+          </span>
+        
         
         <span class="post-visits" data-url="/2019/03/25/CNN网络参数的计算/" data-title="CNN网络参数的计算">
           阅读次数 0
@@ -277,11 +289,57 @@
 
     
     
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#问题描述"><span class="toc-text">问题描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#卷积神经网络架构"><span class="toc-text">卷积神经网络架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参数个数计算"><span class="toc-text">参数个数计算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考资料"><span class="toc-text">参考资料</span></a></li></ol>
+    </div>
+  </div>
+
 
 
     <div class="post-content">
       
-        
+        <blockquote>
+<p>前几天听室友给我讲算法岗的面经，其中面试官就问了一个小问题，“给出CNN网络的参数（<strong>可学习的</strong>）个数如何计算”，今天就来计算一下好了。<br><a id="more"></a></p>
+</blockquote>
+<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p><strong>可学习参数</strong>顾名思义就是指CNN中需要学习/更新的变量，因为CNN的网络架构设计中会引入很多需要被学习出来的变量，比如：<code>hidden layer</code>中的神经元个数便直接和仿射变换的参数个数相关，而现在的问题是把这些<strong>可学习</strong>的变量的个数统计出来。</p>
+<h2 id="卷积神经网络架构"><a href="#卷积神经网络架构" class="headerlink" title="卷积神经网络架构"></a>卷积神经网络架构</h2><p>卷积神经网络在计算机视觉领域有比较多的应用，下图便是一个图片识别的网络架构示例图（工业界使用的模型更复杂）。</p>
+<p><img src="./CNN.png" alt="CNN"></p>
+<p>上图描述了卷积神经网络在进行<strong>正向计算/正向传播</strong>时的流程/架构，如图所示，当输入一个”小轿车”的图片时，我们希望经过一个函数$f(x)$各种计算后，能够输出“CAR”这个词。那么该如何计算呢？</p>
+<ul>
+<li><strong>输入层</strong>（input）：<br>就是读取图片，将图片用数字化的矩阵来表示。</li>
+<li><strong>卷积（convolution）</strong>：<br>选用卷积核（filter，可以是多个）对图片的多个通道进行卷积操作（element-wise的相乘）。卷积计算会使图片的长宽变小，但是”高度”变大（如图中的图片逐渐变”厚”），这是因为使用的卷积核（filter）较多，使得计算得到的图片通道数（channels）也会增加。<blockquote>
+<p>卷积操作其实可以理解为简化版的”连接层”，部分神经元才可以和下一层的部分神经元进行连接。</p>
+</blockquote>
+</li>
+<li><strong>激活（activation）</strong>：<br>该操作主要是对之前的卷积计算结果做非线性处理，<a href="https://en.wikipedia.org/wiki/Universal_approximation_theorem" target="_blank" rel="noopener">万能逼近原理</a>告诉我们这种线性和非线性计算的组合可以拟合所有复杂的函数。常用的非线性处理函数/激活函数有Sigmoid、Relu、Leaky ReLU、tanh等，更多内容可以参考<a href="https://en.wikipedia.org/wiki/Activation_function" target="_blank" rel="noopener">这里</a>。</li>
+<li><strong>池化（pooling）</strong>：<br>对非线性化后的高维矩阵进行”减采样”，同样以一定步长逐步将矩阵中的”元素块（例如：<script type="math/tex">9 \times 9</script>）”仅使用一个数来代表，比如：取”元素块”中的最大值、平均值等计算方式。<blockquote>
+<p>降采样可以减少后续的计算量还可以一定程度防止过拟合。</p>
+</blockquote>
+</li>
+<li><strong>拉平(Flatten)</strong>：<br>将高维矩阵”拉平”，转换为一维矩阵，元素依次排序。</li>
+<li><strong>全连接（Fully Connected）</strong>:<br>设置下一层神经元的个数，并使用仿射变换<script type="math/tex">y_i = \vec W_i \cdot \vec x+b_i</script>得到下一层神经元的值，因为两层之间的神经元会全部连接起来，所及叫做全连接。</li>
+<li><strong>输出层计算分类概率（Softmax）</strong>：<br>对最后一层的神经元进行概率输出计算，即：给出各分类标签的概率，比如这里预期”Car”的概率一定要大于其他分类标签的概率值，所以最后一层的神经元个数和分类的标签个数需要一致。下面是softmax函数的表达式：<script type="math/tex; mode=display">p(y_i|\vec x) = \frac {e^{(\vec w_i \cdot \vec x+b_i)}}{\sum_{k \in K} e^{(\vec w_k \cdot \vec x+b_k)}}</script></li>
+<li><strong>Batch-Normalization</strong>：<br>这一层其实在每一次卷积、全连接后都可以进行计算，但是图片中没有反映处这个处理过程。感兴趣可以查看我之前的博客<a href="https://kiddie92.github.io/2019/03/06/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B9%8BBatch-Normalization%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9AHow%EF%BC%9F/">卷积神经网络之Batch Normalization（一）：How？</a></li>
+</ul>
+<h2 id="参数个数计算"><a href="#参数个数计算" class="headerlink" title="参数个数计算"></a>参数个数计算</h2><p>按照上面的步骤描述，可知：</p>
+<ol>
+<li>input层是没有引进变量的；</li>
+<li>卷积层则引入了”卷积核/filter”，假设卷积核大小为<script type="math/tex">n \times m</script>，图片有<script type="math/tex">l</script>个通道（channels）/维度，而选用的”卷积核/filter”有<script type="math/tex">k</script>个，再加上bias，可以得到引进的参数有：<script type="math/tex">(n*m*l+1)*k</script>个；</li>
+<li>激活、池化层仅仅对原来的矩阵做了一个变换，不会引进新的参数；</li>
+<li>拉平操作仅仅对矩阵进行了reshape，也不会引进新的变量；</li>
+<li>全连接层就是对前后神经元做了仿射变换<script type="math/tex">\vec w_i \cdot \vec x+b_i</script>，引进的参数有权重和偏置，假设n个神经元连接m个神经元，则引入的参数有<script type="math/tex">(n+1)*m</script>；</li>
+<li>输出层其实和全连接层没啥区别，只是输出的神经元个数要求是分类的标签个数，所以引入的变量也是<script type="math/tex">(n+1)*m</script>，这里m是分类的标签个数；</li>
+<li>BN层引入的参数则和输入层神经元个数相关，假设输入神经元个数为n，则该层引进的参数为<script type="math/tex">2n</script></li>
+</ol>
+<p>综合以上，计算一个CNN架构的所有<strong>可学习参数/变量</strong>的个数可以分解成每一个步骤的参数变化量和引入参数个数两个<strong>相关</strong>的小问题，就像这样：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#  name                           size                 parameters</span></span><br><span class="line">---  --------  -------------------------    ------------------------</span><br><span class="line">  0  input                       1x28x28                           0</span><br><span class="line">  1  conv2d1   (28-(5-1))=24 -&gt; 32x24x24    (5*5*1+1)*32   =     832</span><br><span class="line">  2  maxpool1                   32x12x12                           0</span><br><span class="line">  3  conv2d2   (12-(3-1))=10 -&gt; 32x10x10    (3*3*32+1)*32  =   9<span class="string">'248</span></span><br><span class="line"><span class="string">  4  maxpool2                     32x5x5                           0</span></span><br><span class="line"><span class="string">  5  dense                           256    (32*5*5+1)*256 = 205'</span>056</span><br><span class="line">  6  output                           10    (256+1)*10     =   2<span class="string">'570</span></span><br></pre></td></tr></table></figure></p>
+<p>最后将每一个步骤的参数相加便得到所有参数的个数。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><a href="https://stackoverflow.com/questions/42786717/how-to-calculate-the-number-of-parameters-for-convolutional-neural-network" target="_blank" rel="noopener">https://stackoverflow.com/questions/42786717/how-to-calculate-the-number-of-parameters-for-convolutional-neural-network</a></li>
+<li><a href="https://medium.freecodecamp.org/an-intuitive-guide-to-convolutional-neural-networks-260c2de0a050" target="_blank" rel="noopener">https://medium.freecodecamp.org/an-intuitive-guide-to-convolutional-neural-networks-260c2de0a050</a></li>
+</ol>
+
       
     </div>
 
@@ -331,6 +389,16 @@
 
     
       <footer class="post-footer">
+        
+          <div class="post-tags">
+            
+              <a href="/tags/算法/">算法</a>
+            
+              <a href="/tags/深度学习/">深度学习</a>
+            
+              <a href="/tags/CNN/">CNN</a>
+            
+          </div>
         
         
         
@@ -514,7 +582,24 @@
   
 
 
-    <script type="text/javascript" src="/js/src/even.js?v=2.10.2"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+    <script type="text/javascript" src="/js/src/even.js?v=2.10.2"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 
   </body>
 </html>
