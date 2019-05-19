@@ -313,7 +313,7 @@
 <li><strong>数据安全：</strong>云上的数据确保健全、可用</li>
 </ul>
 <p>那么在设计上，我们就得要求<strong>“no single point of failure”</strong>：路由、防火墙、负载均衡、反向代理以及监控系统等在网络和应用层面上必须全部是冗余设计，以此来保证最佳的可用性。 下面，浅谈一下k8s高可用集群是如何组建的。</p>
-<h2 id="k8s关键组件及其高可用方案"><a href="#k8s关键组件及其高可用方案" class="headerlink" title="k8s关键组件及其高可用方案"></a>k8s关键组件及其高可用方案</h2><p>首先，看一下架构设计（参考资料2），图中已经将<strong>高可用k8s集群</strong>各个组件的功能以及通讯调用关系清晰的展示出来了，下面我将分别从<strong>管理平面</strong>、<strong>执行平面</strong>和<strong>数据平面</strong>三个部分来简单说明一下该高可用架构方案以及各个组件的功能。<br><img src="https://upload-images.jianshu.io/upload_images/13272578-73c9c74a3e5f8573.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></p>
+<h2 id="k8s关键组件及其高可用方案"><a href="#k8s关键组件及其高可用方案" class="headerlink" title="k8s关键组件及其高可用方案"></a>k8s关键组件及其高可用方案</h2><p>首先，看一下架构设计（参考资料2），图中已经将<strong>高可用k8s集群</strong>各个组件的功能以及通讯调用关系清晰的展示出来了，下面我将分别从<strong>管理平面</strong>、<strong>执行平面</strong>和<strong>数据平面</strong>三个部分来简单说明一下该高可用架构方案以及各个组件的功能。<br><img src="./k8sHA.jpg" alt="image"></p>
 <h3 id="管理平面"><a href="#管理平面" class="headerlink" title="管理平面"></a>管理平面</h3><ol>
 <li><p><strong>apiserver:</strong> <code>apiserver</code>是k8s集群的入口，为了使用方便，<code>kubectl</code>作为其客户端供用户使用。为了实现高可用，在3个机器上分别以静态Pod的方式部署了<code>apiserver</code>并挂载在同一个loadbalancer上，如此，其与其他组件的联系都经由这个负载均衡器来做转发（图中黑色连线），这样也保证了每一个用户命令都有且仅有一个<code>apiserver</code>来响应，并且理论上只要还有一个Pod是可用的，该组件的服务就没有问题，再加上k8s的Pod有自愈能力，<code>apiserver</code>高可用可以说是能够保证的。</p>
 <blockquote>
