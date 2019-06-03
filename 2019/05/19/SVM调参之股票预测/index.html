@@ -318,8 +318,9 @@
 <p>这里需要注意的是<code>x_train</code>和<code>y_train</code>的对应关系<strong>至少要有一个交易日的时间差</strong>，否则，模型将毫无意义。</p>
 <h3 id="写代码"><a href="#写代码" class="headerlink" title="写代码"></a>写代码</h3><p>有了想法后，写代码就比较简单了，这里参考了<strong>优矿</strong>上一个SVM代码。代码最中主要的部分就是数据处理部分，如下所示：（点击<a href="https://github.com/kiddie92/Learning_Tech/blob/master/SVM%E8%B0%83%E5%8F%82%E4%B9%8B%E8%82%A1%E7%A5%A8%E9%A2%84%E6%B5%8B/svm_quant.py.ipynb" target="_blank" rel="noopener">源代码</a>可以查看完整的源码文件）</p>
 <blockquote>
-<p>Tips:<br>如果github上无法直接查看ipython notebook，可以点击<a href="https://nbviewer.jupyter.org/" target="_blank" rel="noopener">这里</a>将所要查看的文件的URL拷贝进入即可查看。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> index <span class="keyword">in</span> range(2,len(close_pri)):</span><br><span class="line">    <span class="comment"># 取数据[-2]表示使用的特征是由今天之前的数据计算得到的</span></span><br><span class="line">    sma_data = talib.SMA(close_pri[:index],timeperiod=7)[-2]</span><br><span class="line">    wma_data = talib.WMA(close_pri[:index],timeperiod=7)[-2]</span><br><span class="line">    mom_data = talib.MOM(close_pri[:index],timeperiod=7)[-2]</span><br><span class="line">    </span><br><span class="line">    features = []</span><br><span class="line">    features.append(sma_data)</span><br><span class="line">    features.append(wma_data)</span><br><span class="line">    features.append(mom_data)</span><br><span class="line">    x_train.append(features)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 对今天的交易进行打标签，涨则标记1，跌则标记-1</span></span><br><span class="line">    <span class="keyword">if</span> close_pri[index-1] &lt; close_pri[index]:</span><br><span class="line">        label = 1</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        label = -1</span><br><span class="line">    y_train.append(label)</span><br></pre></td></tr></table></figure></p>
+<p>Tips:<br>如果github上无法直接查看ipython notebook，可以点击<a href="https://nbviewer.jupyter.org/" target="_blank" rel="noopener">这里</a>将所要查看的文件的URL拷贝进入即可查看。</p>
 </blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> index <span class="keyword">in</span> range(2,len(close_pri)):</span><br><span class="line">    <span class="comment"># 取数据[-2]表示使用的特征是由今天之前的数据计算得到的</span></span><br><span class="line">    sma_data = talib.SMA(close_pri[:index],timeperiod=7)[-2]</span><br><span class="line">    wma_data = talib.WMA(close_pri[:index],timeperiod=7)[-2]</span><br><span class="line">    mom_data = talib.MOM(close_pri[:index],timeperiod=7)[-2]</span><br><span class="line">    </span><br><span class="line">    features = []</span><br><span class="line">    features.append(sma_data)</span><br><span class="line">    features.append(wma_data)</span><br><span class="line">    features.append(mom_data)</span><br><span class="line">    x_train.append(features)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 对今天的交易进行打标签，涨则标记1，跌则标记-1</span></span><br><span class="line">    <span class="keyword">if</span> close_pri[index-1] &lt; close_pri[index]:</span><br><span class="line">        label = 1</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        label = -1</span><br><span class="line">    y_train.append(label)</span><br></pre></td></tr></table></figure>
 <h2 id="SVM调参"><a href="#SVM调参" class="headerlink" title="SVM调参"></a>SVM调参</h2><p>原本计划以此为例，测试一下不同的参数得到的分类结果，最终会对预测模型的泛化能力产生什么样的影响，这里改成参数sklearn中svm分类算法的参数简介了。</p>
 <p>首先来看一下sklearn中对svm分类问题给出的<strong>目标函数/loss</strong></p>
 <p><code>sklearn</code>中给出的svc公式如下，对比上篇文章的式（18），可以发现，这里的参数<strong>$C$是式（18）的倒数</strong>：</p>
@@ -408,9 +409,15 @@
         
   <nav class="post-nav">
     
+      <a class="prev" href="/2019/06/03/k8s-对外服务之ingress/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">k8s 对外服务之ingress</span>
+        <span class="prev-text nav-mobile">上一篇</span>
+      </a>
     
-      <a class="next" href="/2019/05/19/k8s-对外服务之ingress/">
-        <span class="next-text nav-default">k8s 对外服务之ingress</span>
+    
+      <a class="next" href="/2019/05/10/支持向量机（SVM）/">
+        <span class="next-text nav-default">支持向量机（SVM）</span>
         <span class="prev-text nav-mobile">下一篇</span>
         <i class="iconfont icon-right"></i>
       </a>
