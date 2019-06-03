@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://kiddie92.github.io/"/>
-  <updated>2019-06-03T15:24:32.079Z</updated>
+  <updated>2019-06-03T15:25:54.552Z</updated>
   <id>https://kiddie92.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://kiddie92.github.io/2019/06/03/k8s-%E5%AF%B9%E5%A4%96%E6%9C%8D%E5%8A%A1%E4%B9%8Bingress/"/>
     <id>https://kiddie92.github.io/2019/06/03/k8s-对外服务之ingress/</id>
     <published>2019-06-03T09:46:42.000Z</published>
-    <updated>2019-06-03T15:24:32.079Z</updated>
+    <updated>2019-06-03T15:25:54.552Z</updated>
     
     <summary type="html">
     
@@ -35,7 +35,7 @@
     <link href="https://kiddie92.github.io/2019/05/19/SVM%E8%B0%83%E5%8F%82%E4%B9%8B%E8%82%A1%E7%A5%A8%E9%A2%84%E6%B5%8B/"/>
     <id>https://kiddie92.github.io/2019/05/19/SVM调参之股票预测/</id>
     <published>2019-05-19T09:47:30.000Z</published>
-    <updated>2019-06-03T15:24:44.388Z</updated>
+    <updated>2019-06-03T15:35:34.828Z</updated>
     
     <content type="html"><![CDATA[<blockquote><p>上篇博客讲解了SVM的算法精髓，这篇来牛刀小试一回，主要内容包括：1) 利用SVM分类来预测上证指数的涨跌；2) 试试SVM调参。<br><a id="more"></a></p></blockquote><h2 id="预测上证指数涨跌"><a href="#预测上证指数涨跌" class="headerlink" title="预测上证指数涨跌"></a>预测上证指数涨跌</h2><h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p>预测股票涨跌和预测指数涨跌的原理是一样的，都是利用“<strong>历史数据</strong>”来推测未来的走势。股票数据单纯来看也就是时间序列。这里我们利用分类方法来构建预测模型：</p><ul><li>首先，获取过去长时间内上证指数的数据</li><li>计算这些数据的一些特征（features），比如：sma、wma、mom等</li><li>利用特征数据构建训练数据（train dataset）<code>x_train</code>，保留部分数据作为测试集（test dataset）</li><li>为数据打标签<code>y_train</code>：如果交易日当天的收盘价高于上一个交易日的收盘价，则为“+”数据，标签为“+1”，否则为“-1”</li><li>利用svm对上述带有标签的数据进行分类</li><li>给定测试数据，计算其特征数据，利用分类模型对其进行分类</li><li>对比分类结果（“+1”对应“涨”，“-1”对应“跌”）和实际数据的涨跌情况，若一致则说明<strong>分类准确/预测准确</strong></li></ul><p>这里需要注意的是<code>x_train</code>和<code>y_train</code>的对应关系<strong>至少要有一个交易日的时间差</strong>，否则，模型将毫无意义。</p><h3 id="写代码"><a href="#写代码" class="headerlink" title="写代码"></a>写代码</h3><p>有了想法后，写代码就比较简单了，这里参考了<strong>优矿</strong>上一个SVM代码。代码最中主要的部分就是数据处理部分，如下所示：（点击<a href="https://github.com/kiddie92/Learning_Tech/blob/master/SVM%E8%B0%83%E5%8F%82%E4%B9%8B%E8%82%A1%E7%A5%A8%E9%A2%84%E6%B5%8B/svm_quant.py.ipynb" target="_blank" rel="noopener">源代码</a>可以查看完整的源码文件）</p><blockquote><p>Tips:<br>如果github上无法直接查看ipython notebook，可以点击<a href="https://nbviewer.jupyter.org/" target="_blank" rel="noopener">这里</a>将所要查看的文件的URL拷贝进入即可查看。</p></blockquote><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> index <span class="keyword">in</span> range(2,len(close_pri)):</span><br><span class="line">    <span class="comment"># 取数据[-2]表示使用的特征是由今天之前的数据计算得到的</span></span><br><span class="line">    sma_data = talib.SMA(close_pri[:index],timeperiod=7)[-2]</span><br><span class="line">    wma_data = talib.WMA(close_pri[:index],timeperiod=7)[-2]</span><br><span class="line">    mom_data = talib.MOM(close_pri[:index],timeperiod=7)[-2]</span><br><span class="line">    </span><br><span class="line">    features = []</span><br><span class="line">    features.append(sma_data)</span><br><span class="line">    features.append(wma_data)</span><br><span class="line">    features.append(mom_data)</span><br><span class="line">    x_train.append(features)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 对今天的交易进行打标签，涨则标记1，跌则标记-1</span></span><br><span class="line">    <span class="keyword">if</span> close_pri[index-1] &lt; close_pri[index]:</span><br><span class="line">        label = 1</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        label = -1</span><br><span class="line">    y_train.append(label)</span><br></pre></td></tr></table></figure><h2 id="SVM调参"><a href="#SVM调参" class="headerlink" title="SVM调参"></a>SVM调参</h2><p>原本计划以此为例，测试一下不同的参数得到的分类结果，最终会对预测模型的泛化能力产生什么样的影响，这里改成参数sklearn中svm分类算法的参数简介了。</p><p>首先来看一下sklearn中对svm分类问题给出的<strong>目标函数/loss</strong></p><p><code>sklearn</code>中给出的svc公式如下，对比上篇文章的式（18），可以发现，这里的参数<strong>$C$是式（18）的倒数</strong>：</p><script type="math/tex; mode=display">\min_{w,b,\zeta} \frac{1}{2}w^Tw+C\sum_{i=1}^{n} \zeta_i \\ subject to y_i(w^T\phi(x_i)+b) \ge 1-\zeta_i, \\ \zeta_i \ge 0, i=1,...n</script><p>这里理解起来类似于反演问题的<strong>正则化方法</strong>，整个目标函数可以看作是一个<strong>罚函数/penalty function</strong>，C可以看作是<strong>惩罚因子</strong>。那么，C越大，表示要求惩罚项越小，the vise versa，这里则表示分类越准确，距离是不是最大的稍微有那么一丢丢不那么重要。可以想象如果C是正无穷，则分类准确才是最最重要的，gutter的宽度已经不重要了，这时的模型必然会过拟合。<br>这么一来，还需要分析的参数只有<strong>核函数的参数</strong>了。<br>sklearn官方的参数如下（额，这么多，，），下面挑几个重要的来看一下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SVC(C=1.0, cache_size=200, class_weight=None, coef0=0.0,</span><br><span class="line">  decision_function_shape=<span class="string">'ovr'</span>, degree=3, gamma=<span class="string">'auto'</span>, kernel=<span class="string">'rbf'</span>,</span><br><span class="line">  max_iter=-1, probability=False, random_state=None, shrinking=True,</span><br><span class="line">  tol=0.001, verbose=False)</span><br></pre></td></tr></table></figure></p><p><code>decision_function_shape</code>：‘ovo’ OR ‘ovr’，对于多分类问题，ovo表示两两做分类，ovr表示，其中一个类和其他所有做分类<br><code>degree</code>：就是多项式核函数里面的degree了<br><code>max_iter</code>：最大迭代次数，针对SMO算法<br><code>tol</code>：迭代总会有终止条件的<br><code>gamma</code>：rbf核函数的参数，gamma越大，表示精度越高，因为高斯函数会越高瘦嘛；过拟合也就越严重了，therefore，如果高斯核都搞不定的分类，那就别用svm了吧</p><h2 id="安装ta-lib"><a href="#安装ta-lib" class="headerlink" title="安装ta-lib"></a>安装ta-lib</h2><blockquote><p>安装ta-lib时遇到一点点坑，记录一下。</p></blockquote><p>按照官方<a href="https://mrjbq7.github.io/ta-lib/install.html" target="_blank" rel="noopener">ta-lib</a>的方法先安装依赖：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz</span><br><span class="line">tar -vxf ta-lib-0.4.0-src.tar.gz</span><br><span class="line"><span class="built_in">cd</span> ta-lib/</span><br><span class="line">./configure --prefix=/usr  <span class="comment"># 此处是选取lib文件存放位置</span></span><br></pre></td></tr></table></figure></p><p>试一下：<code>ipython3</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">In [1]: import talib</span><br><span class="line">In [2]:</span><br></pre></td></tr></table></figure></p><p>如果导入模块报错：<code>libta_lib.so.0: cannot open shared object file: No such file or directory</code>，则考虑是<code>/usr/lib/</code>下的的库文件没有被加载到系统环境变量内，导致导入模块的时候没有找到库文件<code>libta_lib.so.0</code>，添加环境变量即可：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib'</span> &gt;&gt; ~/.bashrc</span><br></pre></td></tr></table></figure></p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol><li>实现了用svm做二分类来预测上证指数</li><li>对sklearn的SVC参数做了一定的分析</li><li>ta-lib这个模块在CentOS上安装时可能出现一些问题</li></ol><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol><li><a href="https://www.joinquant.com/view/community/detail/6170c300d0aa8eb1aa3966a3b3d78d8e" target="_blank" rel="noopener">优矿SVM教程</a></li><li><a href="https://scikit-learn.org/stable/auto_examples/svm/plot_rbf_parameters.html" target="_blank" rel="noopener">sklearn-SVM参数说明</a></li><li></li></ol>]]></content>
     
@@ -59,7 +59,9 @@
     
       <category term="人工智能" scheme="https://kiddie92.github.io/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
     
-      <category term="机器学习，quant" scheme="https://kiddie92.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%8Cquant/"/>
+      <category term="机器学习" scheme="https://kiddie92.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="quant" scheme="https://kiddie92.github.io/tags/quant/"/>
     
   </entry>
   
@@ -384,9 +386,9 @@
       <category term="机器学习" scheme="https://kiddie92.github.io/categories/tensorflow/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
     
-      <category term="tensorflow" scheme="https://kiddie92.github.io/tags/tensorflow/"/>
-    
       <category term="机器学习" scheme="https://kiddie92.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="tensorflow" scheme="https://kiddie92.github.io/tags/tensorflow/"/>
     
   </entry>
   

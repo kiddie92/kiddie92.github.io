@@ -18,7 +18,8 @@
       <tags>
         <tag>算法</tag>
         <tag>人工智能</tag>
-        <tag>机器学习，quant</tag>
+        <tag>机器学习</tag>
+        <tag>quant</tag>
       </tags>
   </entry>
   <entry>
@@ -175,8 +176,8 @@
         <category>机器学习</category>
       </categories>
       <tags>
-        <tag>tensorflow</tag>
         <tag>机器学习</tag>
+        <tag>tensorflow</tag>
       </tags>
   </entry>
   <entry>
