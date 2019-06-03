@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+<meta name="theme-color" content="#f8f5ec">
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+
+  <meta name="description" content="SVM调参之股票预测">
+
+
+
+
+  <meta name="keywords" content="算法, 人工智能, 机器学习，quant, Mun*">
+
+
+
+
+
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Mun*">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.10.2">
+
+
+
+<link rel="canonical" href="https://kiddie92.github.io/2019/05/19/SVM调参之股票预测/">
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css">
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/nprogress/nprogress.min.css">
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.10.2">
+
+
+
+  
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-91728997-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-91728997-1');
+</script>
+
+
+  <script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.1.1/av-min.js"></script>
+  <script id="leancloud">
+    AV.init({
+      appId: "n8MGlOWz83zS9G0m0PGinErj-gzGzoHsz",
+      appKey: "bSOcrmi2W53fTzNXQA3UQ2z3"
+    });
+  </script>
+
+
+
+
+
+<script>
+  window.config = {"leancloud":{"app_id":"n8MGlOWz83zS9G0m0PGinErj-gzGzoHsz","app_key":"bSOcrmi2W53fTzNXQA3UQ2z3"},"toc":true,"fancybox":true,"pjax":true};
+</script>
+
+    <title> SVM调参之股票预测 - Mun* </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="mobile-header-logo">
+    <a href="/." class="logo">Mun*</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            首页
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            归档
+          
+        </li>
+      </a>
+    
+      <a href="/tags">
+        <li class="mobile-menu-item">
+          
+          
+            标签
+          
+        </li>
+      </a>
+    
+      <a href="/categories">
+        <li class="mobile-menu-item">
+          
+          
+            分类
+          
+        </li>
+      </a>
+    
+      <a href="/links">
+        <li class="mobile-menu-item">
+          
+          
+            链接
+          
+        </li>
+      </a>
+    
+      <a href="/about">
+        <li class="mobile-menu-item">
+          
+          
+            关于
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Mun*</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              首页
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              归档
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/tags">
+            
+            
+              标签
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/categories">
+            
+            
+              分类
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/links">
+            
+            
+              链接
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/about">
+            
+            
+              关于
+            
+          </a>
+        </li>
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          SVM调参之股票预测
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-05-19
+        </span>
+        
+          <span class="post-category">
+            
+              <a href="/categories/算法/">算法</a>
+            
+              <a href="/categories/算法/人工智能/">人工智能</a>
+            
+              <a href="/categories/算法/人工智能/机器学习/">机器学习</a>
+            
+              <a href="/categories/算法/人工智能/机器学习/量化投资/">量化投资</a>
+            
+          </span>
+        
+        
+        <span class="post-visits" data-url="/2019/05/19/SVM调参之股票预测/" data-title="SVM调参之股票预测">
+          阅读次数 0
+        </span>
+        
+      </div>
+    </header>
+
+    
+    
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#预测上证指数涨跌"><span class="toc-text">预测上证指数涨跌</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#问题描述"><span class="toc-text">问题描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#写代码"><span class="toc-text">写代码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SVM调参"><span class="toc-text">SVM调参</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装ta-lib"><span class="toc-text">安装ta-lib</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-text">Reference</span></a></li></ol>
+    </div>
+  </div>
+
+
+
+    <div class="post-content">
+      
+        <blockquote>
+<p>上篇博客讲解了SVM的算法精髓，这篇来牛刀小试一回，主要内容包括：1) 利用SVM分类来预测上证指数的涨跌；2) 试试SVM调参。<br><a id="more"></a></p>
+</blockquote>
+<h2 id="预测上证指数涨跌"><a href="#预测上证指数涨跌" class="headerlink" title="预测上证指数涨跌"></a>预测上证指数涨跌</h2><h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p>预测股票涨跌和预测指数涨跌的原理是一样的，都是利用“<strong>历史数据</strong>”来推测未来的走势。股票数据单纯来看也就是时间序列。这里我们利用分类方法来构建预测模型：</p>
+<ul>
+<li>首先，获取过去长时间内上证指数的数据</li>
+<li>计算这些数据的一些特征（features），比如：sma、wma、mom等</li>
+<li>利用特征数据构建训练数据（train dataset）<code>x_train</code>，保留部分数据作为测试集（test dataset）</li>
+<li>为数据打标签<code>y_train</code>：如果交易日当天的收盘价高于上一个交易日的收盘价，则为“+”数据，标签为“+1”，否则为“-1”</li>
+<li>利用svm对上述带有标签的数据进行分类</li>
+<li>给定测试数据，计算其特征数据，利用分类模型对其进行分类</li>
+<li>对比分类结果（“+1”对应“涨”，“-1”对应“跌”）和实际数据的涨跌情况，若一致则说明<strong>分类准确/预测准确</strong></li>
+</ul>
+<p>这里需要注意的是<code>x_train</code>和<code>y_train</code>的对应关系<strong>至少要有一个交易日的时间差</strong>，否则，模型将毫无意义。</p>
+<h3 id="写代码"><a href="#写代码" class="headerlink" title="写代码"></a>写代码</h3><p>有了想法后，写代码就比较简单了，这里参考了<strong>优矿</strong>上一个SVM代码。代码最中主要的部分就是数据处理部分，如下所示：（点击<a href="https://github.com/kiddie92/Learning_Tech/blob/master/SVM%E8%B0%83%E5%8F%82%E4%B9%8B%E8%82%A1%E7%A5%A8%E9%A2%84%E6%B5%8B/svm_quant.py.ipynb" target="_blank" rel="noopener">源代码</a>可以查看完整的源码文件）</p>
+<blockquote>
+<p>Tips:<br>如果github上无法直接查看ipython notebook，可以点击<a href="https://nbviewer.jupyter.org/" target="_blank" rel="noopener">这里</a>将所要查看的文件的URL拷贝进入即可查看。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> index <span class="keyword">in</span> range(2,len(close_pri)):</span><br><span class="line">    <span class="comment"># 取数据[-2]表示使用的特征是由今天之前的数据计算得到的</span></span><br><span class="line">    sma_data = talib.SMA(close_pri[:index],timeperiod=7)[-2]</span><br><span class="line">    wma_data = talib.WMA(close_pri[:index],timeperiod=7)[-2]</span><br><span class="line">    mom_data = talib.MOM(close_pri[:index],timeperiod=7)[-2]</span><br><span class="line">    </span><br><span class="line">    features = []</span><br><span class="line">    features.append(sma_data)</span><br><span class="line">    features.append(wma_data)</span><br><span class="line">    features.append(mom_data)</span><br><span class="line">    x_train.append(features)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 对今天的交易进行打标签，涨则标记1，跌则标记-1</span></span><br><span class="line">    <span class="keyword">if</span> close_pri[index-1] &lt; close_pri[index]:</span><br><span class="line">        label = 1</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        label = -1</span><br><span class="line">    y_train.append(label)</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h2 id="SVM调参"><a href="#SVM调参" class="headerlink" title="SVM调参"></a>SVM调参</h2><p>原本计划以此为例，测试一下不同的参数得到的分类结果，最终会对预测模型的泛化能力产生什么样的影响，这里改成参数sklearn中svm分类算法的参数简介了。</p>
+<p>首先来看一下sklearn中对svm分类问题给出的<strong>目标函数/loss</strong></p>
+<p><code>sklearn</code>中给出的svc公式如下，对比上篇文章的式（18），可以发现，这里的参数<strong>$C$是式（18）的倒数</strong>：</p>
+<script type="math/tex; mode=display">\min_{w,b,\zeta} \frac{1}{2}w^Tw+C\sum_{i=1}^{n} \zeta_i 
+\\ subject to y_i(w^T\phi(x_i)+b) \ge 1-\zeta_i, 
+\\ \zeta_i \ge 0, i=1,...n</script><p>这里理解起来类似于反演问题的<strong>正则化方法</strong>，整个目标函数可以看作是一个<strong>罚函数/penalty function</strong>，C可以看作是<strong>惩罚因子</strong>。那么，C越大，表示要求惩罚项越小，the vise versa，这里则表示分类越准确，距离是不是最大的稍微有那么一丢丢不那么重要。可以想象如果C是正无穷，则分类准确才是最最重要的，gutter的宽度已经不重要了，这时的模型必然会过拟合。<br>这么一来，还需要分析的参数只有<strong>核函数的参数</strong>了。<br>sklearn官方的参数如下（额，这么多，，），下面挑几个重要的来看一下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SVC(C=1.0, cache_size=200, class_weight=None, coef0=0.0,</span><br><span class="line">  decision_function_shape=<span class="string">'ovr'</span>, degree=3, gamma=<span class="string">'auto'</span>, kernel=<span class="string">'rbf'</span>,</span><br><span class="line">  max_iter=-1, probability=False, random_state=None, shrinking=True,</span><br><span class="line">  tol=0.001, verbose=False)</span><br></pre></td></tr></table></figure></p>
+<p><code>decision_function_shape</code>：‘ovo’ OR ‘ovr’，对于多分类问题，ovo表示两两做分类，ovr表示，其中一个类和其他所有做分类<br><code>degree</code>：就是多项式核函数里面的degree了<br><code>max_iter</code>：最大迭代次数，针对SMO算法<br><code>tol</code>：迭代总会有终止条件的<br><code>gamma</code>：rbf核函数的参数，gamma越大，表示精度越高，因为高斯函数会越高瘦嘛；过拟合也就越严重了，therefore，如果高斯核都搞不定的分类，那就别用svm了吧</p>
+<h2 id="安装ta-lib"><a href="#安装ta-lib" class="headerlink" title="安装ta-lib"></a>安装ta-lib</h2><blockquote>
+<p>安装ta-lib时遇到一点点坑，记录一下。</p>
+</blockquote>
+<p>按照官方<a href="https://mrjbq7.github.io/ta-lib/install.html" target="_blank" rel="noopener">ta-lib</a>的方法先安装依赖：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz</span><br><span class="line">tar -vxf ta-lib-0.4.0-src.tar.gz</span><br><span class="line"><span class="built_in">cd</span> ta-lib/</span><br><span class="line">./configure --prefix=/usr  <span class="comment"># 此处是选取lib文件存放位置</span></span><br></pre></td></tr></table></figure></p>
+<p>试一下：<code>ipython3</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">In [1]: import talib</span><br><span class="line">In [2]:</span><br></pre></td></tr></table></figure></p>
+<p>如果导入模块报错：<code>libta_lib.so.0: cannot open shared object file: No such file or directory</code>，则考虑是<code>/usr/lib/</code>下的的库文件没有被加载到系统环境变量内，导致导入模块的时候没有找到库文件<code>libta_lib.so.0</code>，添加环境变量即可：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib'</span> &gt;&gt; ~/.bashrc</span><br></pre></td></tr></table></figure></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>实现了用svm做二分类来预测上证指数</li>
+<li>对sklearn的SVC参数做了一定的分析</li>
+<li>ta-lib这个模块在CentOS上安装时可能出现一些问题</li>
+</ol>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol>
+<li><a href="https://www.joinquant.com/view/community/detail/6170c300d0aa8eb1aa3966a3b3d78d8e" target="_blank" rel="noopener">优矿SVM教程</a></li>
+<li><a href="https://scikit-learn.org/stable/auto_examples/svm/plot_rbf_parameters.html" target="_blank" rel="noopener">sklearn-SVM参数说明</a></li>
+<li></li>
+</ol>
+
+      
+    </div>
+
+    
+      
+      
+
+  <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="https://kiddie92.github.io">Mun*</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="https://kiddie92.github.io/2019/05/19/SVM调参之股票预测/">https://kiddie92.github.io/2019/05/19/SVM调参之股票预测/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span>
+      
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用4.0国际许可协议</a>
+    </p>
+  </div>
+
+
+
+      
+      
+  <div class="post-reward">
+    <input type="checkbox" name="reward" id="reward" hidden>
+    <label class="reward-button" for="reward">赞赏支持</label>
+    <div class="qr-code">
+      
+      
+        <label class="qr-code-image" for="reward">
+          <img class="image" src="/images/reward/wechat.png" title="微信打赏">
+        </label>
+      
+      
+        <label class="qr-code-image" for="reward">
+          <img class="image" src="/images/reward/alipay.png" title="支付宝打赏">
+        </label>
+      
+    </div>
+  </div>
+
+    
+
+    
+      <footer class="post-footer">
+        
+          <div class="post-tags">
+            
+              <a href="/tags/算法/">算法</a>
+            
+              <a href="/tags/人工智能/">人工智能</a>
+            
+              <a href="/tags/机器学习，quant/">机器学习，quant</a>
+            
+          </div>
+        
+        
+        
+  <nav class="post-nav">
+    
+    
+      <a class="next" href="/2019/05/19/k8s-对外服务之ingress/">
+        <span class="next-text nav-default">k8s 对外服务之ingress</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+
+      </footer>
+    
+
+  </article>
+
+
+          </div>
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:kiddiezzh@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+        
+          <a href="https://twitter.com/kiddiezzh" class="iconfont icon-twitter" title="twitter"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/kiddie92" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+    
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2018 - 
+    
+    2019
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Mun*</span>
+  </span>
+</div>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+  
+  <script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'https://kiddie92.github.io/2019/05/19/SVM调参之股票预测/';
+        this.page.identifier = '2019/05/19/SVM调参之股票预测/';
+        this.page.title = 'SVM调参之股票预测';
+    };
+    (function() {
+    var d = document, s = d.createElement('script');
+
+    s.src = '//https-kiddie92-github-io.disqus.com/embed.js';
+
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();  
+  </script>
+
+  
+
+  
+
+
+
+    
+  
+
+
+
+  
+  
+
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/pjax/jquery.pjax.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/nprogress/nprogress.min.js"></script>
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.10.2"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+  </body>
+</html>
