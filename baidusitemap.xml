@@ -2,7 +2,10 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://kiddie92.github.io/2019/05/19/SVM%E8%B0%83%E5%8F%82%E4%B9%8B%E8%82%A1%E7%A5%A8%E9%A2%84%E6%B5%8B/</loc>
-    <lastmod>2019-06-03</lastmod>
+    <lastmod>2019-06-06</lastmod>
+  </url>  <url>
+    <loc>https://kiddie92.github.io/2019/03/17/%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95-%E7%89%9B%E9%A1%BF%E8%BF%AD%E4%BB%A3%E6%B3%95/</loc>
+    <lastmod>2019-06-06</lastmod>
   </url>  <url>
     <loc>https://kiddie92.github.io/2019/06/03/k8s-%E5%AF%B9%E5%A4%96%E6%9C%8D%E5%8A%A1%E4%B9%8Bingress/</loc>
     <lastmod>2019-06-03</lastmod>
@@ -21,9 +24,6 @@
   </url>  <url>
     <loc>https://kiddie92.github.io/2019/03/06/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B9%8BBatch-Normalization%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9AHow%EF%BC%9F/</loc>
     <lastmod>2019-05-12</lastmod>
-  </url>  <url>
-    <loc>https://kiddie92.github.io/2019/03/17/%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95-%E7%89%9B%E9%A1%BF%E8%BF%AD%E4%BB%A3%E6%B3%95/</loc>
-    <lastmod>2019-03-25</lastmod>
   </url>  <url>
     <loc>https://kiddie92.github.io/2019/03/11/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B9%8BPython%E7%88%AC%E8%99%AB%E5%AE%9E%E9%AA%8C/</loc>
     <lastmod>2019-03-17</lastmod>
