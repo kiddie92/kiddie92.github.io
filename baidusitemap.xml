@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://kiddie92.github.io/2019/04/25/kubernetes%E7%BD%91%E7%BB%9C%E5%92%8CCNI%E7%AE%80%E4%BB%8B/</loc>
+    <lastmod>2019-06-07</lastmod>
+  </url>  <url>
     <loc>https://kiddie92.github.io/2019/05/19/SVM%E8%B0%83%E5%8F%82%E4%B9%8B%E8%82%A1%E7%A5%A8%E9%A2%84%E6%B5%8B/</loc>
     <lastmod>2019-06-06</lastmod>
   </url>  <url>
@@ -18,9 +21,6 @@
   </url>  <url>
     <loc>https://kiddie92.github.io/2019/03/25/CNN%E7%BD%91%E7%BB%9C%E5%8F%82%E6%95%B0%E7%9A%84%E8%AE%A1%E7%AE%97/</loc>
     <lastmod>2019-05-19</lastmod>
-  </url>  <url>
-    <loc>https://kiddie92.github.io/2019/04/25/kubernetes%E7%BD%91%E7%BB%9C%E5%92%8CCNI%E7%AE%80%E4%BB%8B/</loc>
-    <lastmod>2019-05-12</lastmod>
   </url>  <url>
     <loc>https://kiddie92.github.io/2019/03/06/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B9%8BBatch-Normalization%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9AHow%EF%BC%9F/</loc>
     <lastmod>2019-05-12</lastmod>

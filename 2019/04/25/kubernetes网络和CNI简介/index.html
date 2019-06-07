@@ -321,7 +321,7 @@
 <p>刚开始接触容器的时候，觉得这种设计好奇怪，本来进程间通信挺容易的，如今用namespace做隔离，再想办法让隔离的进程进行网络通信…~_~!! </p>
 </blockquote>
 <h3 id="Pod网络类型"><a href="#Pod网络类型" class="headerlink" title="Pod网络类型"></a>Pod网络类型</h3><p>kubernetes Pod的网络方案有很多，最典型的就是Flannel的三种后端实现方式了（UDP、VxLan、host-gw），讨论这些则主要是在关注容器跨主机通信的问题。而这里主要讨论的则是Pod的内部的网卡如何创建，又如何将网络数据包在宿主机和容器之间传递。</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/13272578-c420cce21800475b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="容器网络类型"></p>
+<p><img src="./Pc1.png" alt="容器网络类型"></p>
 <p>图片来自<a href="https://thenewstack.io/hackers-guide-kubernetes-networking/" target="_blank" rel="noopener">这里</a></p>
 <ol>
 <li>虚拟网桥：创建一个虚拟网卡对（veth pair），一头在容器内，一头在宿主机的root namespace内，并且使用Linux bridge（网桥）或者OpenvSwitch（OVS）来连接两个不同namespace内的网卡对。这样一来，容器内发出的网络数据包，可以通过网桥进入宿主机网络栈，而发往容器的网络数据包也可以经过网桥进入容器。例如，docker项目中的docker0、kubernetes项目中的cni0都是网桥设备。<blockquote>

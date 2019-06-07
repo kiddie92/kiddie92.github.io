@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://kiddie92.github.io/2019/04/25/kubernetes%E7%BD%91%E7%BB%9C%E5%92%8CCNI%E7%AE%80%E4%BB%8B/</loc>
+    
+    <lastmod>2019-06-07T13:14:20.168Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://kiddie92.github.io/2019/05/19/SVM%E8%B0%83%E5%8F%82%E4%B9%8B%E8%82%A1%E7%A5%A8%E9%A2%84%E6%B5%8B/</loc>
     
     <lastmod>2019-06-06T14:34:00.763Z</lastmod>
@@ -47,13 +54,6 @@
     <loc>https://kiddie92.github.io/about/index.html</loc>
     
     <lastmod>2019-05-13T14:59:36.256Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kiddie92.github.io/2019/04/25/kubernetes%E7%BD%91%E7%BB%9C%E5%92%8CCNI%E7%AE%80%E4%BB%8B/</loc>
-    
-    <lastmod>2019-05-12T12:51:35.392Z</lastmod>
     
   </url>
   
