@@ -57,9 +57,9 @@
     
       <category term="算法" scheme="https://kiddie92.github.io/tags/%E7%AE%97%E6%B3%95/"/>
     
-      <category term="机器学习" scheme="https://kiddie92.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-    
       <category term="人工智能" scheme="https://kiddie92.github.io/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
+    
+      <category term="机器学习" scheme="https://kiddie92.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
       <category term="quant" scheme="https://kiddie92.github.io/tags/quant/"/>
     
@@ -90,9 +90,9 @@
     
       <category term="算法" scheme="https://kiddie92.github.io/tags/%E7%AE%97%E6%B3%95/"/>
     
-      <category term="机器学习" scheme="https://kiddie92.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-    
       <category term="人工智能" scheme="https://kiddie92.github.io/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
+    
+      <category term="机器学习" scheme="https://kiddie92.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
   </entry>
   
@@ -359,9 +359,9 @@
     
       <category term="算法" scheme="https://kiddie92.github.io/tags/%E7%AE%97%E6%B3%95/"/>
     
-      <category term="机器学习" scheme="https://kiddie92.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-    
       <category term="人工智能" scheme="https://kiddie92.github.io/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
+    
+      <category term="机器学习" scheme="https://kiddie92.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
   </entry>
   
@@ -386,9 +386,9 @@
       <category term="机器学习" scheme="https://kiddie92.github.io/categories/tensorflow/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
     
-      <category term="tensorflow" scheme="https://kiddie92.github.io/tags/tensorflow/"/>
-    
       <category term="机器学习" scheme="https://kiddie92.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="tensorflow" scheme="https://kiddie92.github.io/tags/tensorflow/"/>
     
   </entry>
   
@@ -467,9 +467,9 @@
       <category term="经济学原理" scheme="https://kiddie92.github.io/categories/%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%8E%9F%E7%90%86/"/>
     
     
-      <category term="比较优势" scheme="https://kiddie92.github.io/tags/%E6%AF%94%E8%BE%83%E4%BC%98%E5%8A%BF/"/>
-    
       <category term="金融知识" scheme="https://kiddie92.github.io/tags/%E9%87%91%E8%9E%8D%E7%9F%A5%E8%AF%86/"/>
+    
+      <category term="比较优势" scheme="https://kiddie92.github.io/tags/%E6%AF%94%E8%BE%83%E4%BC%98%E5%8A%BF/"/>
     
   </entry>
   
@@ -522,9 +522,9 @@
     
       <category term="kubernetes" scheme="https://kiddie92.github.io/tags/kubernetes/"/>
     
-      <category term="机器学习" scheme="https://kiddie92.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-    
       <category term="python" scheme="https://kiddie92.github.io/tags/python/"/>
+    
+      <category term="机器学习" scheme="https://kiddie92.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
       <category term="flask" scheme="https://kiddie92.github.io/tags/flask/"/>
     
@@ -552,11 +552,11 @@
       <category term="经济学原理" scheme="https://kiddie92.github.io/categories/%E7%BB%8F%E6%B5%8E%E5%AD%A6%E5%8E%9F%E7%90%86/"/>
     
     
-      <category term="金融知识" scheme="https://kiddie92.github.io/tags/%E9%87%91%E8%9E%8D%E7%9F%A5%E8%AF%86/"/>
-    
       <category term="数学" scheme="https://kiddie92.github.io/tags/%E6%95%B0%E5%AD%A6/"/>
     
       <category term="囚徒困境" scheme="https://kiddie92.github.io/tags/%E5%9B%9A%E5%BE%92%E5%9B%B0%E5%A2%83/"/>
+    
+      <category term="金融知识" scheme="https://kiddie92.github.io/tags/%E9%87%91%E8%9E%8D%E7%9F%A5%E8%AF%86/"/>
     
   </entry>
   
