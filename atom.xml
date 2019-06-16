@@ -46,16 +46,31 @@
   </entry>
   
   <entry>
-    <title>Matrix Factorization简介</title>
+    <title>基于矩阵分解的推荐算法</title>
     <link href="https://kiddie92.github.io/2019/06/10/Matrix-Factorization%E7%AE%80%E4%BB%8B/"/>
     <id>https://kiddie92.github.io/2019/06/10/Matrix-Factorization简介/</id>
     <published>2019-06-10T12:59:56.000Z</published>
-    <updated>2019-06-10T12:59:56.084Z</updated>
+    <updated>2019-06-16T09:18:18.597Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>Matrix Factorization算法是推荐系统（Recommendation System）的基础，本篇文章仅介绍一下基于<strong>矩阵分解</strong>的推荐系统是如何工作的以及Matrix Factorization算法，最后给出一个算法示例。内容比较浅显，深入算法原理还需要阅读更多的论文和资料。<br><a id="more"></a></p></blockquote><h2 id="推荐系统"><a href="#推荐系统" class="headerlink" title="推荐系统"></a>推荐系统</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>推荐系统是信息过滤系统的子集，系统任务便是预测用户接下来<strong>更可能</strong>想要查看的内容，也就是将特定的信息过滤出来提交给用户。这类算法主要应用于商业应用，比如：歌曲推荐、视频推荐、新闻推荐等。<br>推荐系统可以由很多算法实现，而基于用户/基于商品的Collaborative filtering是比较简单直接的。</p><h3 id="数据源"><a href="#数据源" class="headerlink" title="数据源"></a>数据源</h3><p><em>举个线下的例子：</em><br>抛开算法，可以先思考一下，超市的售货员阿姨是怎么给你推荐商品的呢？<br>你是学生吗？买回去给谁用？需要买什么价位的？这类问题经常被问及…然后，售货员便根据<strong>用户信息</strong>来推荐你可能需要的商品了：我们这有xxx，价格xxx，好多学生都买…售货员的信息则是从大量的市场调研/工作经验中学习到的<strong>商品信息</strong>。</p><p>所以，一个推荐系统应该会同时包含<code>用户信息</code>和<code>商品信息</code>，回到线上，当很多用户在某个视频网站上观看电影后，会对电影打个分，除此之外，用户还有年龄、性别、行业、家庭关系等很多信息，这些都是<code>用户信息</code>；而视频本身也有自己的分类，比如：喜剧、动作等，此外还有票房、受众人群等信息，这些便组成了<code>商品信息</code>。</p><p>在推荐系统中，这些信息交织在一起，存放于一个大矩阵中，内容为用户对于每一个商品的评价打分，如下图所示（图片来自<a href="https://en.wikipedia.org/wiki/Collaborative_filtering" target="_blank" rel="noopener">维基百科</a>）：</p><p><img src="./300px-Collaborative_filtering.gif" alt="Collaborative_filtering"></p><p>需要注意的是，很多人是不点赞、不评论甚至对某些商品完全没有听说过，所以这个<strong>数据矩阵是一个巨大的稀疏矩阵</strong>，里面很多空白。将这些评价量化后，便得到一个<code>数据源矩阵</code>了。而<code>推荐系统</code>要做的便是从该矩阵中<strong>提取信息</strong>，为用户/新用户提供items推荐服务。</p><blockquote><p>至此，应该了解到：<br>1.推荐系统基于大量的用户数据；2.数据是一个大型的稀疏矩阵，每一行/列表示某一用户（user）对所有商品（item）的打分信息，中间有很多很多空白处待填写。</p></blockquote><h3 id="算法策略"><a href="#算法策略" class="headerlink" title="算法策略"></a>算法策略</h3><p>有了<code>数据源矩阵</code>之后，接下来要做的就是在矩阵空白的地方填写数字了，数字代表用户对某一个item的喜好程度，从而推荐用户可能打分比较高的item；如何在空白处填上合理的数字是<strong>基于矩阵分解</strong>方法的核心。下图示意了算法：$tag$</p><p><img src="./An-example-of-matrix-factorization.png" alt="基于矩阵分解算法"></p><p>图片来自<a href="https://www.researchgate.net/figure/An-example-of-matrix-factorization_fig1_314071424" target="_blank" rel="noopener">这里</a></p><p>如上图所示，将<code>数据源矩阵</code>分解成<code>用户矩阵</code><script type="math/tex">W_{u \times k}</script>和<code>商品矩阵</code><script type="math/tex">W_{k \times I}</script>，得到了用户A对每一个feature的喜好程度；又有每一个item对每一个feature的权重/偏置。那就可以重新构建一个新的没有空白的数据矩阵了，也就是将原来的空白地方进行了填充。但是这里还需要一个约束，根据<strong>用户矩阵</strong>和<strong>item矩阵</strong>计算得到的<strong>新的被填满</strong>的<code>数据矩阵</code>和原来有很多空白的<code>数据源矩阵</code>一定要基本一致（原有数据不能失真）。</p><blockquote><p>需要注意的是，feature的数量k一般是少于user和itme数量的，所以最终如果仅存储<strong>用户矩阵</strong>和<strong>item矩阵</strong>，那会比存储<strong>数据源矩阵</strong>要节省很多存储空间。</p></blockquote><h2 id="Matrix-Factorization"><a href="#Matrix-Factorization" class="headerlink" title="Matrix Factorization"></a>Matrix Factorization</h2><p>现在目标就很明确了，将大型稀疏矩阵分解成两个小矩阵，一个是user矩阵，一个是item矩阵。</p><blockquote><p>矩阵分解算法有很多，使用场景也不相同，例如：QR分解在进行迭代计算时常常被使用；SVD分解在进行矩阵降维度，数据去燥方面用的比较多</p></blockquote><h3 id="算法原理和步骤"><a href="#算法原理和步骤" class="headerlink" title="算法原理和步骤"></a>算法原理和步骤</h3><p>目标：</p><script type="math/tex; mode=display">\bf D_{U \times I} \approx User_{u \times k} \times Item_{k \times I} = \hat D_{U \times I}</script><p>理论上，应该有类似QR、SVD分解这样的方法，去直接求解上式，考虑到上式是一个大型稀疏矩阵，常见的做法是直接使用<strong>梯度下降优化算法</strong>：</p><ol><li>给定初始值：矩阵U和I，设定迭代次数和误差范围；</li><li>计算<script type="math/tex">User_{u \times k} \times Item_{k \times I} = \hat D_{U \times I}</script></li><li>计算二范数距离<script type="math/tex">|| D_{U \times I}- \hat D_{U \times I}||_2=e^2</script>，这里加上正则化项也是极好的；</li><li>计算梯度<script type="math/tex">\frac {\partial e^2}{\partial U}</script> 以及 <script type="math/tex">\frac {\partial e^2}{\partial I}</script></li><li>更新参数<script type="math/tex">U'=U+\alpha \cdot \frac {\partial e^2}{\partial U}</script>以及<script type="math/tex">I'=I+\alpha \cdot \frac {\partial e^2}{\partial I}</script></li></ol><h3 id="python示例"><a href="#python示例" class="headerlink" title="python示例"></a>python示例</h3><p>点击<a href="https://nbviewer.jupyter.org/github/albertauyeung/matrix-factorization-in-python/blob/master/mf.ipynb" target="_blank" rel="noopener">这里</a>即可查看，或者<a href="https://github.com/kiddie92/Learning_Tech/tree/master/Matrix_Factorization" target="_blank" rel="noopener">这里</a>。</p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol><li>为用户生成推荐内容；</li><li>Matrix Factorization可以节省存储空间；</li><li>最重要的是数据处理。</li></ol><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol><li>Covington, P., Adams, J., &amp; Sargin, E. (2016, September). Deep neural networks for youtube recommendations. In Proceedings of the 10th ACM conference on recommender systems (pp. 191-198). ACM.</li><li><a href="http://www.albertauyeung.com/post/python-matrix-factorization/" target="_blank" rel="noopener">http://www.albertauyeung.com/post/python-matrix-factorization/</a></li><li>Thai-Nghe, N., Nhut-Tu, M., &amp; Nguyen, H. H. (2017, April). An Approach for Multi-Relational Data Context in Recommender Systems. In Asian Conference on Intelligent Information and Database Systems (pp. 709-720). Springer, Cham.</li><li><a href="https://www.youtube.com/watch?v=ZspR5PZemcs&amp;list=LLoCiddVQCg9ZvZoEa5d5wYw&amp;index=23&amp;t=4s" target="_blank" rel="noopener">https://www.youtube.com/watch?v=ZspR5PZemcs&amp;list=LLoCiddVQCg9ZvZoEa5d5wYw&amp;index=23&amp;t=4s</a></li><li><a href="https://www.youtube.com/watch?v=o8PiWO8C3zs" target="_blank" rel="noopener">https://www.youtube.com/watch?v=o8PiWO8C3zs</a></li></ol>]]></content>
     
     <summary type="html">
     
+      &lt;blockquote&gt;
+&lt;p&gt;Matrix Factorization算法是推荐系统（Recommendation System）的基础，本篇文章仅介绍一下基于&lt;strong&gt;矩阵分解&lt;/strong&gt;的推荐系统是如何工作的以及Matrix Factorization算法，最后给出一个算法示例。内容比较浅显，深入算法原理还需要阅读更多的论文和资料。&lt;br&gt;
+    
     </summary>
     
+      <category term="人工智能" scheme="https://kiddie92.github.io/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
+    
+    
+      <category term="算法" scheme="https://kiddie92.github.io/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="推荐系统" scheme="https://kiddie92.github.io/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/"/>
+    
+      <category term="机器学习" scheme="https://kiddie92.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="人工智能" scheme="https://kiddie92.github.io/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
     
   </entry>
   
@@ -119,9 +134,9 @@
     
       <category term="算法" scheme="https://kiddie92.github.io/tags/%E7%AE%97%E6%B3%95/"/>
     
-      <category term="人工智能" scheme="https://kiddie92.github.io/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
-    
       <category term="机器学习" scheme="https://kiddie92.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="人工智能" scheme="https://kiddie92.github.io/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
     
       <category term="quant" scheme="https://kiddie92.github.io/tags/quant/"/>
     
@@ -148,9 +163,9 @@
     
       <category term="算法" scheme="https://kiddie92.github.io/tags/%E7%AE%97%E6%B3%95/"/>
     
-      <category term="人工智能" scheme="https://kiddie92.github.io/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
-    
       <category term="机器学习" scheme="https://kiddie92.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="人工智能" scheme="https://kiddie92.github.io/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
     
   </entry>
   
@@ -393,9 +408,9 @@
     
       <category term="算法" scheme="https://kiddie92.github.io/tags/%E7%AE%97%E6%B3%95/"/>
     
-      <category term="人工智能" scheme="https://kiddie92.github.io/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
-    
       <category term="机器学习" scheme="https://kiddie92.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="人工智能" scheme="https://kiddie92.github.io/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
     
   </entry>
   
