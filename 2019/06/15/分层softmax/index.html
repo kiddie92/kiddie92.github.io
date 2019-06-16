@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+<meta name="theme-color" content="#f8f5ec">
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+
+  <meta name="description" content="分层softmax">
+
+
+
+
+  <meta name="keywords" content="算法, 深度学习, 人工智能, NLP, Mun*">
+
+
+
+
+
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Mun*">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.10.2">
+
+
+
+<link rel="canonical" href="https://kiddie92.github.io/2019/06/15/分层softmax/">
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css">
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/nprogress/nprogress.min.css">
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.10.2">
+
+
+
+  
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-91728997-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-91728997-1');
+</script>
+
+
+  <script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.1.1/av-min.js"></script>
+  <script id="leancloud">
+    AV.init({
+      appId: "n8MGlOWz83zS9G0m0PGinErj-gzGzoHsz",
+      appKey: "bSOcrmi2W53fTzNXQA3UQ2z3"
+    });
+  </script>
+
+
+
+
+
+<script>
+  window.config = {"leancloud":{"app_id":"n8MGlOWz83zS9G0m0PGinErj-gzGzoHsz","app_key":"bSOcrmi2W53fTzNXQA3UQ2z3"},"toc":true,"fancybox":true,"pjax":true};
+</script>
+
+    <title> 分层softmax - Mun* </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="mobile-header-logo">
+    <a href="/." class="logo">Mun*</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            首页
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            归档
+          
+        </li>
+      </a>
+    
+      <a href="/tags">
+        <li class="mobile-menu-item">
+          
+          
+            标签
+          
+        </li>
+      </a>
+    
+      <a href="/categories">
+        <li class="mobile-menu-item">
+          
+          
+            分类
+          
+        </li>
+      </a>
+    
+      <a href="/Open-source">
+        <li class="mobile-menu-item">
+          
+          
+            开源项目
+          
+        </li>
+      </a>
+    
+      <a href="/links">
+        <li class="mobile-menu-item">
+          
+          
+            链接
+          
+        </li>
+      </a>
+    
+      <a href="/about">
+        <li class="mobile-menu-item">
+          
+          
+            关于
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Mun*</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              首页
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              归档
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/tags">
+            
+            
+              标签
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/categories">
+            
+            
+              分类
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/Open-source">
+            
+            
+              开源项目
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/links">
+            
+            
+              链接
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/about">
+            
+            
+              关于
+            
+          </a>
+        </li>
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          分层softmax
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-06-15
+        </span>
+        
+          <span class="post-category">
+            
+              <a href="/categories/人工智能/">人工智能</a>
+            
+          </span>
+        
+        
+        <span class="post-visits" data-url="/2019/06/15/分层softmax/" data-title="分层softmax">
+          阅读次数 0
+        </span>
+        
+      </div>
+    </header>
+
+    
+    
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Huffman-Tree"><span class="toc-text">Huffman Tree</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#softmax-in-word2vec"><span class="toc-text">softmax in word2vec</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hierarchical-Softmax-in-word2vec"><span class="toc-text">Hierarchical Softmax in word2vec</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-text">Reference</span></a></li></ol>
+    </div>
+  </div>
+
+
+
+    <div class="post-content">
+      
+        <blockquote>
+<p>入坑自然语言处理，论文<a href="https://arxiv.org/pdf/1411.2738.pdf" target="_blank" rel="noopener">word2vec Parameter Learning Explained</a>基本是必读的，这篇论文中的<strong>Hierarchical Softmax</strong>，中文叫做分层softmax/层次softmax是比较让人头大的内容，这篇博文试图阐述Hierarchical Softmax算法在word2vec中的应用。<br><a id="more"></a></p>
+</blockquote>
+<h2 id="Huffman-Tree"><a href="#Huffman-Tree" class="headerlink" title="Huffman Tree"></a>Huffman Tree</h2><p>中文名叫霍夫曼树/霍夫曼编码，是个二叉树（注意<strong>不是</strong>二叉搜索树），这部分内容比较简单，<a href="https://zh.wikipedia.org/wiki/%E9%9C%8D%E5%A4%AB%E6%9B%BC%E7%BC%96%E7%A0%81" target="_blank" rel="noopener">维基百科</a>上也说的非常清楚，<strong>下面搬运一下维基百科上的例子</strong>：<br><strong>示例：</strong><br>霍夫曼树常处理符号编写工作。根据整组数据中符号出现的频率高低，决定如何给符号编码。<strong>如果符号出现的频率越高，则给符号的码越短，相反符号的号码越长</strong>。假设我们要给一个英文单字”F O R G E T”进行霍夫曼编码，而每个英文字母出现的频率分别列在Fig.1。<br><img src="./TABLE1.JPG" alt="Alt text"></p>
+<p><strong>演算过程：</strong> </p>
+<p>（一）进行霍夫曼编码前，我们先创建一个霍夫曼树。</p>
+<ol>
+<li>将每个英文字母依照出现频率由小排到大，最小在左，如Fig.1。</li>
+<li>每个字母都代表一个终端节点（叶节点），比较F.O.R.G.E.T六个字母中每个字母的出现频率，将最小的两个字母频率相加合成一个新的节点。如Fig.2所示，发现F与O的频率最小，故相加2+3=5。</li>
+<li>比较5.R.G.E.T，发现R与G的频率最小，故相加4+4=8。</li>
+<li>比较5.8.E.T，发现5与E的频率最小，故相加5+5=10。</li>
+<li>比较8.10.T，发现8与T的频率最小，故相加8+7=15。</li>
+<li>最后剩10.15，没有可以比较的对象，相加10+15=25。</li>
+</ol>
+<p>最后产生的树状图就是霍夫曼树，参考Fig.2。<br><img src="./Huffman_algorithm.gif" alt="Huffman_algorithm"></p>
+<p>（二）进行编码</p>
+<ol>
+<li>给霍夫曼树的所有左链接’0’与右链接’1’。</li>
+<li>从树根至树叶依序记录所有字母的编码，如Fig.3。<br><img src="./TABLE8.JPG" alt="Alt text"></li>
+</ol>
+<blockquote>
+<p>以上便是Huffman Tree的主要内容，在word2vec算法中，这个方法是用来<strong>替代softmax层</strong>来减少计算量的。至此，需要了解到的信息有以下几点：<br>1.最后树的输出FOERGT是不要特定排序的，排列成FORGET也是可以的，就是画图不是很方便；<br>2.在word2vec中，这里的字母就是单词了，如果单词出现的频率越高，则给单词的码越短（离根节点越近），相反单词的号码越长；<br>3.构建Huffman Tree的中间节点（5, 8, 10, 15, 25）的个数是<strong>字典中单词个数减1</strong></p>
+</blockquote>
+<h2 id="softmax-in-word2vec"><a href="#softmax-in-word2vec" class="headerlink" title="softmax in word2vec"></a>softmax in word2vec</h2><p>word2vec Parameter Learning Explained这篇论文中介绍了 Continuous Bag-of-Word Model（连续词袋模型）和skip-gram model（跳字模型），分别对应了词向量的两种训练方法：利用context预测中心词以及利用中心词去预测context。对于连续词袋模型（CBOW）来说，一般的做法（如下图所示）是先对每个单词进行one-of-N编码（one-hot encoded），作为训练网络的输入，接着构建一层hidden layer，最后构建输出层，这一层是一个softmax层，每个context单词到中心单词的事件都被认为是<strong>独立的</strong>，所以将这些事件发生的<strong>概率相乘</strong>，最后构建损失函数，即：将输出概率分布和实际选中的词概率分布进行Corss Entropy计算，接下来使用SGD对参数进行更新。这里，hidden layer的训练结果就是最终的<code>word vector</code>了。</p>
+<blockquote>
+<p>需要注意的是：对于任意的单词，Input layer和Hidden Layer之间的权重矩阵W是参数共享的</p>
+</blockquote>
+<p><img src="./CBOW.png" alt="Continuous Bag-of-Word Model"></p>
+<p>上述方法看起来是没毛病的，问题是计算量有点大，尤其是进行反向传播更新参数的时候$t$：</p>
+<script type="math/tex; mode=display">\frac {\partial \log P(\left. w_c,   \right |w_{o_1},w_{o_2},...,w_{o_{2m}})}{\partial v_{o_i}} =\frac {1}{2m}( \vec u_c - \sum_{j \in V}P(\left. w_j \right |w_c)\vec u_j )  \tag {1}</script><p>式（1）说明，参数更新的时候，对于每一个单词每一次迭代都<strong>至少</strong>有<script type="math/tex">O|V|</script>的计算量，如此大的计算量是由于softmax引用了词典中的所有单词。</p>
+<p>在skip-gram模型中也是一样的：</p>
+<script type="math/tex; mode=display">\frac {\partial \log P(\left. w_o \right |w_c)}{\partial v_c} = \vec u_o - \sum_{j \in V}P(\left. w_j \right |w_c)\vec u_j</script><blockquote>
+<p>至此应该了解到：<br>1.浅层的网络就可以学习出来词向量；<br>2.W矩阵对于不同的单词是参数共享的，单词顺序发生变化的时候是不影响结果的；<br>3.参数更新时的计算量非常大。</p>
+</blockquote>
+<h2 id="Hierarchical-Softmax-in-word2vec"><a href="#Hierarchical-Softmax-in-word2vec" class="headerlink" title="Hierarchical Softmax in word2vec"></a>Hierarchical Softmax in word2vec</h2><p>为了减少计算量，作者提出了两种近似计算方法，第一种叫做<code>Negative Sampling</code>（负采样），该方法就是对词典中的特定属性的单词进行特定分布的采样，将计算的数据量降低了（详见论文）；第二种就是<code>Hierarchical Softmax</code>（分层softmax/层次softmax），该方法将<code>softmax层</code>替换成了<code>分层softmax层</code>。<br><code>分层softmax</code>的计算过程如下图所示：</p>
+<p><img src="./hierarchical_softmax1.png" alt="hierarchical_softmax"><br>图片来自<a href="https://learning.oreilly.com/library/view/python-natural-language/9781787121423/a63263c0-bd79-4c15-88d0-8898186e03a5.xhtml" target="_blank" rel="noopener">这里</a></p>
+<p>从图中可以看出，hidden layer到output layer的连接原本是一个简单的softmax，有<strong>V个神经元</strong>和所有的hidden layer两两连接，现在变成了一个树，有<strong>V-1个神经元</strong>和所有的hidden layer两两连接。计算概率的方法也发生了变化：</p>
+<script type="math/tex; mode=display">P(w|w_i)=\prod_{j=1}^{L(w)-1} \sigma ([n(w,j+1) = left\_child(n(w,j)] \cdot \vec U^T_{n(w,j) } \vec V_i) \tag {2}</script><p>其中，当<script type="math/tex">n(w,j+1) = left\_child(n(w,j)</script>时，中括号内为1，否则为-1，这是用到了一个sigmoid函数的小trick：<script type="math/tex">1-\sigma (x)=\sigma(-x)</script>。所以式（2）的意思就是从根节点到目标单词，有且仅有一条路径可以到达，在这条路径上往左走的概率是<script type="math/tex">\sigma(\vec U^T_{n(w,j) } \vec V_i)</script>，往右走的概论自然就是<script type="math/tex">\sigma(-\vec U^T_{n(w,j) } \vec V_i)</script>，<a href="https://kiddie92.github.io/2019/06/09/Logistic-Regression/">逻辑回归</a>那篇也介绍过，sigmoid函数是用来做二分类的，在这里正好合适；当路径上的所有二分类的概率都连乘后，得到的就是预测单词的概率，可以证明，词典中所有单词被预测到的概率和为1。这也是这个方法被叫做分层softmax的原因了。</p>
+<p>如此一来，计算某个单词被预测的概率就仅仅和该单词到hidden layer的神经元连接的唯一路径相关了，更新参数的时候计算量一下子降到了O(log(V))。</p>
+<blockquote>
+<p>仔细想一下，<code>Hierarchical Softmax</code>和<code>CNN</code>的思想其实有点类似，把原本的全连接变成了部分的特定连接。</p>
+</blockquote>
+<p>关于这方面的源码编写可以参考<a href="http://www.trevorsimonton.com/blog/2016/12/15/huffman-tree-in-word2vec.html" target="_blank" rel="noopener">这个美国老哥的博客</a>。</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol>
+<li>Rong, X. (2014). word2vec parameter learning explained. arXiv preprint arXiv:1411.2738.</li>
+<li>Morin, F., &amp; Bengio, Y. (2005, January). Hierarchical probabilistic neural network language model. In Aistats (Vol. 5, pp. 246-252).</li>
+<li><a href="https://www.youtube.com/watch?v=C4X0Cb5_FSo&amp;list=PLLbeS1kM6teJqdFzw1ICHfa4a1y0hg8Ax&amp;index=17&amp;t=0s" target="_blank" rel="noopener">https://www.youtube.com/watch?v=C4X0Cb5_FSo&amp;list=PLLbeS1kM6teJqdFzw1ICHfa4a1y0hg8Ax&amp;index=17&amp;t=0s</a></li>
+<li><a href="https://learning.oreilly.com/library/view/python-natural-language/9781787121423/a63263c0-bd79-4c15-88d0-8898186e03a5.xhtml" target="_blank" rel="noopener">https://learning.oreilly.com/library/view/python-natural-language/9781787121423/a63263c0-bd79-4c15-88d0-8898186e03a5.xhtml</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/35074402" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/35074402</a></li>
+<li><a href="http://www.trevorsimonton.com/blog/2016/12/15/huffman-tree-in-word2vec.html" target="_blank" rel="noopener">http://www.trevorsimonton.com/blog/2016/12/15/huffman-tree-in-word2vec.html</a></li>
+<li><a href="https://www.quora.com/What-is-hierarchical-softmax" target="_blank" rel="noopener">https://www.quora.com/What-is-hierarchical-softmax</a></li>
+</ol>
+
+      
+    </div>
+
+    
+      
+      
+
+  <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="https://kiddie92.github.io">Mun*</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="https://kiddie92.github.io/2019/06/15/分层softmax/">https://kiddie92.github.io/2019/06/15/分层softmax/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span>
+      
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用4.0国际许可协议</a>
+    </p>
+  </div>
+
+
+
+      
+      
+  <div class="post-reward">
+    <input type="checkbox" name="reward" id="reward" hidden>
+    <label class="reward-button" for="reward">赞赏支持</label>
+    <div class="qr-code">
+      
+      
+        <label class="qr-code-image" for="reward">
+          <img class="image" src="/images/reward/wechat.png" title="微信打赏">
+        </label>
+      
+      
+        <label class="qr-code-image" for="reward">
+          <img class="image" src="/images/reward/alipay.png" title="支付宝打赏">
+        </label>
+      
+    </div>
+  </div>
+
+    
+
+    
+      <footer class="post-footer">
+        
+          <div class="post-tags">
+            
+              <a href="/tags/算法/">算法</a>
+            
+              <a href="/tags/深度学习/">深度学习</a>
+            
+              <a href="/tags/人工智能/">人工智能</a>
+            
+              <a href="/tags/NLP/">NLP</a>
+            
+          </div>
+        
+        
+        
+  <nav class="post-nav">
+    
+    
+      <a class="next" href="/2019/06/10/Matrix-Factorization简介/">
+        <span class="next-text nav-default">Matrix Factorization简介</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+
+      </footer>
+    
+
+  </article>
+
+
+          </div>
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:kiddiezzh@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+        
+          <a href="https://twitter.com/kiddiezzh" class="iconfont icon-twitter" title="twitter"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/kiddie92" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+    
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2018 - 
+    
+    2019
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Mun*</span>
+  </span>
+</div>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+  
+  <script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'https://kiddie92.github.io/2019/06/15/分层softmax/';
+        this.page.identifier = '2019/06/15/分层softmax/';
+        this.page.title = '分层softmax';
+    };
+    (function() {
+    var d = document, s = d.createElement('script');
+
+    s.src = '//https-kiddie92-github-io.disqus.com/embed.js';
+
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();  
+  </script>
+
+  
+
+  
+
+
+
+    
+  
+
+
+
+  
+  
+
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/pjax/jquery.pjax.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/nprogress/nprogress.min.js"></script>
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.10.2"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+  </body>
+</html>

@@ -161,6 +161,15 @@
         </li>
       </a>
     
+      <a href="/Open-source">
+        <li class="mobile-menu-item">
+          
+          
+            开源项目
+          
+        </li>
+      </a>
+    
       <a href="/links">
         <li class="mobile-menu-item">
           
@@ -228,6 +237,15 @@
         </li>
       
         <li class="menu-item">
+          <a class="menu-item-link" href="/Open-source">
+            
+            
+              开源项目
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
           <a class="menu-item-link" href="/links">
             
             
@@ -271,11 +289,7 @@
         
           <span class="post-category">
             
-              <a href="/categories/算法/">算法</a>
-            
-              <a href="/categories/算法/人工智能/">人工智能</a>
-            
-              <a href="/categories/算法/人工智能/机器学习/">机器学习</a>
+              <a href="/categories/人工智能/">人工智能</a>
             
           </span>
         
@@ -350,9 +364,9 @@
 <script type="math/tex; mode=display">-ln[L(w,b)] = - \sum_n [ \hat y^n \ln{f_{w,b}(x^n)} + (1-\hat y^n) \ln{(1-f_{w,b}(x^n)}) ]  \tag{8}</script><p>式(8)的右边便是<strong>两个二项分布的Cross Entropy</strong>，也就是logistic regression的loss function/object function接下来要做的便是对式(8)进行优化/求最小值。</p>
 <h3 id="交叉熵（Cross-Entropy-and-KL-divergence"><a href="#交叉熵（Cross-Entropy-and-KL-divergence" class="headerlink" title="交叉熵（Cross Entropy and KL-divergence)"></a>交叉熵（Cross Entropy and KL-divergence)</h3><p><code>熵</code>：在信息论中（information theroy）离散概率分布函数的熵为</p>
 <script type="math/tex; mode=display">H(p) = - \sum_i{p_i \log{p_i}} \tag{9}</script><p><code>KL-divergence</code>: 为了衡量两个离散分布函数的相似度，如果使用传统的二范数距离或者向量的夹角距离，显然不合适，这里定义</p>
-<script type="math/tex; mode=display">D_{KL}(\left. p \right |q) = \sum_i{p_i \log{\frac{p_i}{q_i}}}  \tag{10}</script><p>来衡量两个离散分布函数有多接近/相似，<strong>注意</strong><script type="math/tex">D_{KL}(\left. p \right |q) \ne D_{KL}(\left. q \right |p)</script>，当<script type="math/tex">D_{KL}(\left. p \right |q) =0</script>时，<script type="math/tex">p</script>属于<script type="math/tex">q</script>分布。<br><code>Cross Entropy</code>:</p>
+<script type="math/tex; mode=display">D_{KL}(\left. p \right |q) = \sum_i{p_i \log{\frac{p_i}{q_i}}}  \tag{10}</script><p>来衡量两个离散分布函数有多接近/相似，<strong>注意</strong><script type="math/tex">D_{KL}(\left. p \right |q) \ne D_{KL}(\left. q \right |p)</script>，当<script type="math/tex">D_{KL}(\left. p \right |q) =0</script>时，<script type="math/tex">p</script>同<script type="math/tex">q</script>分布。<br><code>Cross Entropy</code>:</p>
 <script type="math/tex; mode=display">H(p,q) = H(p)+D_{KL}(\left. p \right |q)=\sum_i{p_i \log{\frac {1}{q_i}}}= -\sum_i{p_i \log{q_i}} \tag{11}</script><p>所以对应到式(8)中，对于<script type="math/tex">\forall x^n</script>，有：</p>
-<script type="math/tex; mode=display">q=\begin{cases}  \hat y^n,  \space \space \space \space \space \space \space for \space x \in C_1 \\  1-\hat y^n, \space  for \space x \in C_2 \end{cases}, \space \space \space  p=\begin{cases}  f_{w,b}(x^n),  \space \space \space \space \space \space \space for \space x \in C_1 \\  1-f_{w,b}(x^n), \space  for \space x \in C_2 \end{cases} \tag{12}</script><script type="math/tex; mode=display">-ln[L(w,b)] = \sum_n  H(p,q) = \sum_n  H(f(x^n),\hat y^n)  \tag{13}</script><h3 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h3><p>有了多个Corss Entropy求和作为loss，接下来便是对目标函数/损失函数进行求解，求解目标是使该函数取<strong>最小值</strong>，这里可以使用Gradient Descent方法，牛顿迭代法或者其他启发式优化算法理论上也是可以的。</p>
+<script type="math/tex; mode=display">p=\begin{cases}  \hat y^n,  \space \space \space \space \space \space \space for \space x \in C_1 \\  1-\hat y^n, \space  for \space x \in C_2 \end{cases}, \space \space \space  q=\begin{cases}  f_{w,b}(x^n),  \space \space \space \space \space \space \space for \space x \in C_1 \\  1-f_{w,b}(x^n), \space  for \space x \in C_2 \end{cases} \tag{12}</script><script type="math/tex; mode=display">-ln[L(w,b)] = \sum_n  H(p,q) = \sum_n  H(\hat y^n,f(x^n))  \tag{13}</script><h3 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h3><p>有了多个Corss Entropy求和作为loss，接下来便是对目标函数/损失函数进行求解，求解目标是使该函数取<strong>最小值</strong>，这里可以使用Gradient Descent方法，牛顿迭代法或者其他启发式优化算法理论上也是可以的。</p>
 <h3 id="从二分类到多分类"><a href="#从二分类到多分类" class="headerlink" title="从二分类到多分类"></a>从二分类到多分类</h3><p>上面的推导都是基于<code>binary classification</code>的，如果要进行<code>multiple classification</code>，就需要对上面的情况进行扩展了。这里先给出做法（how），关于<code>sigmoid</code>和<code>softmax</code>分析请<strong>继续</strong>往下看。</p>
 <p>首先<script type="math/tex">\vec x</script>不再是只做一次“<script type="math/tex">\vec w \cdot \vec x + b</script>”变换了，而是做<script type="math/tex">n</script>次，<script type="math/tex">n</script>就是需要分类的<strong>类别数</strong>，目标的分布也不再是0-1这样，而是多维的0-1分布，比如：对于三分类问题，<script type="math/tex">x^n \in C_1</script>，则<script type="math/tex">\hat y^n=[1,0,0]</script>，而计算概率的函数也由sigmiod函数转变为softmax函数。</p>
 <p><img src="./图1.png" alt="binary VS multiple classification"></p>
@@ -436,6 +450,12 @@
         
         
   <nav class="post-nav">
+    
+      <a class="prev" href="/2019/06/10/Matrix-Factorization简介/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Matrix Factorization简介</span>
+        <span class="prev-text nav-mobile">上一篇</span>
+      </a>
     
     
       <a class="next" href="/2019/06/03/k8s-对外服务之ingress/">
