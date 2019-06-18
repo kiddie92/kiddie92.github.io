@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://kiddie92.github.io/Open-source/index.html</loc>
+    
+    <lastmod>2019-06-18T09:49:52.499Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://kiddie92.github.io/2019/06/10/Matrix-Factorization%E7%AE%80%E4%BB%8B/</loc>
     
     <lastmod>2019-06-16T09:18:18.597Z</lastmod>
@@ -12,13 +19,6 @@
     <loc>https://kiddie92.github.io/links/index.html</loc>
     
     <lastmod>2019-06-16T04:42:45.894Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kiddie92.github.io/Open-source/index.html</loc>
-    
-    <lastmod>2019-06-16T04:25:09.203Z</lastmod>
     
   </url>
   
