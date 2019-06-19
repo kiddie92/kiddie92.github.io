@@ -330,7 +330,7 @@
 <blockquote>
 <p>其他OSI层也可以做反向代理</p>
 </blockquote>
-<h2 id="ingress"><a href="#ingress" class="headerlink" title="ingress"></a>ingress</h2><p>k8s <strong>对外</strong>暴露服务（service）主要有两种方式：<code>NotePort</code>, <code>LoadBalance</code>， 此外<code>externalIPs</code>也可以使各类service对外提供服务，但是当集群服务很多的时候，NodePort方式最大的缺点是会占用很多集群机器的端口；LB方式最大的缺点则是每个service一个LB又有点浪费和麻烦，并且需要k8s之外的支持； 而ingress则只需要一个NodePort或者一个LB就可以满足所有<code>service</code>对外服务的需求。</p>
+<h2 id="ingress"><a href="#ingress" class="headerlink" title="ingress"></a>ingress</h2><p>k8s <strong>对外</strong>暴露服务（service）主要有两种方式：<code>NotePort</code>, <code>LoadBalance</code>， 此外<code>externalIPs</code>也可以使各类service对外提供服务，但是当集群服务很多的时候，NodePort方式最大的缺点是会占用很多集群机器的端口；LB方式最大的缺点则是每个service一个LB又有点浪费和麻烦，并且需要k8s之外的支持； 而ingress则只需要一个NodePort或者一个LB就可以满足所有<code>service</code>对外服务的需求。<br><img src="./ingress.png" width="60%" height="60%"></p>
 <p>实际上，<code>ingress</code>相当于一个7层的负载均衡器，是k8s对反向代理的一个抽象。大概的工作原理也确实类似于Nginx，可以理解成在 Ingress 里建立一个个映射规则 , <code>ingress Controller</code> 通过监听 <code>Ingress</code>这个api对象里的配置规则并转化成 Nginx 的配置（kubernetes声明式API和控制循环） , 然后对外部提供服务。ingress包括：<strong>ingress controller</strong>和<strong>ingress resources</strong></p>
 <p><code>ingress controller</code>：核心是一个deployment，实现方式有很多，比如nginx, Contour, Haproxy, trafik, Istio，需要编写的yaml有：Deployment, Service, ConfigMap, ServiceAccount（Auth），其中service的类型可以是NodePort或者LoadBalancer。</p>
 <p><code>ingress resources</code>：这个就是一个类型为<code>Ingress</code>的k8s api对象了，这部分则是面向开发人员。</p>

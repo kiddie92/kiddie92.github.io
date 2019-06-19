@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://kiddie92.github.io/links/index.html</loc>
+    
+    <lastmod>2019-06-19T12:16:45.784Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://kiddie92.github.io/2019/06/03/k8s-%E5%AF%B9%E5%A4%96%E6%9C%8D%E5%8A%A1%E4%B9%8Bingress/</loc>
     
-    <lastmod>2019-06-18T16:03:52.290Z</lastmod>
+    <lastmod>2019-06-19T12:12:12.328Z</lastmod>
     
   </url>
   
@@ -19,13 +26,6 @@
     <loc>https://kiddie92.github.io/2019/06/10/Matrix-Factorization%E7%AE%80%E4%BB%8B/</loc>
     
     <lastmod>2019-06-16T09:18:18.597Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kiddie92.github.io/links/index.html</loc>
-    
-    <lastmod>2019-06-16T04:42:45.894Z</lastmod>
     
   </url>
   
