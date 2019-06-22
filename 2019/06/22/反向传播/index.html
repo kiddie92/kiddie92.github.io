@@ -17,8 +17,12 @@
 
 
 
+  <meta name="description" content="反向传播算法（BP）">
 
 
+
+
+  <meta name="keywords" content="算法, 机器学习, 人工智能, Mun*">
 
 
 
@@ -38,7 +42,7 @@
 
 
 
-<link rel="canonical" href="https://kiddie92.github.io/">
+<link rel="canonical" href="https://kiddie92.github.io/2019/06/22/反向传播/">
 
 
 
@@ -104,7 +108,7 @@
   window.config = {"leancloud":{"app_id":"n8MGlOWz83zS9G0m0PGinErj-gzGzoHsz","app_key":"bSOcrmi2W53fTzNXQA3UQ2z3"},"toc":true,"fancybox":true,"pjax":true};
 </script>
 
-    <title> Mun* </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+    <title> 反向传播算法（BP） - Mun* </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   </head>
 
   <body><div id="mobile-navbar" class="mobile-navbar">
@@ -270,15 +274,11 @@
           <div id="content" class="content">
             
   
-  <section id="posts" class="posts">
-    
-      
-        
   <article class="post">
     <header class="post-header">
       <h1 class="post-title">
         
-          <a class="post-link" href="/2019/06/22/反向传播/">反向传播算法（BP）</a>
+          反向传播算法（BP）
         
       </h1>
 
@@ -303,15 +303,18 @@
 
     
     
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Back-Propagation-tag"><span class="toc-text">Back Propagation $tag$</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代码实现"><span class="toc-text">代码实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RNN怎么做BP"><span class="toc-text">RNN怎么做BP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-text">Reference</span></a></li></ol>
+    </div>
+  </div>
+
 
 
     <div class="post-content">
       
-        
-        
-
-        
-          <blockquote>
+        <blockquote>
 <p>人工智能领域的算法真是日新月异啊，最近CMU和Google Brain又提出了XLNet。<br>这篇博文还是从基础算法入手，介绍一下Back Propagation（简称BP），主要分为两个部分：反向传播的基本原理和RNN的反向传播算法，最后给出代码实现。</p>
 </blockquote>
 <h2 id="Back-Propagation-tag"><a href="#Back-Propagation-tag" class="headerlink" title="Back Propagation $tag$"></a>Back Propagation $tag$</h2><p>之前介绍过<a href="https://kiddie92.github.io/2019/03/17/%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95-%E7%89%9B%E9%A1%BF%E8%BF%AD%E4%BB%A3%E6%B3%95/">牛顿迭代法</a>：当我们想要优化一个目标函数时，需要在每次迭代的时候对变量/参数进行更新，而更新参数的最重要的部分就是<strong>求目标函数对参数的导数</strong>了。<br>下面对最简单的神经网络进行BP算法的公式推导：<br>下图是一个只有两个神经元的网络（图片修改自<a href="./BP.pptx">李弘毅老师的PPT</a>），输入样本为一个二维的向量$\vec x$，输出为一个数$y$，现在假设loss函数是$l=|| y - \hat y ||_2^2$，那么要求的便是$\frac {\partial l}{\partial w_i}$ 以及$\frac {\partial l}{\partial b}$ （把$w$和$b$合并成一个向量$W$也是可以的）。</p>
@@ -355,258 +358,99 @@
 <li><a href="https://www.youtube.com/watch?v=UTojaCzMoOs" target="_blank" rel="noopener">https://www.youtube.com/watch?v=UTojaCzMoOs</a></li>
 </ol>
 
-        
       
     </div>
 
     
+      
+      
 
-    
+  <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="https://kiddie92.github.io">Mun*</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="https://kiddie92.github.io/2019/06/22/反向传播/">https://kiddie92.github.io/2019/06/22/反向传播/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span>
+      
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用4.0国际许可协议</a>
+    </p>
+  </div>
 
-  </article>
+
 
       
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/06/15/分层softmax/">分层softmax</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-06-15
-        </span>
-        
-          <span class="post-category">
-            
-              <a href="/categories/人工智能/">人工智能</a>
-            
-          </span>
-        
-        
-        <span class="post-visits" data-url="/2019/06/15/分层softmax/" data-title="分层softmax">
-          阅读次数 0
-        </span>
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
       
-        
-        
-          
-        
+  <div class="post-reward">
+    <input type="checkbox" name="reward" id="reward" hidden>
+    <label class="reward-button" for="reward">赞赏支持</label>
+    <div class="qr-code">
+      
+      
+        <label class="qr-code-image" for="reward">
+          <img class="image" src="/images/reward/wechat.png" title="微信打赏">
+        </label>
+      
+      
+        <label class="qr-code-image" for="reward">
+          <img class="image" src="/images/reward/alipay.png" title="支付宝打赏">
+        </label>
+      
+    </div>
+  </div>
 
+    
+
+    
+      <footer class="post-footer">
         
-          <blockquote>
-<p>入坑自然语言处理，论文<a href="https://arxiv.org/pdf/1411.2738.pdf" target="_blank" rel="noopener">word2vec Parameter Learning Explained</a>基本是必读的，这篇论文中的<strong>Hierarchical Softmax</strong>，中文叫做分层softmax/层次softmax是比较让人头大的内容，这篇博文试图阐述Hierarchical Softmax算法在word2vec中的应用。<br>
-          <div class="read-more">
-            <a href="/2019/06/15/分层softmax/" class="read-more-link">阅读更多</a>
+          <div class="post-tags">
+            
+              <a href="/tags/算法/">算法</a>
+            
+              <a href="/tags/机器学习/">机器学习</a>
+            
+              <a href="/tags/人工智能/">人工智能</a>
+            
           </div>
         
-      
-    </p></blockquote></div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/06/10/Matrix-Factorization简介/">基于矩阵分解的推荐算法</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-06-10
-        </span>
-        
-          <span class="post-category">
-            
-              <a href="/categories/人工智能/">人工智能</a>
-            
-          </span>
         
         
-        <span class="post-visits" data-url="/2019/06/10/Matrix-Factorization简介/" data-title="基于矩阵分解的推荐算法">
-          阅读次数 0
-        </span>
-        
-      </div>
-    </header>
-
+  <nav class="post-nav">
     
     
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <blockquote>
-<p>Matrix Factorization算法是推荐系统（Recommendation System）的基础，本篇文章仅介绍一下基于<strong>矩阵分解</strong>的推荐系统是如何工作的以及Matrix Factorization算法，最后给出一个算法示例。内容比较浅显，深入算法原理还需要阅读更多的论文和资料。<br>
-          <div class="read-more">
-            <a href="/2019/06/10/Matrix-Factorization简介/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </p></blockquote></div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/06/09/Logistic-Regression/">Logistic Regression</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-06-09
-        </span>
-        
-          <span class="post-category">
-            
-              <a href="/categories/人工智能/">人工智能</a>
-            
-          </span>
-        
-        
-        <span class="post-visits" data-url="/2019/06/09/Logistic-Regression/" data-title="Logistic Regression">
-          阅读次数 0
-        </span>
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <blockquote>
-<p>对数几率回归/逻辑回归/逻辑斯蒂回归/最大熵模型也即Logistic Regression是深度学习的基础，算法的重要性不言而喻。Logistic Regression虽然叫“Rgression”，但其实与之前介绍的<a href="https://kiddie92.github.io/2019/05/10/%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA%EF%BC%88SVM%EF%BC%89/">SVM分类（svc）方法</a>一样，同属<strong>分类算法</strong>。本篇博文对该算法的介绍流程基本参考了李宏毅老师的机器学习课程，文章后半部分主要以问答的形式给出了关于逻辑斯蒂回归的部分理解。<br>
-          <div class="read-more">
-            <a href="/2019/06/09/Logistic-Regression/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </p></blockquote></div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/06/03/k8s-对外服务之ingress/">k8s 对外服务之ingress</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-06-03
-        </span>
-        
-          <span class="post-category">
-            
-              <a href="/categories/容器云kubernetes/">容器云kubernetes</a>
-            
-          </span>
-        
-        
-        <span class="post-visits" data-url="/2019/06/03/k8s-对外服务之ingress/" data-title="k8s 对外服务之ingress">
-          阅读次数 0
-        </span>
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <blockquote>
-<p>本文首先回顾了一下负载均衡和反向代理，随后介绍ingress，这部分的内容主要参考了YouTube上印度老哥的频道：<a href="https://www.youtube.com/watch?v=VicH6KojwCI" target="_blank" rel="noopener">KodeKloud的视频</a>，直接看视频效果更佳。<br>
-          <div class="read-more">
-            <a href="/2019/06/03/k8s-对外服务之ingress/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </p></blockquote></div>
-
-    
-
-    
-
-  </article>
-
-      
-      
-  <nav class="pagination">
-    
-    
-      <a class="next" href="/page/2/">
-        <span class="next-text">下一页</span>
+      <a class="next" href="/2019/06/15/分层softmax/">
+        <span class="next-text nav-default">分层softmax</span>
+        <span class="prev-text nav-mobile">下一篇</span>
         <i class="iconfont icon-right"></i>
       </a>
     
   </nav>
 
 
+      </footer>
     
-  </section>
+
+  </article>
+
 
           </div>
           
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
 
         </div>
       </main>
@@ -694,6 +538,27 @@
     </div>
 
     
+  
+  <script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'https://kiddie92.github.io/2019/06/22/反向传播/';
+        this.page.identifier = '2019/06/22/反向传播/';
+        this.page.title = '反向传播算法（BP）';
+    };
+    (function() {
+    var d = document, s = d.createElement('script');
+
+    s.src = '//https-kiddie92-github-io.disqus.com/embed.js';
+
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();  
+  </script>
+
+  
+
+  
+
 
 
     
