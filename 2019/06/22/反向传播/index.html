@@ -22,7 +22,7 @@
 
 
 
-  <meta name="keywords" content="算法, 机器学习, 人工智能, Mun*">
+  <meta name="keywords" content="算法, 人工智能, 机器学习, Mun*">
 
 
 
@@ -350,12 +350,16 @@
 <ul>
 <li>主要的不同点还是要看公式，RNN的在<script type="math/tex">t</script>时刻输出神经元的值可以用下式表示：<script type="math/tex; mode=display">a_{k,t} = \sigma (W_{k}^{h}a_{k,t-1} + W_{k}^{x}a_{k-1,t} +b_{k})</script>式中<script type="math/tex">W_{k}^{h}</script>与上一时刻的计算结果相关</li>
 <li>所以<script type="math/tex">\frac {\partial l}{\partial W_{k}^{h}}</script>的计算算是新内容，其他的和之前说的没有什么不一样</li>
+<li>也可以认为就是结构上与前馈网络有所不同（如下图所示），对于每一个$y$都有一个loss，这里需要对每一个loss计算梯度，加起来就是整个需要更新的梯度了。</li>
 </ul>
+<p><img src="./rnn1_expand.png" width="50%" height="50%"><br>一个简单的many2many形式的RNN展开图，图片来自<a href="http://corochann.com/recurrent-neural-network-rnn-introduction-1286.html" target="_blank" rel="noopener">这里</a>。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>反向传播算法1974年被提出，不过当时没有受到重视，2010年开始，得益于该算法和GPU算力的提升，人工智能开始迅速发展。</p>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol>
-<li>Werbos, P. (1974). Beyond Regression:” New Tools for Prediction and Analysis in the Behavioral Sciences. Ph. D. dissertation, Harvard University.</li>
+<li>Werbos, P. (1974). Beyond Regression:” New Tools for Prediction and Analysis in the Behavioral Sciences. Ph. D. dissertation, Harvard University. </li>
 <li><a href="https://medium.com/@a.mirzaei69/implement-a-neural-network-from-scratch-with-python-numpy-backpropagation-e82b70caa9bb" target="_blank" rel="noopener">https://medium.com/@a.mirzaei69/implement-a-neural-network-from-scratch-with-python-numpy-backpropagation-e82b70caa9bb</a></li>
 <li><a href="https://www.youtube.com/watch?v=UTojaCzMoOs" target="_blank" rel="noopener">https://www.youtube.com/watch?v=UTojaCzMoOs</a></li>
+<li><a href="http://corochann.com/recurrent-neural-network-rnn-introduction-1286.html" target="_blank" rel="noopener">http://corochann.com/recurrent-neural-network-rnn-introduction-1286.html</a></li>
+<li><a href="https://www.youtube.com/watch?v=esgbmJ6SnSY" target="_blank" rel="noopener">https://www.youtube.com/watch?v=esgbmJ6SnSY</a></li>
 </ol>
 
       
@@ -412,9 +416,9 @@
             
               <a href="/tags/算法/">算法</a>
             
-              <a href="/tags/机器学习/">机器学习</a>
-            
               <a href="/tags/人工智能/">人工智能</a>
+            
+              <a href="/tags/机器学习/">机器学习</a>
             
           </div>
         
