@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://kiddie92.github.io/links/index.html</loc>
+    
+    <lastmod>2019-06-26T14:05:54.241Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://kiddie92.github.io/2019/06/22/%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/</loc>
     
     <lastmod>2019-06-24T13:04:55.893Z</lastmod>
@@ -82,13 +89,6 @@
     <loc>https://kiddie92.github.io/2019/06/03/k8s-%E5%AF%B9%E5%A4%96%E6%9C%8D%E5%8A%A1%E4%B9%8Bingress/</loc>
     
     <lastmod>2019-06-22T05:39:19.940Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kiddie92.github.io/links/index.html</loc>
-    
-    <lastmod>2019-06-19T12:16:45.784Z</lastmod>
     
   </url>
   
