@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+<meta name="theme-color" content="#f8f5ec">
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+
+  <meta name="description" content="从零开始写NN（上）">
+
+
+
+
+  <meta name="keywords" content="算法, 深度学习, 神经网络, Mun*">
+
+
+
+
+
+
+
+
+
+
+  <link rel="alternate" href="https://feedity.com/github-io/UlJXUVFQUg.rss" title="Mun*">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.10.2">
+
+
+
+<link rel="canonical" href="https://kiddie92.github.io/2019/06/24/从零开始写NN（上）/">
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css">
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/nprogress/nprogress.min.css">
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.10.2">
+
+
+
+  
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-91728997-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-91728997-1');
+</script>
+
+
+  <script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.1.1/av-min.js"></script>
+  <script id="leancloud">
+    AV.init({
+      appId: "n8MGlOWz83zS9G0m0PGinErj-gzGzoHsz",
+      appKey: "bSOcrmi2W53fTzNXQA3UQ2z3"
+    });
+  </script>
+
+
+
+
+
+<script>
+  window.config = {"leancloud":{"app_id":"n8MGlOWz83zS9G0m0PGinErj-gzGzoHsz","app_key":"bSOcrmi2W53fTzNXQA3UQ2z3"},"toc":true,"fancybox":true,"pjax":true};
+</script>
+
+    <title> 从零开始写NN（上） - Mun* </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="mobile-header-logo">
+    <a href="/." class="logo">Mun*</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            首页
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            归档
+          
+        </li>
+      </a>
+    
+      <a href="/tags">
+        <li class="mobile-menu-item">
+          
+          
+            标签
+          
+        </li>
+      </a>
+    
+      <a href="/categories">
+        <li class="mobile-menu-item">
+          
+          
+            分类
+          
+        </li>
+      </a>
+    
+      <a href="/Open-source">
+        <li class="mobile-menu-item">
+          
+          
+            开源项目
+          
+        </li>
+      </a>
+    
+      <a href="/links">
+        <li class="mobile-menu-item">
+          
+          
+            链接
+          
+        </li>
+      </a>
+    
+      <a href="/about">
+        <li class="mobile-menu-item">
+          
+          
+            关于
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Mun*</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              首页
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              归档
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/tags">
+            
+            
+              标签
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/categories">
+            
+            
+              分类
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/Open-source">
+            
+            
+              开源项目
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/links">
+            
+            
+              链接
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/about">
+            
+            
+              关于
+            
+          </a>
+        </li>
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          从零开始写NN（上）
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-06-24
+        </span>
+        
+          <span class="post-category">
+            
+              <a href="/categories/人工智能/">人工智能</a>
+            
+          </span>
+        
+        
+        <span class="post-visits" data-url="/2019/06/24/从零开始写NN（上）/" data-title="从零开始写NN（上）">
+          阅读次数 0
+        </span>
+        
+      </div>
+    </header>
+
+    
+    
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#明确目标"><span class="toc-text">明确目标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#算法设计"><span class="toc-text">算法设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#正向传播函数"><span class="toc-text">正向传播函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#反向传播函数"><span class="toc-text">反向传播函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#训练函数"><span class="toc-text">训练函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-text">Reference</span></a></li></ol>
+    </div>
+  </div>
+
+
+
+    <div class="post-content">
+      
+        <blockquote>
+<p>从零开始写NN (neural network) 系列第一篇，本篇博文将会从代码结构上介绍一下怎么写一个简单的<code>神经网络算法</code>，下篇打算使用一个示例介绍一下如何调整参数细节。当然，这里的所谓从0开始，其实还是使用了<code>numpy</code>，有点像使用<code>matlab</code>的感觉。<br><a id="more"></a></p>
+</blockquote>
+<h2 id="明确目标"><a href="#明确目标" class="headerlink" title="明确目标"></a>明确目标</h2><p>上一篇结尾的地方给了一个实现<a href="https://kiddie92.github.io/2019/06/22/%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/">Back Propagation算法</a>的代码，既然反向传播都写成了博客，那干脆把整个神经网络算法也给介绍介绍好了。接下来我将分析一下上篇结尾给出的<a href="https://github.com/kiddie92/Learning_Tech/tree/master/BP" target="_blank" rel="noopener">算法代码</a>。<br>了解了BP后，要实现一个简单的神经网络就不难了，这里的代码相比简单的算法实现做了一点点延伸：$tag$</p>
+<ul>
+<li>网络的深度、每一层的神经元个数都是可变的参数</li>
+<li>激活函数提供多个选择</li>
+<li>可以定义一个<code>batch</code>的大小，每计算一次<code>batch</code>更新一次权重</li>
+<li>可以定义<code>epoch</code>的次数，每个<code>epoch</code>内的数据在进行训练前需要被打散</li>
+<li>使用矩阵运算来并行化以提高效率</li>
+</ul>
+<h2 id="算法设计"><a href="#算法设计" class="headerlink" title="算法设计"></a>算法设计</h2><p>算法基本思路：给定一个<code>batch</code>，里面包括一组sample，对于每个sample <code>x</code>都会计算一次正传的值，保存每个神经元的值为<code>反向传播</code>计算所用；再进行反向计算得到<code>w</code>和<code>b</code>的梯度，之后使用梯度对模型参数也即<code>w</code>和<code>b</code>进行更新，每次迭代都会使用一组新的<code>batch</code>。当所有的sample都进行计算后，再将所有的sample顺序打乱，循环上面的过程。<br>其中，每一个<code>batch</code>都会使用矩阵运算，这样可以使用并行算法，这也是<code>前馈神经网络</code>要比<code>循环/递归神经网络</code>训练快的一个主要原因；公式表达如下：</p>
+<script type="math/tex; mode=display">\vec y=A \vec x</script><script type="math/tex; mode=display">[\vec y_1, \vec y_2…\vec y_n] = A [\vec x_1, \vec x_2… \vec x_n]</script><p>下面是算法图解，从上往下看，每一个神经网络表示对每一个sample的计算，一共有<code>batch_size</code>个，图中<script type="math/tex">\delta[i]</script>表示<code>反向传播</code>过程中神经元上的值（误差累计），上篇博文中式（5）；<script type="math/tex">z_s[i]</script>表示<code>正向计算</code>神经元上的加权和（仿射值）； <script type="math/tex">a_s[i]</script>表示<code>正向计算</code>神经元上的激活值；<code>W_s[i]</code>表示两层之间的权重矩阵。</p>
+<p><img src="./NN_Coding.png" width="70%" height="70%"></p>
+<p>所以算法步骤如下：<br><strong>步骤1：</strong> 给定epoch次数，batch_size大小，学习率；输入数据，初始化权重参数；<br><strong>步骤2：</strong> 设置两层循环，1. 第一层循环：epoch迭代次数；2. 打乱epoch内数据顺序；3. 第二层循环，一个epoch按照下标顺序被分为多个batch，每个batch的大小相同；<br><strong>步骤3：</strong> 调用正向计算函数，得到神经元上的激活值和加权和（仿射计算值）；<br><strong>步骤4：</strong> 调用反向计算函数，得到一个batch内每一个权重的更新梯度的平均值；<br><strong>步骤5：</strong> 使用学习率/步长参数对权重参数进行更新，得到更新后的权重参数；<br><strong>步骤6：</strong> 回到步骤3进行循环，batch循环结束后回到步骤2，进行epoch循环</p>
+<h2 id="正向传播函数"><a href="#正向传播函数" class="headerlink" title="正向传播函数"></a>正向传播函数</h2><p>首先，需要写一个<code>正向计算</code>的函数，当input一个数组<code>x</code>时，函数将对<code>x</code>进行正向传播，使用权重参数<code>W</code>，逐层计算每一层神经元的激活函数值，最后输出<code>y</code>值，也即<code>a_s[-1]</code>。<br>每一个神经元的线性加权值<code>z_s</code>，激活值<code>a_s</code>以及权重参数<code>W</code>都需要被保存：</p>
+<p><code>z_s</code>保存为矩阵形式，整体是个list，list的每一个元素都是一个<code>layer[i]*batch_size</code>的矩阵，其中<code>layer[i]</code>表示第i层网络神经元的个数，需要注意的是我们<strong>不需要</strong>保存input层（<code>layer[0]</code>）的<code>z_s</code>；</p>
+<p><code>a_s</code>保存为矩阵形式，整体是个list，list的每一个元素都是一个<code>layer[i]*batch_size</code>的矩阵，其中<code>layer[i]</code>表示第i层网络神经元的个数，需要注意的是我们<strong>需要</strong>保存input层的<code>a_s</code>，并且定义<code>a_s[0]</code>的值就是input数据<code>x</code>。</p>
+<p><code>W</code>会在一个batch内的多个sample计算中被复用，保存为矩阵，整体是一个和<code>z_s</code>维度相同的list，<code>W[i]</code>是一个维度为<code>layer[i+1]*layer[i]</code>的矩阵。</p>
+<p>如图所示，对于input层来说，<code>W_s[0]</code>为<code>layer[1]*layer[0]</code>的二维数组，<code>a</code>为<code>layer[0]*bathc_size</code>的数组，两变量做<code>矩阵相乘</code>得到的是<code>layer[1]*bathc_size</code>的二维数组。</p>
+<p>代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">feedforward</span><span class="params">(self, x)</span>:</span>  <span class="comment"># 正向计算</span></span><br><span class="line">    <span class="comment">#x 在train函数里为x_batch，x，y是一个矩阵：相当于对多笔数据进行并行计算</span></span><br><span class="line">    a = np.copy(x)</span><br><span class="line">    z_s = []</span><br><span class="line">    a_s = [a]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(self.weights)):</span><br><span class="line">        activation_function = self.getActivationFunction(self.activations[i])</span><br><span class="line">        z_s.append(self.weights[i].dot(a) + self.biases[i])</span><br><span class="line">        a = activation_function(z_s[<span class="number">-1</span>])</span><br><span class="line">        a_s.append(a)</span><br><span class="line">    <span class="keyword">return</span> (z_s, a_s)</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>矩阵相乘在数值计算上可以做很多优化，这点<code>matlab</code>最擅长了；使用<code>GPU</code>并行计算也可。</p>
+</blockquote>
+<h2 id="反向传播函数"><a href="#反向传播函数" class="headerlink" title="反向传播函数"></a>反向传播函数</h2><p>如图所示，将正传得到的结果和<script type="math/tex">\hat y</script>的距离做一个度量，也就是设计一个loss函数，这里简单将loss设置为二范数的形式；这样一来，<code>(y-a_s[-1])</code>就是梯度<script type="math/tex">\frac {\partial l}{\partial y}</script>，接着让<code>(y-a_s[-1])</code>乘以<script type="math/tex">\frac {\partial y}{\partial z_{s[2]}}</script>，得到传播的初始值<script type="math/tex">\delta[-1]</script>；再使<script type="math/tex">\delta[-1]</script>沿着反方向逐层计算，神经元上的值并保存在<script type="math/tex">\delta [i]</script>内就好了；由公式<script type="math/tex">\frac {\partial l}{\partial w_0} = \frac {\partial l}{\partial z_0} \frac {\partial z_0}{ \partial w_0}</script> 可知，<script type="math/tex">\delta [i]</script>需要计算到第一层隐含层；最后将正向计算的<code>a_s[i]</code>和<code>delta[i]</code>做矩阵相乘就得到了每一个<code>W</code>的梯度，注意计算时一个batch内的<code>W</code>需要计算均值。</p>
+<p>正向计算已经保存了<code>z_s</code>, <code>a_s</code>以及<code>W</code>；反向传播涉及的变量有<code>delta</code> <code>dw</code> <code>db</code>：</p>
+<p><code>delta</code>在函数内保存为和<code>w</code>维度相同的list，<script type="math/tex">\delta [i]</script>为<code>layer[i]*batch_size</code> 的矩阵，和<code>z_s[i]</code>进行element-wise的相乘。</p>
+<blockquote>
+<p>需要注意的是，正向传播的时候用的是<code>w[i].dot(a)</code>，反向传播时则使用<code>w[i].T.dot(delta[i])</code>，这在数学上很好理解，把矩阵写成线性方程组就一目了然了。</p>
+</blockquote>
+<p><code>dw[i]</code> 在函数中必须要保存为和<code>w</code>的形式一模一样，如<a href="https://kiddie92.github.io/2019/06/22/%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0">上篇博文</a>的图3所示，<code>delta[i]</code>和<code>a_s[i]</code>相乘；如下图所示，<code>delta[i]</code>中的每一个列向量第i个元素组成一个向量<strong>分别</strong>和<code>a_s[i]</code>中的每一个列向量第i个元素组成的向量做<strong>内积</strong>，得到的便是求和之后的权重矩阵，最后整体除以<code>batch_size</code>得到<code>dw[i]</code>矩阵。</p>
+<script type="math/tex; mode=display">\delta_{i,1} \cdot a_{i,k} \\ \delta_{i,2} \cdot a_{i,k} \\ ...\\k \in layer(i)</script><p><img src="./delta-a_s.png" alt="delta-a_s"></p>
+<blockquote>
+<p>如图所示，这里的<code>delta[i]</code>和<code>a_s[i]</code>相乘部分也是可以用矩阵计算来完成的，把<code>a_s</code>矩阵转置一下就可以相乘了。</p>
+</blockquote>
+<p><code>db[i]</code>在求<code>dw</code>中乘以<code>a_s[i]</code>改为<strong>乘以1</strong>就行了，参考上篇博客的公式推导。</p>
+<p>代码<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">backpropagation</span><span class="params">(self,y, z_s, a_s)</span>:</span> <span class="comment"># 反向计算</span></span><br><span class="line">    dw = []  <span class="comment"># dl/dW</span></span><br><span class="line">    db = []  <span class="comment"># dl/dB</span></span><br><span class="line">    deltas = [<span class="literal">None</span>] * len(self.weights)  <span class="comment"># 存放每一层的error</span></span><br><span class="line">    <span class="comment"># deltas[-1] = sigmoid'(z)*[partial l/partial y]</span></span><br><span class="line">    <span class="comment"># 这里y是标注数据，a_s[-1]是最后一层的输出，差值就是二范数loss的求导</span></span><br><span class="line">    deltas[<span class="number">-1</span>] =(y-a_s[<span class="number">-1</span>])*(self.getDerivitiveActivationFunction(self.activations[<span class="number">-1</span>]))(z_s[<span class="number">-1</span>])</span><br><span class="line">    <span class="comment"># Perform BackPropagation</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> reversed(range(len(deltas)<span class="number">-1</span>)):</span><br><span class="line">        deltas[i] = self.weights[i+<span class="number">1</span>].T.dot(deltas[i+<span class="number">1</span>])*(self.getDerivitiveActivationFunction(self.activations[i])(z_s[i]))</span><br><span class="line">    batch_size = y.shape[<span class="number">1</span>]</span><br><span class="line">    db = [d.dot(np.ones((batch_size,<span class="number">1</span>)))/float(batch_size) <span class="keyword">for</span> d <span class="keyword">in</span> deltas]</span><br><span class="line">    dw = [d.dot(a_s[i].T)/float(batch_size) <span class="keyword">for</span> i,d <span class="keyword">in</span> enumerate(deltas)]</span><br><span class="line">    <span class="comment"># return the derivitives respect to weight matrix and biases</span></span><br><span class="line">    <span class="keyword">return</span> dw, db</span><br></pre></td></tr></table></figure></p>
+<h2 id="训练函数"><a href="#训练函数" class="headerlink" title="训练函数"></a>训练函数</h2><p><code>train</code>函数就是将整个计算流程表达出来，输入数据<code>(x,y)</code>，<code>batch_size</code> <code>epoch</code>以及步长/学习率<code>lr</code>；按照算法设计部分的步骤，调用<code>正向计算</code>和<code>反向计算</code>函数就可以更新权重参数了。<br>代码<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">train</span><span class="params">(self, x, y, batch_size, epochs, lr)</span>:</span></span><br><span class="line">    <span class="comment"># update weights and biases based on the output</span></span><br><span class="line">    <span class="keyword">for</span> e <span class="keyword">in</span> range(epochs):</span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        # 使用下标来打乱数据,有点麻烦</span></span><br><span class="line"><span class="string">        x_num = x.shape[0]</span></span><br><span class="line"><span class="string">        index = np.arange(x_num)  # 生成下标  </span></span><br><span class="line"><span class="string">        np.random.shuffle(index)  </span></span><br><span class="line"><span class="string">        i = index[0]</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        <span class="comment"># 直接打乱源数据</span></span><br><span class="line">        nn=np.random.randint(<span class="number">1</span>,<span class="number">1000</span>)</span><br><span class="line">        np.random.seed(nn)</span><br><span class="line">        np.random.shuffle(x)</span><br><span class="line">        np.random.seed(nn)</span><br><span class="line">        np.random.shuffle(y)</span><br><span class="line">        i = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span>(i&lt;len(y)):</span><br><span class="line">            x_batch = x[i:i+batch_size].reshape(<span class="number">1</span>, <span class="number">-1</span>) <span class="comment"># 转换成矩阵更加清晰明了</span></span><br><span class="line">            y_batch = y[i:i+batch_size].reshape(<span class="number">1</span>, <span class="number">-1</span>)</span><br><span class="line">            i = i+batch_size</span><br><span class="line">            z_s, a_s = self.feedforward(x_batch)</span><br><span class="line">            dw, db = self.backpropagation(y_batch, z_s, a_s)</span><br><span class="line">            <span class="comment"># 一个batch更新一次参数</span></span><br><span class="line">            self.weights = [w+lr*dweight <span class="keyword">for</span> w,dweight <span class="keyword">in</span>  zip(self.weights, dw)]</span><br><span class="line">            self.biases = [w+lr*dbias <span class="keyword">for</span> w,dbias <span class="keyword">in</span>  zip(self.biases, db)]</span><br><span class="line">        print(<span class="string">"loss = &#123;&#125;"</span>.format(np.linalg.norm(a_s[<span class="number">-1</span>]-y_batch) ))</span><br></pre></td></tr></table></figure></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>基本上是把NN的代码很细致的介绍了一遍，阐述的有点啰嗦了。</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol>
+<li>Werbos, P. (1974). Beyond Regression:” New Tools for Prediction and Analysis in the Behavioral Sciences. Ph. D. dissertation, Harvard University.</li>
+<li><a href="https://medium.com/@a.mirzaei69/implement-a-neural-network-from-scratch-with-python-numpy-backpropagation-e82b70caa9bb" target="_blank" rel="noopener">代码参考原文</a></li>
+<li><a href="https://kiddie92.github.io/2019/06/22/%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0">反向传播算法 (BP) </a></li>
+</ol>
+
+      
+    </div>
+
+    
+      
+      
+
+  <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="https://kiddie92.github.io">kiddie92</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="https://kiddie92.github.io/2019/06/24/从零开始写NN（上）/">https://kiddie92.github.io/2019/06/24/从零开始写NN（上）/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span>
+      
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用4.0国际许可协议</a>
+    </p>
+  </div>
+
+
+
+      
+      
+  <div class="post-reward">
+    <input type="checkbox" name="reward" id="reward" hidden>
+    <label class="reward-button" for="reward">赞赏支持</label>
+    <div class="qr-code">
+      
+      
+        <label class="qr-code-image" for="reward">
+          <img class="image" src="/images/reward/wechat.png" title="微信打赏">
+        </label>
+      
+      
+        <label class="qr-code-image" for="reward">
+          <img class="image" src="/images/reward/alipay.png" title="支付宝打赏">
+        </label>
+      
+    </div>
+  </div>
+
+    
+
+    
+      <footer class="post-footer">
+        
+          <div class="post-tags">
+            
+              <a href="/tags/算法/">算法</a>
+            
+              <a href="/tags/深度学习/">深度学习</a>
+            
+              <a href="/tags/神经网络/">神经网络</a>
+            
+          </div>
+        
+        
+        
+  <nav class="post-nav">
+    
+    
+      <a class="next" href="/2019/06/22/反向传播/">
+        <span class="next-text nav-default">反向传播算法（BP）</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+
+      </footer>
+    
+
+  </article>
+
+
+          </div>
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:kiddiezzh@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+        
+          <a href="https://twitter.com/kiddiezzh" class="iconfont icon-twitter" title="twitter"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/kiddie92" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+    
+      <a href="https://feedity.com/github-io/UlJXUVFQUg.rss" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2018 - 
+    
+    2019
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">kiddie92</span>
+  </span>
+</div>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+  
+  <script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'https://kiddie92.github.io/2019/06/24/从零开始写NN（上）/';
+        this.page.identifier = '2019/06/24/从零开始写NN（上）/';
+        this.page.title = '从零开始写NN（上）';
+    };
+    (function() {
+    var d = document, s = d.createElement('script');
+
+    s.src = '//https-kiddie92-github-io.disqus.com/embed.js';
+
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();  
+  </script>
+
+  
+
+  
+
+
+
+    
+  
+
+
+
+  
+  
+
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/pjax/jquery.pjax.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/nprogress/nprogress.min.js"></script>
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.10.2"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+  </body>
+</html>
