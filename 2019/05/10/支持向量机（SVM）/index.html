@@ -370,7 +370,7 @@
 <h3 id="各类核函数"><a href="#各类核函数" class="headerlink" title="各类核函数"></a>各类核函数</h3><p>多项式核：</p>
 <script type="math/tex; mode=display">K(\vec x_i,\vec x_j)= (\vec x_i \cdot \vec x_j+b)^n</script><p>径向基函数核（RBF）：维度太高，容易过拟合</p>
 <script type="math/tex; mode=display">K(\vec x_i,\vec x_j)=exp(-\frac {1}{2\sigma^2}||\vec x_i-\vec x_j||_2^2)</script><p>Sigmiod核：可以理解成只有一个Hidden Layer的NN</p>
-<script type="math/tex; mode=display">K(\vec x_i,\vec x_j)=tanh(\vec x_i \cdot \vec x_j)</script><h2 id="SVM-与-SVR"><a href="#SVM-与-SVR" class="headerlink" title="SVM 与 SVR"></a>SVM 与 SVR</h2><p>用支持向量机来做回归问题其实也是可以的，不过并不是回归问题的主流方法。</p>
+<script type="math/tex; mode=display">K(\vec x_i,\vec x_j)=tanh(\vec x_i \cdot \vec x_j)</script><h2 id="SVM-与-SVR"><a href="#SVM-与-SVR" class="headerlink" title="SVM 与 SVR"></a>SVM 与 SVR</h2><p>用支持向量机来做回归问题其实也是可以的，需要将SVC问题逆向思考一下，不过这并不是回归问题的主流方法。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
 <li>所谓<code>支持向量</code>就是这些对分割线（高维空间里是个超平面）产生影响的数据向量，这些数据点其实就是位于“黑色实线”上的点，或者叫做距离分割线的<strong>最近点</strong>，其他点的<script type="math/tex">\alpha_i=0</script>，对<script type="math/tex">\vec w</script>的确定没有贡献；</li>
 <li>强对偶下，对偶问题的解就是原始问题的解，并且对偶问题始终是一个<strong>Concave优化问题</strong>，所以SVM的解一定是全局唯一解，<strong>不会陷入局部最小值</strong>；</li>
