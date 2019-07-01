@@ -346,8 +346,7 @@
 <p>由于后续安装步骤需要用到<code>windowX</code>图形界面服务，而我们是通过<code>CRT</code>或者<code>putty</code>远程连接登录服务器进行操作的，这里推荐使用<code>VNC viewer</code><br>在服务器电脑上安装<code>vnc</code>服务，并开启即可使用，其间可能会遇到各式各样的问题，需要自行Google一下</p>
 </blockquote>
 </li>
-<li><p><strong>正式安装confluence</strong><br>这里的安装部分全程比较简单，按照前面提到的blog内容step by step即可成功，需要注意的是安装的目录可以自行选择。<br>再贴下blog地址<a href="https://segmentfault.com/a/1190000008753391#articleHeader10" target="_blank" rel="noopener">https://segmentfault.com/a/1190000008753391#articleHeader10</a></p>
-</li>
+<li><strong>正式安装confluence</strong><br>这里的安装部分全程比较简单，按照前面提到的blog内容step by step即可成功，需要注意的是安装的目录可以自行选择。<br>再贴下blog地址<a href="https://segmentfault.com/a/1190000008753391#articleHeader10" target="_blank" rel="noopener">https://segmentfault.com/a/1190000008753391#articleHeader10</a></li>
 </ul>
 <h4 id="三-运行维护"><a href="#三-运行维护" class="headerlink" title="三.运行维护"></a>三.运行维护</h4><p>1.安装后的文件位于<code>/confluence/atlassian/confluence</code>文件夹下，将该目录下的<code>bin</code>目录加入系统的环境变量<code>echo &#39;export PATH=$PATH:/confluence/atlassian/confluence/bin&#39; &gt;&gt; /etc/profile</code><br>2.由于Wiki服务没有手动加入守护进程，所以可能会由于一些原因导致其停止工作，比如电脑重启，这时需要重启Wiki服务：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl start mariadb <span class="comment">#1.启动mysql</span></span><br><span class="line">SuSEfirewall2 stop <span class="comment">#2.关闭防火墙</span></span><br><span class="line">start_up.sh <span class="comment">#3.最后开启wiki</span></span><br></pre></td></tr></table></figure></p>
 <h4 id="四-书签"><a href="#四-书签" class="headerlink" title="四.书签"></a>四.书签</h4><p>CentOS7搭建Confluence Wiki<br><a href="https://segmentfault.com/a/1190000008753391#articleHeader10" target="_blank" rel="noopener">https://segmentfault.com/a/1190000008753391#articleHeader10</a></p>
