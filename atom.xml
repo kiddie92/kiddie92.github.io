@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://kiddie92.github.io/"/>
-  <updated>2019-06-28T12:19:21.156Z</updated>
+  <updated>2019-07-03T15:25:10.887Z</updated>
   <id>https://kiddie92.github.io/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>从零开始写NN（下）</title>
+    <link href="https://kiddie92.github.io/2019/06/26/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%86%99NN%EF%BC%88%E4%B8%8B%EF%BC%89/"/>
+    <id>https://kiddie92.github.io/2019/06/26/从零开始写NN（下）/</id>
+    <published>2019-06-26T12:49:32.000Z</published>
+    <updated>2019-07-03T15:25:10.887Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p><a href="https://kiddie92.github.io/2019/06/24/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%86%99NN%EF%BC%88%E4%B8%8A%EF%BC%89/">上篇博文</a>主要介绍了写一个简单的深度神经网络可能需要注意的细节点，这篇延续上篇内容，将在<strong>算法细节</strong>和<strong>调参</strong>上也写一点经验和想法。<br><a id="more"></a></p></blockquote><h2 id="算法细节"><a href="#算法细节" class="headerlink" title="算法细节"></a>算法细节</h2><p>显然，自己去写一个神经网络算法与流行的算法框架（<code>tensorflow/pytorch/mxnet</code>等）还是有巨大的差距的，因为一些算法细节的地方并没有实现，下面简单清点一下值得关注的几个地方（可能有遗漏，发现后会更新博客）。</p><p><strong>Epoch &amp; Batch Size</strong><br>train函数的代码中，我给<code>epoch</code>和<code>batch_size</code>之间做了一个<strong>shuffle</strong>，主要是为了每次学习的时候会有不同的数据分布进入学习，防止每次数据出现相同的分布，被神经网络抽象成了一个feature，这样一来，模型的泛化能力可能会受到影响。我在这里使用的随机数生成方法是：先随机得到一个<code>seed</code>再产生随机数来打乱<code>x</code>以及<code>y</code>的序列，但倘若每次产生的种子相同，那随机序列也就被重复了，所以最好是每次产生的种子不要重复。</p><p><strong>Activation function</strong><br>代码里只提供了三种激活函数：<code>sigmoid</code> <code>tanh</code> <code>relu</code>，可以扩展更多。</p><p><strong><code>y-a_s</code>别写反了</strong><br>这个其实没什么值的说的，不过因为我之前写反了，导致loss一直不能下降，学了半天学出了下图的样子，查了半天才发现是自己写成了<code>a_s-y</code>；所以说计算梯度的时候千万别搞错了正负号。<br><img src="./failed-fit.png" alt="Alt text"></p><p>上面几点其实都是很容易就可以改好的，而算法框架还有很多厉害之处：</p><p><strong>loss函数</strong><br>loss函数针对不同的问题，会有不同的定义，比如分类问题常用的是<code>cross entropy</code>（关于cross entropy的介绍可以查看<a href="https://kiddie92.github.io/2019/06/09/Logistic-Regression/#%E4%BA%A4%E5%8F%89%E7%86%B5%EF%BC%88Cross-Entropy-and-KL-divergence">我之前的博客</a>）；回归问题<strong>可能</strong>会使用<code>1范数甚至0范数</code>+<code>正则项</code>；另外明确所使用的loss函数也会让代码变的一目了然，而上篇所述的<a href="https://github.com/kiddie92/Learning_Tech/blob/master/BP/NeuralNetwork.py" target="_blank" rel="noopener">代码</a>则没有将loss函数解耦出来。</p><p><strong>优化器optimizer</strong><br>优化算法有很多中，之前的博客介绍过<a href="https://kiddie92.github.io/2019/03/17/%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95-%E7%89%9B%E9%A1%BF%E8%BF%AD%E4%BB%A3%E6%B3%95/">牛顿迭代法</a>，上篇所述代码中使用的则是简单的<code>梯度下降法</code>，其中学习率/步长都是固定的；此外，还有很多启发式的优化算法，这里就不得不提大名鼎鼎的<code>adam</code>算法了，这个算法本身的实现都得好好研究一番了，集成到神经网络的算法框架中是非常值得尝试的。</p><p><strong>Dropout</strong><br>一般认为构建神经网络最好是deep一下，表达能力才会提高（现在也有人提出wide&amp;deep了）。如果两层神经元之间采用全连接往往会造成过拟合，这里可以设置每一层神经元都有一定比例随机的丢弃部分神经元，这便是Dropout的做法，其实就是一个正则化的方法，增加了模型的泛化能力。这一点也是值得尝试增加的功能。</p><blockquote><p>理论上有了BN层就<strong>可以不需要</strong>Dropout了，在博客<a href="https://kiddie92.github.io/2019/03/09/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B9%8BBatch-Normalization%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9AWhy%EF%BC%9F/">卷积神经网络之Batch-Normalization（二）：Why？</a>中我也给过一点分析。</p></blockquote><p><strong>Batch Normalization</strong><br>之前写过<a href="https://kiddie92.github.io/2019/03/06/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B9%8BBatch-Normalization%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9AHow%EF%BC%9F/">两篇关于Batch Normalization的博客</a>，这里不再赘述了；这个算法点相对来说是比较容易实现并且很容易和源代码解耦的。</p><p><strong>CNN、ResNet、attention等</strong><br>上面列举的几个相对特殊的网络，实现起来都不得不修改源码了；然而一个优秀的深度学习算法框架最好能够实现几乎所有流行的神经网络架构，而未来可能会出现很多新的算法，从架构师的角度来看，算法框架必须要有非常好的<strong>扩展性能</strong>。依我个人的愚见，算法框架应该有一个“完备性”，所有的已经实现的算法都可以用最基础的几个定义来实现，这里就不得不吹一波基于<a href="https://kiddie92.github.io/2019/03/02/TensorFlow-%E7%89%B9%E6%80%A7-Graph-%E5%92%8C-Sessions/#%E8%AE%A1%E7%AE%97%E5%9B%BE%EF%BC%88Graph%EF%BC%89">计算图</a>的算法框架了。</p><h2 id="调参"><a href="#调参" class="headerlink" title="调参"></a>调参</h2><p>首先来看一下怎么调用上篇所述的类：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> NeuralNetwork <span class="keyword">import</span> NeuralNetwork</span><br><span class="line"></span><br><span class="line"><span class="comment"># 造一个sin函数&lt;x,y&gt;作为labeled数据</span></span><br><span class="line">X = <span class="number">2</span>*np.pi*np.random.rand(<span class="number">1000</span>) </span><br><span class="line">y = np.sin(X)</span><br><span class="line"></span><br><span class="line">nn = NeuralNetwork([<span class="number">1</span>,<span class="number">100</span>,<span class="number">80</span>,<span class="number">1</span>],activations=[<span class="string">'tanh'</span>,<span class="string">'tanh'</span>,<span class="string">'tanh'</span>])</span><br><span class="line">nn.train(X, y, epochs=<span class="number">1000</span>, batch_size=<span class="number">10</span>, lr = <span class="number">0.01</span>) <span class="comment"># 得到最终的模型参数w,b</span></span><br><span class="line"></span><br><span class="line">xx=X.reshape(<span class="number">1</span>, <span class="number">-1</span>)  </span><br><span class="line">yy=y.reshape(<span class="number">1</span>, <span class="number">-1</span>)</span><br><span class="line">_, a_s = nn.feedforward(xx) <span class="comment"># 使用全新的模型进行拟合</span></span><br><span class="line"></span><br><span class="line">plt.scatter(xx.flatten(), yy.flatten(),color=<span class="string">'blue'</span>)</span><br><span class="line">plt.scatter(xx.flatten(), a_s[<span class="number">-1</span>].flatten(),color=<span class="string">'red'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure></p><p>从上面的代码来看，可以调整的参数其实不多，下面从数据开始逐个做一点简单的分析：<br><strong>数据归一化 (normalization)</strong><br>这里<code>y</code>恰好是sin函数的值，大小都在[-1, 1]内，算是已经进行了归一化了。</p><p><strong>网络架构</strong><br>网络架构<strong>一般不会</strong>作为优先调整的参数，如果认为网络加深可以提升网络质量，可以在现有架构下达到最优参数后再尝试增加网络层数，因为如果最后一层不需要，那么也是可以学出来该层对应的权重都是1这样；同样，神经元个数也是这个道理。</p><p><strong>激活函数的选取</strong><br>这里需要注意的是最后一层输出需要在[-1, 1]内，所以这里只能用<code>tanh</code>了。</p><p><strong>batch_size</strong><br>一般建议batch_size先定，再定<code>epochs</code>，这<code>里batch_size</code>给的是10，如果效果不好可以再增加或者减少。</p><p><strong>epochs</strong><br>如果数据足够多，甚至有冗余，<code>epochs</code>就没有必要设置太大，一般建议从小数往上加，更具最终的学习效果来看是否需要增加。</p><p><strong>Learning rate</strong><br>学习率的调整一般会和<code>batch_size</code>有一定的关联，当<code>batch_size</code>比较大的时候，学习率可以适当给大一点，不过太大不太容易陷入局部极小值也不太容易找到全局极小值；学习率比较小的话则比较容易陷入局部极小值；总之，太大太小都有可能造成计算资源的浪费。所以还是<code>adam</code>大法好 : )</p><p>拟合效果：</p><p><img src="./tanhX3.png" alt="Alt text"></p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>上篇实现了一个简单的神经网络算法，但是很多有利于提高网络能力的方法并没有被集成进来，此外，算法的可扩展性并不是很强；这篇博文主要是对上篇所述的代码进行一个补充说明，增加一些改进点的分析，分享一点使用上的心得；最后，顺便赞扬一番TensorFlow/PyTorch/MXNet这些非常优秀的深度学习算法框架。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;&lt;a href=&quot;https://kiddie92.github.io/2019/06/24/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%86%99NN%EF%BC%88%E4%B8%8A%EF%BC%89/&quot;&gt;上篇博文&lt;/a&gt;主要介绍了写一个简单的深度神经网络可能需要注意的细节点，这篇延续上篇内容，将在&lt;strong&gt;算法细节&lt;/strong&gt;和&lt;strong&gt;调参&lt;/strong&gt;上也写一点经验和想法。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="人工智能" scheme="https://kiddie92.github.io/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
+    
+    
+      <category term="算法" scheme="https://kiddie92.github.io/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="深度学习" scheme="https://kiddie92.github.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="神经网络" scheme="https://kiddie92.github.io/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"/>
+    
+  </entry>
   
   <entry>
     <title>从零开始写NN（上）</title>
@@ -120,11 +147,11 @@
     
       <category term="算法" scheme="https://kiddie92.github.io/tags/%E7%AE%97%E6%B3%95/"/>
     
-      <category term="推荐系统" scheme="https://kiddie92.github.io/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/"/>
-    
       <category term="机器学习" scheme="https://kiddie92.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
       <category term="人工智能" scheme="https://kiddie92.github.io/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
+    
+      <category term="推荐系统" scheme="https://kiddie92.github.io/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/"/>
     
   </entry>
   
@@ -500,9 +527,9 @@
       <category term="机器学习" scheme="https://kiddie92.github.io/categories/tensorflow/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
     
-      <category term="机器学习" scheme="https://kiddie92.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-    
       <category term="tensorflow" scheme="https://kiddie92.github.io/tags/tensorflow/"/>
+    
+      <category term="机器学习" scheme="https://kiddie92.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
   </entry>
   
@@ -528,35 +555,6 @@
       <category term="kubernetes" scheme="https://kiddie92.github.io/tags/kubernetes/"/>
     
       <category term="性能测试" scheme="https://kiddie92.github.io/tags/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>CentOS 下基于kubernetes安装部署kubeflow</title>
-    <link href="https://kiddie92.github.io/2019/01/05/CentOS-%E4%B8%8B%E5%9F%BA%E4%BA%8Ekubernetes%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2kubeflow/"/>
-    <id>https://kiddie92.github.io/2019/01/05/CentOS-下基于kubernetes安装部署kubeflow/</id>
-    <published>2019-01-05T05:45:00.000Z</published>
-    <updated>2019-06-22T05:41:59.122Z</updated>
-    
-    <content type="html"><![CDATA[<blockquote><p>小目标：基于前期搭建的<a href="https://kiddie92.github.io/2018/12/26/CentOS%E4%B8%8A%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2Kubernetes%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/">kubernetes集群</a>，部署kubeflow，由于涉及到google的docker镜像，只好设置国外代理了<br><a id="more"></a> </p></blockquote><h3 id="下载安装包："><a href="#下载安装包：" class="headerlink" title="下载安装包："></a>下载安装包：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/ksonnet/ksonnet/releases/download/v0.13.1/ks_0.13.1_linux_amd64.tar.gz</span><br><span class="line">wget https://github.com/kubeflow/kubeflow/archive/v0.4.0-rc.3.tar.gz  <span class="comment">#2019.1.4 最新版本v0.4.0-rc.3</span></span><br></pre></td></tr></table></figure><p>将下载好的安装包解压并归档</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tar -vxf ks_0.13.1_linux_amd64.tar.gz</span><br><span class="line">tar -vxf v0.4.0-rc.3.tar.gz</span><br><span class="line">mkdir kubeflow-ks</span><br><span class="line">cp -r kubeflow-0.4.0-rc.3 kubeflow-ks</span><br><span class="line">cp -r ks_0.13.1_linux_amd64 kubeflow-ks</span><br></pre></td></tr></table></figure><h3 id="安装ksonnet"><a href="#安装ksonnet" class="headerlink" title="安装ksonnet"></a>安装ksonnet</h3><p>ks是一个可执行文件，直接拷贝到系统可执行目录下就OK了</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> kubeflow-ks/ks_0.13.1_linux_amd64</span><br><span class="line">cp ks /usr/bin</span><br></pre></td></tr></table></figure><h3 id="安装部署kubeflow"><a href="#安装部署kubeflow" class="headerlink" title="安装部署kubeflow"></a>安装部署kubeflow</h3><p>首先定义一些临时的环境变量，安装的时候会方便很多，因为安装脚本也是需要用到这些变量的</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> KUBEFLOW_SRC=/your/path/to/kubeflow-0.4.0-rc.3</span><br><span class="line"><span class="built_in">export</span> KFAPP=kubeflowconfig  <span class="comment">#随意命名</span></span><br></pre></td></tr></table></figure><blockquote><p><strong>注意</strong>：KFAPP必须是将要存放配置文件的<strong>目录名称</strong>，不可以是目录的路径，否则会报以下错误：<code>&lt;name&gt; should be the name for the deployment; not a path</code></p></blockquote><p>安装部署只需要三个命令<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$&#123;KUBEFLOW_SRC&#125;</span>/scripts/kfctl.sh init <span class="variable">$&#123;KFAPP&#125;</span> --platform none  <span class="comment"># none 也可以是minikube等</span></span><br><span class="line"><span class="variable">$&#123;KUBEFLOW_SRC&#125;</span>/scripts/kfctl.sh generate k8s</span><br><span class="line"><span class="variable">$&#123;KUBEFLOW_SRC&#125;</span>/scripts/kfctl.sh apply k8s</span><br></pre></td></tr></table></figure></p><p>查看是否运行好了：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pod -n kubeflow  <span class="comment">#理论上gcr.io的镜像pull不下来</span></span><br><span class="line"><span class="comment"># 查看ImagePullBackOff等问题</span></span><br><span class="line">kubectl describe pod scheduledworkflow -n kubeflow </span><br><span class="line"><span class="comment">#提示: Failed to pull image "gcr.io/ml-pipeline/scheduledworkflow:0.1.6"</span></span><br></pre></td></tr></table></figure></p><p>所以这里需要代理了.. 设置国外代理的方法比较多，我这里使用的是VPS的方式。</p><h3 id="想要删除-or-重新部署？"><a href="#想要删除-or-重新部署？" class="headerlink" title="想要删除 or 重新部署？"></a>想要删除 or 重新部署？</h3><p>直接删除kubeflow这个namespace和之前放置配置文件的文件夹就OK了</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kubectl delete ns kubeflow</span><br><span class="line">kubectl delete crd tfjobs.kubeflow.org  <span class="comment"># crd 不删除也行</span></span><br><span class="line">rm -rf <span class="variable">$&#123;KFAPP&#125;</span></span><br></pre></td></tr></table></figure><h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ol><li><a href="https://www.kubeflow.org/docs/started/getting-started/#kubeflow-quick-start" target="_blank" rel="noopener">官方文档</a></li><li><a href="https://www.katacoda.com/kubeflow/scenarios/deploying-kubeflow-with-ksonnet" target="_blank" rel="noopener">katacoda</a></li></ol>]]></content>
-    
-    <summary type="html">
-    
-      &lt;blockquote&gt;
-&lt;p&gt;小目标：基于前期搭建的&lt;a href=&quot;https://kiddie92.github.io/2018/12/26/CentOS%E4%B8%8A%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2Kubernetes%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/&quot;&gt;kubernetes集群&lt;/a&gt;，部署kubeflow，由于涉及到google的docker镜像，只好设置国外代理了&lt;br&gt;
-    
-    </summary>
-    
-      <category term="容器云kubeflow" scheme="https://kiddie92.github.io/categories/%E5%AE%B9%E5%99%A8%E4%BA%91kubeflow/"/>
-    
-      <category term="分布式机器学习" scheme="https://kiddie92.github.io/categories/%E5%AE%B9%E5%99%A8%E4%BA%91kubeflow/%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-      <category term="kubernetes" scheme="https://kiddie92.github.io/tags/kubernetes/"/>
-    
-      <category term="kubeflow" scheme="https://kiddie92.github.io/tags/kubeflow/"/>
-    
-      <category term="分布式机器学习" scheme="https://kiddie92.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
   </entry>
   
