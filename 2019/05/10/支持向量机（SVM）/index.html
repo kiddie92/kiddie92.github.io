@@ -351,7 +351,7 @@
 <p>推导至此，我们应当了解到：</p>
 <ol>
 <li>所谓<code>支持向量</code>就是这些对分割线（高维空间里是个超平面）产生影响的数据向量，这些数据点其实就是位于“黑色实线”上的点，或者叫做距离分割线的<strong>最近点</strong>，其他点的<script type="math/tex">\alpha_i=0</script>，对<script type="math/tex">\vec w</script>的确定没有贡献；</li>
-<li>强对偶下，对偶问题的解就是原始问题的解，并且对偶问题始终是一个<strong>Concave优化问题</strong>，所以SVM的解一定是全局唯一解，<strong>不会陷入局部最小值</strong>；</li>
+<li>强对偶下，对偶问题的解就是原始问题的解，并且对偶问题始终是一个<strong>Concave优化问题</strong>，所以SVM的解一定是全局唯一解，<strong>不会陷入局部极小值</strong>；</li>
 <li><code>Decision Rule</code>变为：<script type="math/tex">\sum_i \alpha_iy_i\vec x_i \cdot \vec u +b \ge 0, \text {THEN +}</script></li>
 </ol>
 <h2 id="目标函数和Hinge-Loss"><a href="#目标函数和Hinge-Loss" class="headerlink" title="目标函数和Hinge Loss"></a>目标函数和Hinge Loss</h2><p>上一部分介绍的是<strong>线性可分</strong>的支持向量机的推导，如果按照机器学习的“套路”，很难说清楚目标函数、优化算法这类概念。实际上，既然是二分类问题，那目标函数按理说应该是<strong>分类</strong>的准确性，优化的目标便是提升准确性。所以接下来稍微重构一下刚刚的问题，并简单介绍一下<strong>线性不可分（含有噪声信号）</strong>的情况如何使用SVM来做分类。</p>
