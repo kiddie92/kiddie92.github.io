@@ -17,8 +17,12 @@
 
 
 
+  <meta name="description" content="seq2seq-从RNN到LSTM再到attention">
 
 
+
+
+  <meta name="keywords" content="算法, 深度学习, Attention, RNN, Mun*">
 
 
 
@@ -38,7 +42,7 @@
 
 
 
-<link rel="canonical" href="https://kiddie92.github.io/">
+<link rel="canonical" href="https://kiddie92.github.io/2019/07/03/seq2seq的attention机制/">
 
 
 
@@ -104,7 +108,7 @@
   window.config = {"leancloud":{"app_id":"n8MGlOWz83zS9G0m0PGinErj-gzGzoHsz","app_key":"bSOcrmi2W53fTzNXQA3UQ2z3"},"toc":true,"fancybox":true,"pjax":true};
 </script>
 
-    <title> Mun* </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+    <title> seq2seq-从RNN到LSTM再到attention - Mun* </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   </head>
 
   <body><div id="mobile-navbar" class="mobile-navbar">
@@ -270,15 +274,11 @@
           <div id="content" class="content">
             
   
-  <section id="posts" class="posts">
-    
-      
-        
   <article class="post">
     <header class="post-header">
       <h1 class="post-title">
         
-          <a class="post-link" href="/2019/07/03/seq2seq的attention机制/">seq2seq-从RNN到LSTM再到attention</a>
+          seq2seq-从RNN到LSTM再到attention
         
       </h1>
 
@@ -303,15 +303,18 @@
 
     
     
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#RNN的编码解码-tag"><span class="toc-text">RNN的编码解码 $tag$</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#RNN-LSTM-GRU"><span class="toc-text">RNN LSTM GRU</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基于RNN的seq2seq模型"><span class="toc-text">基于RNN的seq2seq模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Attention"><span class="toc-text">Attention</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#image-caption任务"><span class="toc-text">image caption任务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#小结"><span class="toc-text">小结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-text">Reference</span></a></li></ol>
+    </div>
+  </div>
+
 
 
     <div class="post-content">
       
-        
-        
-
-        
-          <blockquote>
+        <blockquote>
 <p>Attention自2017年由Google提出至今，在seq2seq（编码解码）的任务表现出色，在NLP领域的应用也都有多项突破。我觉得attention对于深度学习将会产生深远的影响。这篇文章主要会介绍一下基于Attention的seq2seq模型和RNN base的seq2seq模型在算法上的一些区别，此外还顺便简要介绍一下LSTM和GRU算法。</p>
 </blockquote>
 <h2 id="RNN的编码解码-tag"><a href="#RNN的编码解码-tag" class="headerlink" title="RNN的编码解码 $tag$"></a>RNN的编码解码 $tag$</h2><p>当神经网络的输入是一串序列，输出也是一串序列，并且输入和输出序列的长度是不固定的，这样的学习任务就属于<code>sequence2sequence模型</code>（简称seq2seq）实际上，CNN和RNN都可以用于该任务的学习，以CNN为代表的<code>前馈神经网络</code>的做法是以滑动窗的方式（attention出来之前）取输入序列（17年facebook做过相关工作），而以RNN为代表的<code>循环神经网络</code>的做法一般来说比较主流一些，所以这里仅讨论RNN的编码解码算法。<br>深度学习爆红之前，NLP的常规操作是以<code>HMM/CRF</code>为代表的<code>生成模型</code>，给定一个词汇序列来预测下一个是什么，要求预测的词汇一定要最大化概率（如下式所示），基于语料库的词性和词频来分析似乎很合理；而RNN作为<code>判别模型</code>的代表，采用循环/递归的方式不断由前面的序列来生成下一个序列元素，其依据的也是式（1）。</p>
@@ -379,370 +382,101 @@ h_t =(1-z_t)*h_{t-1}+z_t* \hat h_t</script>式中，<script type="math/tex">z_t<
 <li><a href="https://www.youtube.com/watch?v=uCSTpOLMC48&amp;list=LLoCiddVQCg9ZvZoEa5d5wYw&amp;index=9" target="_blank" rel="noopener">https://www.youtube.com/watch?v=uCSTpOLMC48&amp;list=LLoCiddVQCg9ZvZoEa5d5wYw&amp;index=9</a></li>
 </ol>
 
-        
       
     </div>
 
     
+      
+      
 
-    
+  <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="https://kiddie92.github.io">kiddie92</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="https://kiddie92.github.io/2019/07/03/seq2seq的attention机制/">https://kiddie92.github.io/2019/07/03/seq2seq的attention机制/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span>
+      
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用4.0国际许可协议</a>
+    </p>
+  </div>
 
-  </article>
+
 
       
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/06/26/从零开始写NN（下）/">从零开始写NN（下）</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-06-26
-        </span>
-        
-          <span class="post-category">
-            
-              <a href="/categories/人工智能/">人工智能</a>
-            
-          </span>
-        
-        
-        <span class="post-visits" data-url="/2019/06/26/从零开始写NN（下）/" data-title="从零开始写NN（下）">
-          阅读次数 0
-        </span>
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
       
-        
-        
-          
-        
+  <div class="post-reward">
+    <input type="checkbox" name="reward" id="reward" hidden>
+    <label class="reward-button" for="reward">赞赏支持</label>
+    <div class="qr-code">
+      
+      
+        <label class="qr-code-image" for="reward">
+          <img class="image" src="/images/reward/wechat.png" title="微信打赏">
+        </label>
+      
+      
+        <label class="qr-code-image" for="reward">
+          <img class="image" src="/images/reward/alipay.png" title="支付宝打赏">
+        </label>
+      
+    </div>
+  </div>
 
+    
+
+    
+      <footer class="post-footer">
         
-          <blockquote>
-<p><a href="https://kiddie92.github.io/2019/06/24/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%86%99NN%EF%BC%88%E4%B8%8A%EF%BC%89/">上篇博文</a>主要介绍了写一个简单的深度神经网络可能需要注意的细节点，这篇延续上篇内容，将在<strong>算法细节</strong>和<strong>调参</strong>上也写一点经验和想法。<br>
-          <div class="read-more">
-            <a href="/2019/06/26/从零开始写NN（下）/" class="read-more-link">阅读更多</a>
+          <div class="post-tags">
+            
+              <a href="/tags/算法/">算法</a>
+            
+              <a href="/tags/深度学习/">深度学习</a>
+            
+              <a href="/tags/Attention/">Attention</a>
+            
+              <a href="/tags/RNN/">RNN</a>
+            
           </div>
         
-      
-    </p></blockquote></div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/06/24/从零开始写NN（上）/">从零开始写NN（上）</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-06-24
-        </span>
-        
-          <span class="post-category">
-            
-              <a href="/categories/人工智能/">人工智能</a>
-            
-          </span>
         
         
-        <span class="post-visits" data-url="/2019/06/24/从零开始写NN（上）/" data-title="从零开始写NN（上）">
-          阅读次数 0
-        </span>
-        
-      </div>
-    </header>
-
+  <nav class="post-nav">
     
     
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <blockquote>
-<p>从零开始写NN (neural network) 系列第一篇，本篇博文将会从代码结构上介绍一下怎么写一个简单的<code>神经网络算法</code>，下篇打算使用一个示例介绍一下如何调整参数细节。当然，这里的所谓从0开始，其实还是使用了<code>numpy</code>，有点像使用<code>matlab</code>的感觉。<br>
-          <div class="read-more">
-            <a href="/2019/06/24/从零开始写NN（上）/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </p></blockquote></div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/06/22/反向传播/">反向传播算法（BP）</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-06-22
-        </span>
-        
-          <span class="post-category">
-            
-              <a href="/categories/人工智能/">人工智能</a>
-            
-          </span>
-        
-        
-        <span class="post-visits" data-url="/2019/06/22/反向传播/" data-title="反向传播算法（BP）">
-          阅读次数 0
-        </span>
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <blockquote>
-<p>人工智能领域的算法真是日新月异啊，最近CMU和Google Brain又提出了XLNet。<br>这篇博文还是从基础算法入手，介绍一下Back Propagation（简称BP），主要分为两个部分：反向传播的基本原理和RNN的反向传播算法，最后给出代码实现。<br>
-          <div class="read-more">
-            <a href="/2019/06/22/反向传播/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </p></blockquote></div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/06/15/分层softmax/">分层softmax</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-06-15
-        </span>
-        
-          <span class="post-category">
-            
-              <a href="/categories/人工智能/">人工智能</a>
-            
-          </span>
-        
-        
-        <span class="post-visits" data-url="/2019/06/15/分层softmax/" data-title="分层softmax">
-          阅读次数 0
-        </span>
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <blockquote>
-<p>入坑自然语言处理，论文<a href="https://arxiv.org/pdf/1411.2738.pdf" target="_blank" rel="noopener">word2vec Parameter Learning Explained</a>基本是必读的，这篇论文中的<strong>Hierarchical Softmax</strong>，中文叫做分层softmax/层次softmax是比较让人头大的内容，这篇博文试图阐述Hierarchical Softmax算法在word2vec中的应用。<br>
-          <div class="read-more">
-            <a href="/2019/06/15/分层softmax/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </p></blockquote></div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/06/10/Matrix-Factorization简介/">基于矩阵分解的推荐算法</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-06-10
-        </span>
-        
-          <span class="post-category">
-            
-              <a href="/categories/人工智能/">人工智能</a>
-            
-          </span>
-        
-        
-        <span class="post-visits" data-url="/2019/06/10/Matrix-Factorization简介/" data-title="基于矩阵分解的推荐算法">
-          阅读次数 0
-        </span>
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <blockquote>
-<p>Matrix Factorization算法是推荐系统（Recommendation System）的基础，本篇文章仅介绍一下基于<strong>矩阵分解</strong>的推荐系统是如何工作的以及Matrix Factorization算法，最后给出一个算法示例。内容比较浅显，深入算法原理还需要阅读更多的论文和资料。<br>
-          <div class="read-more">
-            <a href="/2019/06/10/Matrix-Factorization简介/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </p></blockquote></div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/06/09/Logistic-Regression/">Logistic Regression</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-06-09
-        </span>
-        
-          <span class="post-category">
-            
-              <a href="/categories/人工智能/">人工智能</a>
-            
-          </span>
-        
-        
-        <span class="post-visits" data-url="/2019/06/09/Logistic-Regression/" data-title="Logistic Regression">
-          阅读次数 0
-        </span>
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <blockquote>
-<p>对数几率回归/逻辑回归/逻辑斯蒂回归/最大熵模型也即Logistic Regression是深度学习的基础，算法的重要性不言而喻。Logistic Regression虽然叫“Rgression”，但其实与之前介绍的<a href="https://kiddie92.github.io/2019/05/10/%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA%EF%BC%88SVM%EF%BC%89/">SVM分类（svc）方法</a>一样，同属<strong>分类算法</strong>。本篇博文对该算法的介绍流程基本参考了李宏毅老师的机器学习课程，文章后半部分主要以问答的形式给出了关于逻辑斯蒂回归的部分理解。<br>
-          <div class="read-more">
-            <a href="/2019/06/09/Logistic-Regression/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </p></blockquote></div>
-
-    
-
-    
-
-  </article>
-
-      
-      
-  <nav class="pagination">
-    
-    
-      <a class="next" href="/page/2/">
-        <span class="next-text">下一页</span>
+      <a class="next" href="/2019/06/26/从零开始写NN（下）/">
+        <span class="next-text nav-default">从零开始写NN（下）</span>
+        <span class="prev-text nav-mobile">下一篇</span>
         <i class="iconfont icon-right"></i>
       </a>
     
   </nav>
 
 
+      </footer>
     
-  </section>
+
+  </article>
+
 
           </div>
           
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
 
         </div>
       </main>
@@ -830,6 +564,27 @@ h_t =(1-z_t)*h_{t-1}+z_t* \hat h_t</script>式中，<script type="math/tex">z_t<
     </div>
 
     
+  
+  <script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'https://kiddie92.github.io/2019/07/03/seq2seq的attention机制/';
+        this.page.identifier = '2019/07/03/seq2seq的attention机制/';
+        this.page.title = 'seq2seq-从RNN到LSTM再到attention';
+    };
+    (function() {
+    var d = document, s = d.createElement('script');
+
+    s.src = '//https-kiddie92-github-io.disqus.com/embed.js';
+
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();  
+  </script>
+
+  
+
+  
+
 
 
     

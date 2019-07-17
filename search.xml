@@ -4,6 +4,37 @@
   
     
     <entry>
+      <title>seq2seq-从RNN到LSTM再到attention</title>
+      <link href="/2019/07/03/seq2seq%E7%9A%84attention%E6%9C%BA%E5%88%B6/"/>
+      <url>/2019/07/03/seq2seq%E7%9A%84attention%E6%9C%BA%E5%88%B6/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>Attention自2017年由Google提出至今，在seq2seq（编码解码）的任务表现出色，在NLP领域的应用也都有多项突破。我觉得attention对于深度学习将会产生深远的影响。这篇文章主要会介绍一下基于Attention的seq2seq模型和RNN base的seq2seq模型在算法上的一些区别，此外还顺便简要介绍一下LSTM和GRU算法。</p></blockquote><h2 id="RNN的编码解码-tag"><a href="#RNN的编码解码-tag" class="headerlink" title="RNN的编码解码 $tag$"></a>RNN的编码解码 $tag$</h2><p>当神经网络的输入是一串序列，输出也是一串序列，并且输入和输出序列的长度是不固定的，这样的学习任务就属于<code>sequence2sequence模型</code>（简称seq2seq）实际上，CNN和RNN都可以用于该任务的学习，以CNN为代表的<code>前馈神经网络</code>的做法是以滑动窗的方式（attention出来之前）取输入序列（17年facebook做过相关工作），而以RNN为代表的<code>循环神经网络</code>的做法一般来说比较主流一些，所以这里仅讨论RNN的编码解码算法。<br>深度学习爆红之前，NLP的常规操作是以<code>HMM/CRF</code>为代表的<code>生成模型</code>，给定一个词汇序列来预测下一个是什么，要求预测的词汇一定要最大化概率（如下式所示），基于语料库的词性和词频来分析似乎很合理；而RNN作为<code>判别模型</code>的代表，采用循环/递归的方式不断由前面的序列来生成下一个序列元素，其依据的也是式（1）。</p><script type="math/tex; mode=display">\max P(y_1,y_2,...,y_{T'} )  = \prod_{t'=1}^{T'} P(y_{t'} | \space y_1,y_2,...,y_{t'-1}) \tag {1}</script><p>上式表示序列自动生成的数学原理，下面先介绍一下RNN、LSTM和GRU的基本原理，再介绍一下基于RNN的seq2seq模型。</p><h3 id="RNN-LSTM-GRU"><a href="#RNN-LSTM-GRU" class="headerlink" title="RNN LSTM GRU"></a>RNN LSTM GRU</h3><ul><li><strong>传统RNN</strong><br>下图表示深层RNN的模型计算过程，其中<script type="math/tex">a^{1,t}</script>这一层在时间上进行展开，便于理解。可以看出，传统的RNN算法在预测下一个输出时，利用了前面几乎所有的输入信息，这些输入信息是通过隐藏层传递到下一个输出的。注意这里的参数<script type="math/tex">W</script>和<script type="math/tex">U</script>在不同的时刻是共享的。<br><img src="./RNN_base.png" width="40%" height="40%"></li><li><strong>LSTM和GRU</strong><br>相较于传统的RNN算法，LSTM和GRU增加了一些门控机制，因为可学习控制输入/输入以及遗忘/丢弃一些信息，所以算法系统就不会完全利用序列之前的所有信息了。关于加入了门控的RNN算法，可以对比下面的计算图示以及公式：<br><img src="./lstmandgru.png" alt="lstmandgru"><strong>LSTM的计算公式</strong><script type="math/tex; mode=display">i_t = \sigma (x_tU^i+h_{t-1}W^i) \\f_t=\sigma(x_tU^f+h_{t-1}W^f) \\o_t = \sigma(x_tU^o+h_{t-1}W^o) \\\hat C_t=tanh(x_tU^g+h_{t-1}W^g) \\C_t = f_t*C_{t-1}+i_t*\hat C_t \\h_t = tanh(C_t)*o_t</script>式中，<script type="math/tex">i_t</script>为输入门阀，<script type="math/tex">f_t</script>为遗忘门阀，<script type="math/tex">o_t</script>为输出门阀，他们都为本时刻的输入<script type="math/tex">x_t</script>和上一时刻的隐含层<script type="math/tex">h_{t-1}</script>所决定，并且大小都在0~1之间；<script type="math/tex">\hat C_t</script>表示本次“计划”更新的<code>Cell</code>；<script type="math/tex">C_t</script>表示本次计算得到的<code>Cell</code>，它由上以时刻计算得到的<script type="math/tex">C_{t-1}</script>和本时刻计算得到的<script type="math/tex">\hat C_t</script>共同决定，从式中可以看出，上一时刻的<script type="math/tex">C_{t-1}</script>可能会被遗忘，本时刻的<script type="math/tex">\hat C_t</script>也可能被忽略；最终得到的输出<script type="math/tex">h_t</script>由<script type="math/tex">C_t</script>以及输出门<script type="math/tex">o_t</script>决定。<br><strong>GRU的计算公式</strong><script type="math/tex; mode=display">z_t = \sigma(x_tU^z+h_{t-1}W^z) \\r_t = \sigma(x_tU^r+h_{t-1}W^r) \\\hat h_t = tanh(x_tU^h+(r_t*h_{t-1})W^h) \\h_t =(1-z_t)*h_{t-1}+z_t* \hat h_t</script>式中，<script type="math/tex">z_t</script>为更新门，<script type="math/tex">r_t</script>为重置门，式子上来看不难理解，GRU像是简化版的LSTM。</li></ul><blockquote><p>GRU最后计算<script type="math/tex">h_t</script>公式上看有点像卡尔曼滤波，^_^</p></blockquote><p>经过上面的分析，可以看出，<strong>LSTM和GRU对于序列的前后依赖关系相较于传统的RNN已经实现了一定的解耦</strong>，他们都不再是依赖所有的前序数据，而是选择可学习的部分依赖。通俗点说，就是可能会不再关注部分前序序列的内容。</p><h3 id="基于RNN的seq2seq模型"><a href="#基于RNN的seq2seq模型" class="headerlink" title="基于RNN的seq2seq模型"></a>基于RNN的seq2seq模型</h3><p>seq2seq模型又可以被认为是编码解码过程，所以实现该模型可以利用两个RNN，一个做<code>encoder</code>，另外一个做<code>decoder</code>。假设要做的是一个<code>中英翻译任务</code>，模型要做的便是先利用一个RNN将输入的中文序列进行<code>编码</code>，得到背景词汇向量<script type="math/tex">c</script>(<code>context vector</code>)，这里可以理解成输入语句的高维抽象；接着使用一个RNN利对<script type="math/tex">c</script>来做<code>解码</code>产生目标翻译序列———对应的英文翻译。如下图所示，中文语句用<script type="math/tex">{\{x_1,x_2,x_3\}}</script>来表示，英文翻译使用<script type="math/tex">{\{y_1,y_2,y_3\}}</script>来表示，图中<script type="math/tex">x_i</script><strong>分别</strong>是对中文词汇进行了one-hot编码之后得到的向量，<script type="math/tex">h_i</script>表示RNN的输出/隐含层变量，这里用<script type="math/tex">h_i</script>表示；<script type="math/tex">c</script>是由编码器隐含层变量<script type="math/tex">h_i</script>通过一个函数<script type="math/tex">q</script>得出。解码RNN/LSTM/GRU的每一个<code>Cell</code>的输入则是背景词汇编码<script type="math/tex">c</script>，隐含层<script type="math/tex">s_i</script>，以及对应时刻的输入<script type="math/tex">y_i</script>。</p><p><img src="./seq2seq-model.png" width="65%" height="65%"></p><blockquote><p>需要说明的是，在这个例子中<script type="math/tex">{\{x_1,x_2,x_3\}}</script> 和 <script type="math/tex">{\{y_1,y_2,y_3\}}</script>不一定是等长的，序列的长度也不一定是3。</p></blockquote><p><strong>几个问题：</strong></p><ol><li>初始化<script type="math/tex">h_0</script>和<script type="math/tex">s_0</script><br>图中的<script type="math/tex">h_0</script>和<script type="math/tex">s_0</script>分别是编码和解码器第一个输入对应的隐含层，所以需要初始化该变量，其中<script type="math/tex">h_0</script>可以初始化为0，<script type="math/tex">s_0</script>可以使用<script type="math/tex">tanh(Wh_1)</script>进行初始化，这里是考虑到翻译任务中，源语言的第一个词汇和目标语言的第一个词汇是对应的。</li><li>函数<script type="math/tex">q</script>如何定义？<br>可以是直接取最后一个<script type="math/tex">h_3</script>，也可以是对<script type="math/tex">h_i</script>进行加权求和等等。</li><li>生成语句何时停止？<br>每一个语料库的语句的起始，终止都会添加一个特殊字符，<code>bos</code> 和<code>EOS</code>分别表示语句的起始和结束，当生成的词汇为<code>eos</code>时则停止生成。这一点在HMM算法中也是一样的。</li><li>使用双向LSTM时，隐含层如何取？<br>当使用双向LSTM进行训练时，两个方向会分别得到forward <script type="math/tex">\overrightarrow s_i</script>和backword <script type="math/tex">\overleftarrow s_i</script>，那么该时刻的隐含层则<strong>可以是</strong>两者的拼接<script type="math/tex">concat(\overrightarrow s_i,\overleftarrow s_i)</script></li></ol><h2 id="Attention"><a href="#Attention" class="headerlink" title="Attention"></a>Attention</h2><p>上面说到LSTM和GRU可以理解成相对于传统的RNN对<code>前序数据</code>做了部分的解耦，那么<code>attention</code>可以说是做到了完全解耦了。下面先介绍一下attention是如何做的：<br>如下图所示，首先计算下一时刻要进入<code>cell</code>的隐含层<script type="math/tex">s_{t'-1}</script>和已经准备好的解码器隐含层<script type="math/tex">h_i</script>的“相似度”（姑且认为是相似度好了），也可以说是对解码器隐含层<script type="math/tex">h_i</script>的打分，打分函数可以有很多，比如对<script type="math/tex">s_{t'-1}</script>和<script type="math/tex">h_t</script>直接做<code>内积</code>，或者做一个神经元：</p><script type="math/tex; mode=display">\alpha_{t'i}=Score(s_{t'-1},h_t) \\\alpha_{t'i}=act(p^Ts^{(L-1, t'-1)}+q^Th^{i}_t+r) \tag {2}</script><blockquote><p>注意这里的<script type="math/tex">p^T</script>和<script type="math/tex">q^T</script>是参数共享的，有利于后续的矩阵运算和并行化。<br>关于并行化计算也不难理解，计算attention中的打分、求背景词向量都是可以使用矩阵来计算的（即使有多个<code>query</code>），这一点在<code>self-attention</code>中非常有价值，详细介绍可以看<a href="https://www.youtube.com/watch?v=ugWDIIOHtPA&amp;list=LLoCiddVQCg9ZvZoEa5d5wYw&amp;index=27&amp;t=894s" target="_blank" rel="noopener">这里</a>。</p></blockquote><p>对隐含层进行打分之后，直接做<code>softmax</code>，得到每一个隐含神经元的分值：</p><script type="math/tex; mode=display">\hat \alpha_{t'i}=\frac{exp(\alpha_{t'i})}{\sum_{j=1}^{T}{exp(\alpha_{t'j})} } \tag {3}</script><p><img src="./attention.png" width="35%" height="35%"></p><p>接下来，使用<code>分数向量（score）</code>对<script type="math/tex">h_t</script>做加权求和就得到了该时刻需要用的背景词向量了：</p><script type="math/tex; mode=display">\hat c_{t'} = \sum_{t=1}^{T} \hat \alpha_{t',i}h_t</script><p>实际上，这里如果对比<code>self-attention</code>可以发现，<script type="math/tex">s_{t'-1}</script>作为<code>query</code>，<script type="math/tex">h_t</script>同时作为<code>key</code>和<code>value</code>。</p><blockquote><p>此外，attention也有很多变化的版本：<code>self-attention</code>, <code>mutihead-attention</code>, <code>hard-attention</code>；算法上有些微差异，想要了解更多可以查看<a href="https://lilianweng.github.io/lil-log/2018/06/24/attention-attention.html" target="_blank" rel="noopener">这里</a>。</p></blockquote><h2 id="image-caption任务"><a href="#image-caption任务" class="headerlink" title="image caption任务"></a>image caption任务</h2><p>“看图说话”任务学习得到的是一个seq2seq的模型，这里使用的算法为CNN-RNN，如下图所示，其实就是把上图中的编码器改成了CNN，解码器和上述是一样的，把CNN的高维特征用attetion的方式输入到解码器中则完成了attention的实际操作。啥也不说了，项目地址在<a href="https://github.com/Hvass-Labs/TensorFlow-Tutorials" target="_blank" rel="noopener">这里</a>。</p><p><img src="./image_caption.png" alt="image_caption"></p><blockquote><p>此外，CNN-RNN还可以深入做一些更加有趣的事情，比如：唇语解读。</p></blockquote><h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ol><li>RNN和所有信息处于非解耦关系，LSTM处于部分解耦，Attention则是完全解耦；</li><li>attention可以使用矩阵运算来实现并行化；</li><li>引入attention可以对深度学习机制进行部分解释。</li></ol><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol><li>Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., … &amp; Polosukhin, I. (2017). Attention is all you need. In Advances in neural information processing systems (pp. 5998-6008).</li><li>Gers, F. A., Schmidhuber, J., &amp; Cummins, F. (1999). Learning to forget: Continual prediction with LSTM.</li><li>Sutskever, I., Vinyals, O., &amp; Le, Q. V. (2014). Sequence to sequence learning with neural networks. In Advances in neural information processing systems (pp. 3104-3112).</li><li>Cho, K., Van Merriënboer, B., Gulcehre, C., Bahdanau, D., Bougares, F., Schwenk, H., &amp; Bengio, Y. (2014). Learning phrase representations using RNN encoder-decoder for statistical machine translation. arXiv preprint arXiv:1406.1078.</li><li><a href="https://www.youtube.com/watch?v=VTXgPNmENG0&amp;list=PLlPcwHqLqJDkVO0zHMqswX1jA9Xw7OSOK&amp;index=7" target="_blank" rel="noopener">https://www.youtube.com/watch?v=VTXgPNmENG0&amp;list=PLlPcwHqLqJDkVO0zHMqswX1jA9Xw7OSOK&amp;index=7</a></li><li><a href="https://www.youtube.com/watch?v=ugWDIIOHtPA&amp;list=PLJV_el3uVTsOK_ZK5L0Iv_EQoL1JefRL4&amp;index=60" target="_blank" rel="noopener">https://www.youtube.com/watch?v=ugWDIIOHtPA&amp;list=PLJV_el3uVTsOK_ZK5L0Iv_EQoL1JefRL4&amp;index=60</a></li><li><a href="https://www.youtube.com/watch?v=GQh7wDQDc0Y" target="_blank" rel="noopener">https://www.youtube.com/watch?v=GQh7wDQDc0Y</a></li><li><a href="https://www.youtube.com/watch?v=uCSTpOLMC48&amp;list=LLoCiddVQCg9ZvZoEa5d5wYw&amp;index=9" target="_blank" rel="noopener">https://www.youtube.com/watch?v=uCSTpOLMC48&amp;list=LLoCiddVQCg9ZvZoEa5d5wYw&amp;index=9</a></li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> 人工智能 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 算法 </tag>
+            
+            <tag> 深度学习 </tag>
+            
+            <tag> Attention </tag>
+            
+            <tag> RNN </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>从零开始写NN（下）</title>
       <link href="/2019/06/26/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%86%99NN%EF%BC%88%E4%B8%8B%EF%BC%89/"/>
       <url>/2019/06/26/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%86%99NN%EF%BC%88%E4%B8%8B%EF%BC%89/</url>
@@ -633,9 +664,9 @@
       
         <tags>
             
-            <tag> 金融知识 </tag>
-            
             <tag> 比较优势 </tag>
+            
+            <tag> 金融知识 </tag>
             
         </tags>
       
@@ -724,11 +755,11 @@
       
         <tags>
             
+            <tag> 金融知识 </tag>
+            
             <tag> 数学 </tag>
             
             <tag> 囚徒困境 </tag>
-            
-            <tag> 金融知识 </tag>
             
         </tags>
       
