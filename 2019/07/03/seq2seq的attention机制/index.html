@@ -17,7 +17,7 @@
 
 
 
-  <meta name="description" content="seq2seq-从RNN到LSTM再到attention">
+  <meta name="description" content="Seq2Seq-从RNN到LSTM再到Attention">
 
 
 
@@ -108,7 +108,7 @@
   window.config = {"leancloud":{"app_id":"n8MGlOWz83zS9G0m0PGinErj-gzGzoHsz","app_key":"bSOcrmi2W53fTzNXQA3UQ2z3"},"toc":true,"fancybox":true,"pjax":true};
 </script>
 
-    <title> seq2seq-从RNN到LSTM再到attention - Mun* </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+    <title> Seq2Seq-从RNN到LSTM再到Attention - Mun* </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   </head>
 
   <body><div id="mobile-navbar" class="mobile-navbar">
@@ -278,7 +278,7 @@
     <header class="post-header">
       <h1 class="post-title">
         
-          seq2seq-从RNN到LSTM再到attention
+          Seq2Seq-从RNN到LSTM再到Attention
         
       </h1>
 
@@ -294,7 +294,7 @@
           </span>
         
         
-        <span class="post-visits" data-url="/2019/07/03/seq2seq的attention机制/" data-title="seq2seq-从RNN到LSTM再到attention">
+        <span class="post-visits" data-url="/2019/07/03/seq2seq的attention机制/" data-title="Seq2Seq-从RNN到LSTM再到Attention">
           阅读次数 0
         </span>
         
@@ -315,7 +315,7 @@
     <div class="post-content">
       
         <blockquote>
-<p>Attention自2017年由Google提出至今，在seq2seq（编码解码）的任务表现出色，在NLP领域的应用也都有多项突破。我觉得attention对于深度学习将会产生深远的影响。这篇文章主要会介绍一下基于Attention的seq2seq模型和RNN base的seq2seq模型在算法上的一些区别，此外还顺便简要介绍一下LSTM和GRU算法。</p>
+<p>Attention自2017年由Google提出至今，在seq2seq（编码解码）的任务表现出色，在NLP领域的应用也都有多项突破。我觉得attention对于深度学习将会产生深远的影响。这篇文章主要会介绍一下基于Attention的seq2seq模型和RNN base的seq2seq模型在算法上的一些区别，此外还顺便简要介绍一下LSTM和GRU算法。<br><a id="more"></a></p>
 </blockquote>
 <h2 id="RNN的编码解码-tag"><a href="#RNN的编码解码-tag" class="headerlink" title="RNN的编码解码 $tag$"></a>RNN的编码解码 $tag$</h2><p>当神经网络的输入是一串序列，输出也是一串序列，并且输入和输出序列的长度是不固定的，这样的学习任务就属于<code>sequence2sequence模型</code>（简称seq2seq）实际上，CNN和RNN都可以用于该任务的学习，以CNN为代表的<code>前馈神经网络</code>的做法是以滑动窗的方式（attention出来之前）取输入序列（17年facebook做过相关工作），而以RNN为代表的<code>循环神经网络</code>的做法一般来说比较主流一些，所以这里仅讨论RNN的编码解码算法。<br>深度学习爆红之前，NLP的常规操作是以<code>HMM/CRF</code>为代表的<code>生成模型</code>，给定一个词汇序列来预测下一个是什么，要求预测的词汇一定要最大化概率（如下式所示），基于语料库的词性和词频来分析似乎很合理；而RNN作为<code>判别模型</code>的代表，采用循环/递归的方式不断由前面的序列来生成下一个序列元素，其依据的也是式（1）。</p>
 <script type="math/tex; mode=display">\max P(y_1,y_2,...,y_{T'} )  = \prod_{t'=1}^{T'} P(y_{t'} | \space y_1,y_2,...,y_{t'-1}) \tag {1}</script><p>上式表示序列自动生成的数学原理，下面先介绍一下RNN、LSTM和GRU的基本原理，再介绍一下基于RNN的seq2seq模型。</p>
@@ -569,7 +569,7 @@ h_t =(1-z_t)*h_{t-1}+z_t* \hat h_t</script>式中，<script type="math/tex">z_t<
     var disqus_config = function () {
         this.page.url = 'https://kiddie92.github.io/2019/07/03/seq2seq的attention机制/';
         this.page.identifier = '2019/07/03/seq2seq的attention机制/';
-        this.page.title = 'seq2seq-从RNN到LSTM再到attention';
+        this.page.title = 'Seq2Seq-从RNN到LSTM再到Attention';
     };
     (function() {
     var d = document, s = d.createElement('script');
