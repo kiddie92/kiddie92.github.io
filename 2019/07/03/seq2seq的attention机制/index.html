@@ -361,7 +361,7 @@ h_t =(1-z_t)*h_{t-1}+z_t* \hat h_t</script>式中，<script type="math/tex">z_t<
 <blockquote>
 <p>此外，attention也有很多变化的版本：<code>self-attention</code>, <code>mutihead-attention</code>, <code>hard-attention</code>；算法上有些微差异，想要了解更多可以查看<a href="https://lilianweng.github.io/lil-log/2018/06/24/attention-attention.html" target="_blank" rel="noopener">这里</a>。</p>
 </blockquote>
-<h2 id="image-caption任务"><a href="#image-caption任务" class="headerlink" title="image caption任务"></a>image caption任务</h2><p>“看图说话”任务学习得到的是一个seq2seq的模型，这里使用的算法为CNN-RNN，如下图所示，其实就是把上图中的编码器改成了CNN，解码器和上述是一样的，把CNN的高维特征用attetion的方式输入到解码器中则完成了attention的实际操作。啥也不说了，项目地址在<a href="https://github.com/Hvass-Labs/TensorFlow-Tutorials" target="_blank" rel="noopener">这里</a>。</p>
+<h2 id="image-caption任务"><a href="#image-caption任务" class="headerlink" title="image caption任务"></a>image caption任务</h2><p>“看图说话”任务学习得到的是一个seq2seq的模型，这里使用的算法为CNN-RNN，如下图所示，其实就是把上图中的编码器改成了CNN，解码器和上述是一样的，把CNN的高维特征用attetion的方式输入到解码器中则完成了attention的实际操作。啥也不说了，项目地址在<a href="https://github.com/Hvass-Labs/TensorFlow-Tutorials/blob/master/22_Image_Captioning.ipynb" target="_blank" rel="noopener">这里</a>。</p>
 <p><img src="./image_caption.png" alt="image_caption"></p>
 <blockquote>
 <p>此外，CNN-RNN还可以深入做一些更加有趣的事情，比如：唇语解读。</p>
